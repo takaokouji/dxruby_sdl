@@ -6,3 +6,6 @@ Documentation:
 
 HandleExceptions:
   Enabled: false
+
+Blocks:
+  Enabled: false

@@ -12,9 +12,11 @@ describe DXRubySDL::Window do
     let(:width) { default[:width] }
     let(:height) { default[:height] }
     let(:background_color) { default[:background_color] }
-    
+
     describe '.loop', 'メインループ' do
-      it "サイズが#{default[:width]}x#{default[:height]}、背景がRGB(#{default[:background_color].join(", ")})のウィンドウを表示して、ESCキーを入力するまで待つ" do
+      it "サイズが#{default[:width]}x#{default[:height]}、" \
+        "背景がRGB(#{default[:background_color].join(", ")})の" \
+        "ウィンドウを表示して、ESCキーを入力するまで待つ" do
         expect {
           DXRubySDL::Window.loop do
             SDL::Event.push(SDL::Event::Quit.new)
