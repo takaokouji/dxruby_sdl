@@ -42,14 +42,29 @@ describe DXRubySDL::Window do
 
     describe '.draw_font', '文字列を描画する' do
       context 'サイズのみを設定したフォントを指定した場合' do
-        it '文字列を描画する' do
+        let!(:font) { DXRubySDL::Font.new(32) }
+        let(:args) { [0, 0, 'やあ', font] }
+
+        subject do
           expect {
-            font = DXRubySDL::Font.new(32)
             DXRubySDL::Window.loop do
-              DXRubySDL::Window.draw_font(0, 0, 'やあ', font)
+              DXRubySDL::Window.draw_font(*args)
               SDL::Event.push(SDL::Event::Quit.new)
             end
           }.to raise_error(SystemExit)
+        end
+
+        it '文字列を描画する' do
+          subject
+        end
+
+        hash = { color: [255, 0, 0] }
+        context '第5引数に色(#{hash.inspect})を指定した場合' do
+          let(:args) { [0, 0, 'やあ', font, hash] }
+
+          it '文字列を描画する' do
+            subject
+          end
         end
       end
     end
