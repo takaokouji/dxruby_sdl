@@ -1,5 +1,5 @@
 require 'dxruby_sdl/version'
+require 'dxruby_sdl/window'
 
 module DXRubySDL
-  # Your code goes here...
 end
