@@ -13,16 +13,12 @@ module DXRubySDL
                               SDL::SWSURFACE)
     end
 
-    def create
-      _screen
-    end
-
     def loop(&block)
       _screen.fill_rect(0, 0, DEFAULTS[:width], DEFAULTS[:height],
                         DEFAULTS[:background_color])
       _screen.update_rect(0, 0, 0, 0)
 
-      timer = FPSTimer.new
+      timer = FPSTimer.instance
       timer.reset
 
       Kernel.loop do

@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
+require 'singleton'
+
 module DXRubySDL
   module Window
     # FPSTimer is copied from http://www.kmc.gr.jp/~ohai/fpstimer.rb.
     class FPSTimer
+      include Singleton
+
       FPS_COUNT = 10
 
       attr_accessor :fps
