@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 describe DXRubySDL do
-  it 'should have a version number' do
-    DXRubySDL::VERSION.should_not be_nil
-  end
-
-  it 'should do something useful' do
-    false.should be_true
+  describe '::VERSION' do
+    subject { described_class::VERSION }
+    
+    it { should be_instance_of(String) }
+    it { should match(/\A[0-9]\.[0-9]+\.[0-9]+\z/) }
   end
 end
