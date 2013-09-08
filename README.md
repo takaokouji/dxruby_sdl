@@ -10,6 +10,28 @@ DXRuby API. It use SDL/Ruby.
 
 ## Installation
 
+### SDL & SGE
+
+#### Mac OS X with MacPorts
+
+SDL
+
+    sudo port install libsdl libsdl_image libsdl_mixer libsdl_sound libsdl_ttf
+
+SGE
+
+    curl -O http://www.digitalfanatics.org/cal/sge/files/sge030809.tar.gz
+    tar xvzf sge030809.tar.gz
+    cd sge030809
+    curl https://gist.github.com/steved555/963525/raw/7b638e4100f9dd1a9d00560b98ea2ddd4375b2b0/sge_030809_freetype.patch | patch
+    curl https://gist.github.com/steved555/963524/raw/c03396e1fb8bb87e9f4ba92597d087f730c6c48b/sge_030809_cmap.patch | patch
+    curl https://gist.github.com/steved555/963522/raw/5b277a0a6b08a1c077fbe2c96eead4ef1d761856/sge-030809-build.patch | patch
+    sed -i -e 's/-soname/-install_name/g' Makefile
+    make
+    sudo make install
+
+### dxruby_sdl
+
 Add this line to your application's Gemfile:
 
     gem 'dxruby_sdl'
