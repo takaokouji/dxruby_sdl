@@ -1,6 +1,10 @@
 language: ruby
+
 rvm:
   - 1.9.3
+
+env:
+  AUDIODEV=null
 
 before_install:
  - sudo apt-get update -qq
