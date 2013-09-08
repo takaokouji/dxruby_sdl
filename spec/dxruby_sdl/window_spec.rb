@@ -26,13 +26,27 @@ describe DXRubySDL::Window do
     end
 
     describe '.draw', 'Imageオブジェクトを描画する' do
-      context '線を描いたImageオブジェクトを指定した場合' do
-        it '線を描く' do
+      context '(0, 0)-(100,100)の白い線を描いたImageオブジェクトを指定した場合' do
+        it '白い線を描画する' do
           expect {
             i = DXRubySDL::Image.new(640, 480)
             i.line(0, 0, 100, 100, [255, 255, 255])
             DXRubySDL::Window.loop do
               DXRubySDL::Window.draw(0, 0, i)
+              SDL::Event.push(SDL::Event::Quit.new)
+            end
+          }.to raise_error(SystemExit)
+        end
+      end
+    end
+
+    describe '.drawFont', '文字列を描画する' do
+      context 'サイズのみを設定したフォントを指定した場合' do
+        it '文字列を描画する' do
+          expect {
+            font = DXRubySDL::Font.new(32)
+            DXRubySDL::Window.loop do
+              DXRubySDL::Window.drawFont(0, 0, 'やあ', font)
               SDL::Event.push(SDL::Event::Quit.new)
             end
           }.to raise_error(SystemExit)

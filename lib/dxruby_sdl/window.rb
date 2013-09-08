@@ -36,8 +36,17 @@ module DXRubySDL
       end
     end
 
-    def draw(x, y, image)
-      _screen.put(image.surface, x, y)
+    def draw(x, y, image, z = 0)
+      _screen.put(image._surface, x, y)
+    end
+
+    def drawFont(x, y, string, font, hash = {})
+      if hash[:color]
+        r, g, b = *hash[:color]
+      else
+        r, g, b = 255, 255, 255
+      end
+      font._ttf.draw_blended_utf8(_screen, string, x, y, r, g, b)
     end
 
     private

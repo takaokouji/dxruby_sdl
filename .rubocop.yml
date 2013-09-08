@@ -9,3 +9,14 @@ HandleExceptions:
 
 Blocks:
   Enabled: false
+
+FavorUnlessOverNegatedIf:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+MethodAndVariableSnakeCase:
+  Enabled: false
+
+
