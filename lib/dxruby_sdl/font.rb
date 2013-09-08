@@ -11,7 +11,25 @@ module DXRubySDL
       if !SDL::TTF.init?
         SDL::TTF.init
       end
-      @_ttf = SDL::TTF.open('/Library/Fonts/osaka.ttf', size)
+      if !(path = FONTS[fontname.downcase])
+        path = FONTS.first.last
+      end
+      @_ttf = SDL::TTF.open(path, size)
+    end
+
+    private
+
+    if /darwin/ =~ RUBY_PLATFORM
+      FONTS = {
+        'osaka' => '/Library/Fonts/osaka.ttf',
+        'IPA ゴシック' => '/Library/Fonts/ipag.ttf',
+        'IPA Pゴシック' => '/Library/Fonts/ipagp.ttf',
+      }
+    elsif /linux/ =~ RUBY_PLATFORM
+      FONTS = {
+        'IPA ゴシック' => '/usr/share/fonts/opentype/ipafont/ipag.ttf',
+        'IPA Pゴシック' => '/usr/share/fonts/opentype/ipafont/ipagp.ttf',
+      }
     end
   end
 end
