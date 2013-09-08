@@ -2,8 +2,7 @@
 
 module DXRubySDL
   module Color
-
-    private
+    module_function
 
     def to_sdl_color(color)
       if color.length == 4
