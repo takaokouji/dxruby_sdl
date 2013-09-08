@@ -32,11 +32,20 @@ module DXRubySDL
     end
 
     def circle(x, y, r, color)
-      @_surface.draw_circle(x, y, r, to_sdl_color(color), true, to_sdl_alpha(color))
+      @_surface.draw_circle(x, y, r, to_sdl_color(color), true,
+                            to_sdl_alpha(color))
+    end
+
+    def box(x1, y1, x2, y2, color)
+      x = x1 < x2 ? x1 : x2
+      w = (x2 - x1).abs
+      y = y1 < y2 ? y1 : y2
+      h = (y2 - y1).abs
+      @_surface.draw_rect(x, y, w, h, to_sdl_color(color))
     end
 
     def self.load(filename, x = nil, y = nil, width = nil, height = nil)
-      image = self.new(0, 0)
+      image = new(0, 0)
       surface = SDL::Surface.load(filename)
       image.instance_variable_set('@_surface', surface)
       return image

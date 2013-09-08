@@ -18,7 +18,7 @@ describe DXRubySDL::Image, '画像を表すクラス' do
       path = File.expand_path("../../fixtures/#{filename}", __FILE__)
       DXRubySDL::Image.load(path)
     }
-    
+
     context 'PNG形式のファイルの場合' do
       let(:filename) { 'logo.png' }
 
@@ -43,6 +43,12 @@ describe DXRubySDL::Image, '画像を表すクラス' do
   describe '#circle' do
     it '呼び出すことができる' do
       image.circle(50, 50, 25, [255, 255, 255])
+    end
+  end
+
+  describe '#box' do
+    it '呼び出すことができる' do
+      image.box(0, 0, 100, 100, [255, 255, 255])
     end
   end
 end
