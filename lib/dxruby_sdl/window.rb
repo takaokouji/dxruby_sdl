@@ -30,6 +30,9 @@ module DXRubySDL
       end
     end
 
+    def draw(x, y, image)
+    end
+
     private
 
     DEFAULTS = {

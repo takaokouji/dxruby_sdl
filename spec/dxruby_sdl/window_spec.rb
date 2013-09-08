@@ -24,5 +24,20 @@ describe DXRubySDL::Window do
         }.to raise_error(SystemExit)
       end
     end
+
+    describe '.draw', 'Imageオブジェクトを描画する' do
+      context '線を描いたImageオブジェクトを指定した場合' do
+        it '線を描く' do
+          begin
+            i = DXRubySDL::Image.new(640, 480)
+            i.line(0, 0, 100, 100, [255, 255, 255])
+            DXRubySDL::Window.loop do
+              DXRubySDL::Window.draw(0, 0, i)
+            end
+          rescue SystemExit
+          end
+        end
+      end
+    end
   end
 end
