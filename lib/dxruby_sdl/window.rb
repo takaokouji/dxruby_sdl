@@ -40,7 +40,7 @@ module DXRubySDL
       _screen.put(image._surface, x, y)
     end
 
-    def drawFont(x, y, string, font, hash = {})
+    def draw_font(x, y, string, font, hash = {})
       if hash[:color]
         r, g, b = *hash[:color]
       else

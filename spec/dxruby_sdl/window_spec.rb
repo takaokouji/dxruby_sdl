@@ -40,13 +40,13 @@ describe DXRubySDL::Window do
       end
     end
 
-    describe '.drawFont', '文字列を描画する' do
+    describe '.draw_font', '文字列を描画する' do
       context 'サイズのみを設定したフォントを指定した場合' do
         it '文字列を描画する' do
           expect {
             font = DXRubySDL::Font.new(32)
             DXRubySDL::Window.loop do
-              DXRubySDL::Window.drawFont(0, 0, 'やあ', font)
+              DXRubySDL::Window.draw_font(0, 0, 'やあ', font)
               SDL::Event.push(SDL::Event::Quit.new)
             end
           }.to raise_error(SystemExit)

@@ -15,8 +15,3 @@ FavorUnlessOverNegatedIf:
 
 IfUnlessModifier:
   Enabled: false
-
-MethodAndVariableSnakeCase:
-  Enabled: false
-
-
