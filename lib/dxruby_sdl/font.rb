@@ -19,6 +19,7 @@ module DXRubySDL
 
     private
 
+    # :nocov:
     if /darwin/ =~ RUBY_PLATFORM
       FONTS = {
         'osaka' => '/Library/Fonts/osaka.ttf',
@@ -31,5 +32,6 @@ module DXRubySDL
         'IPA Pゴシック' => '/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf',
       }
     end
+    # :nocov:
   end
 end
