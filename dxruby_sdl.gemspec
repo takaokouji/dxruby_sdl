@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'travis-lint'
+  spec.add_development_dependency 'rubocop'
 
   spec.add_runtime_dependency 'rubysdl'
   spec.add_runtime_dependency 'rsdl' if /darwin/ =~ RUBY_PLATFORM
