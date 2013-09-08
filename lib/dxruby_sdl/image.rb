@@ -4,23 +4,38 @@ module DXRubySDL
   class Image
     include Color
 
-    attr_reader :width
-    attr_reader :height
     attr_reader :_surface
 
     def initialize(width, height, color = [0, 0, 0, 0])
-      @width = width
-      @height = height
       @color = color
+
+      if width == 0 && height == 0
+        return
+      end
 
       @_surface =
         SDL::Surface.new(SDL::SWSURFACE, width, height, Window._screen)
       @_surface.fill_rect(0, 0, width, height, @color)
     end
 
+    def width
+      return @_surface.w
+    end
+
+    def height
+      return @_surface.h
+    end
+
     def line(x1, y1, x2, y2, color)
       @_surface.draw_line(x1, y1, x2, y2,
                           to_sdl_color(color), true, to_sdl_alpha(color))
+    end
+
+    def self.load(filename, x = nil, y = nil, width = nil, height = nil)
+      image = self.new(0, 0)
+      surface = SDL::Surface.load(filename)
+      image.instance_variable_set('@_surface', surface)
+      return image
     end
   end
 end

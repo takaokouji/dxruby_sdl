@@ -11,6 +11,27 @@ describe DXRubySDL::Image, '画像を表すクラス' do
     end
   end
 
+  describe '.load' do
+    subject {
+      path = File.expand_path("../../fixtures/#{filename}", __FILE__)
+      DXRubySDL::Image.load(path)
+    }
+    
+    context 'PNG形式のファイルの場合' do
+      let(:filename) { 'logo.png' }
+
+      its(:width) { should eq(518) }
+      its(:height) { should eq(232) }
+    end
+
+    context 'JPG形式のファイルの場合' do
+      let(:filename) { 'logo.jpg' }
+
+      its(:width) { should eq(518) }
+      its(:height) { should eq(232) }
+    end
+  end
+
   describe '#line' do
     let(:image) { DXRubySDL::Image.new(640, 480) }
 
