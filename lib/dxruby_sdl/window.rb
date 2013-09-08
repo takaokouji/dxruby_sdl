@@ -7,8 +7,6 @@ module DXRubySDL
     module_function
 
     def loop(&block)
-      SDL.init(SDL::INIT_EVERYTHING)
-
       screen = SDL.set_video_mode(DEFAULTS[:width], DEFAULTS[:height], 16,
                                   SDL::SWSURFACE)
       screen.fill_rect(0, 0, DEFAULTS[:width], DEFAULTS[:height],
@@ -18,23 +16,18 @@ module DXRubySDL
       timer = FPSTimer.new
       timer.reset
 
-      begin
-        Kernel.loop do
-          while (event = SDL::Event.poll)
-            case event
-            when SDL::Event::Quit
-              exit
-            end
-          end
-
-          timer.wait_frame do
-            yield
+      Kernel.loop do
+        while (event = SDL::Event.poll)
+          case event
+          when SDL::Event::Quit
+            exit
           end
         end
-      rescue SystemExit
-      end
 
-      SDL.quit
+        timer.wait_frame do
+          yield
+        end
+      end
     end
 
     private

@@ -7,3 +7,5 @@ require 'dxruby_sdl/image'
 
 module DXRubySDL
 end
+
+SDL.init(SDL::INIT_EVERYTHING)

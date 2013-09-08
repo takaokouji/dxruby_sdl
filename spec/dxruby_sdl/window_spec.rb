@@ -15,9 +15,11 @@ describe DXRubySDL::Window do
     
     describe '.loop', 'メインループ' do
       it "サイズが#{default[:width]}x#{default[:height]}、背景がRGB(#{default[:background_color].join(", ")})のウィンドウを表示して、ESCキーを入力するまで待つ" do
-        DXRubySDL::Window.loop do
-          SDL::Event.push(SDL::Event::Quit.new)
-        end
+        expect {
+          DXRubySDL::Window.loop do
+            SDL::Event.push(SDL::Event::Quit.new)
+          end
+        }.to raise_error(SystemExit)
       end
     end
   end

@@ -10,4 +10,12 @@ describe DXRubySDL::Image, '画像を表すクラス' do
       its(:height) { should eq(480) }
     end
   end
+
+  describe '#line' do
+    let(:image) { DXRubySDL::Image.new(640, 480) }
+
+    it '呼び出すことができる' do
+      image.line(0, 0, 100, 100, [255,255,255])
+    end
+  end
 end
