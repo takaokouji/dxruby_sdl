@@ -31,6 +31,10 @@ module DXRubySDL
                           to_sdl_color(color), true, to_sdl_alpha(color))
     end
 
+    def circle(x, y, r, color)
+      @_surface.draw_circle(x, y, r, to_sdl_color(color), true, to_sdl_alpha(color))
+    end
+
     def self.load(filename, x = nil, y = nil, width = nil, height = nil)
       image = self.new(0, 0)
       surface = SDL::Surface.load(filename)
