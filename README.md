@@ -1,4 +1,30 @@
-dxruby-sdl
-==========
+# dxruby_sdl
 
-DXRuby on SDL/Ruby
+`dxruby_sdl` is a ruby library for 2D graphics and game. It has same
+DXRuby API. It use SDL/Ruby.
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+    gem 'dxruby_sdl'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install dxruby_sdl
+
+## Usage
+
+see http://dxruby.sourceforge.jp/ (in Japanese).
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
