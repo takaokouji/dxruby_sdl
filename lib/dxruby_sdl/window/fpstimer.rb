@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module DXRubySDL
   module Window
     # FPSTimer is copied from http://www.kmc.gr.jp/~ohai/fpstimer.rb.
@@ -29,8 +31,8 @@ module DXRubySDL
       # execute given block and wait
       def wait_frame
         now = get_ticks
-        nxt = @old + (1.0/@fps)
-        if nxt > now 
+        nxt = @old + (1.0 / @fps)
+        if nxt > now
           yield
           @skip = 0
           wait(nxt)
@@ -53,6 +55,7 @@ module DXRubySDL
       end
 
       private
+
       def wait(nxt)
         while nxt > get_ticks + @accurary
           sleep(@accurary - 0.005)

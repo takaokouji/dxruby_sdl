@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe DXRubySDL do
@@ -9,8 +10,19 @@ describe DXRubySDL do
   end
 
   describe 'require \'dxruby\'' do
-    subject { require 'dxruby' }
+    before do
+      require 'dxruby'
+    end
 
-    it { should be_true }
+    %w[
+      Window
+      Image
+    ].each do |klass_name|
+      it "トップレベルに#{klass_name}が定義されている" do
+        expect {
+          eval("::#{klass_name}")
+        }.not_to raise_error
+      end
+    end
   end
 end

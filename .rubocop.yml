@@ -1,0 +1,8 @@
+MethodLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+HandleExceptions:
+  Enabled: false
