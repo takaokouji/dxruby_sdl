@@ -36,13 +36,17 @@ module DXRubySDL
           wait(nxt)
           @old = nxt
         elsif @skip > @skip_limit
+          # :nocov:
           yield
           @skip = 0
           @old = get_ticks
+          # :nocov:
         else
+          # :nocov:
           @skip += 1
           @total_skip += 1
           @old = nxt
+          # :nocov:
         end
 
         calc_real_fps
@@ -67,10 +71,12 @@ module DXRubySDL
       def calc_real_fps
         @frame_count += 1
         if @frame_count >= FPS_COUNT
+          # :nocov:
           @frame_count = 0
           now = get_ticks
           @real_fps = FPS_COUNT / (now - @fps_old)
           @fps_old = now
+          # :nocov:
         end
       end
     end
