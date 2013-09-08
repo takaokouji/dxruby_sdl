@@ -104,7 +104,7 @@ describe DXRubySDL::Window do
         end
 
         hash = { color: [255, 0, 0] }
-        context '第5引数に色(#{hash.inspect})を指定した場合' do
+        context "第5引数に色(#{hash.inspect})を指定した場合" do
           let(:args) { [0, 0, 'やあ', font, hash] }
 
           it '文字列を描画する' do
