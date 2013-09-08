@@ -27,8 +27,8 @@ module DXRubySDL
       }
     elsif /linux/ =~ RUBY_PLATFORM
       FONTS = {
-        'IPA ゴシック' => '/usr/share/fonts/opentype/ipafont/ipag.ttf',
-        'IPA Pゴシック' => '/usr/share/fonts/opentype/ipafont/ipagp.ttf',
+        'IPA ゴシック' => '/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf',
+        'IPA Pゴシック' => '/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf',
       }
     end
   end
