@@ -32,7 +32,7 @@ module DXRubySDL
     end
 
     def circle(x, y, r, color)
-      @_surface.draw_circle(x, y, r, to_sdl_color(color), true,
+      @_surface.draw_circle(x, y, r, to_sdl_color(color), false, true,
                             to_sdl_alpha(color))
     end
 
