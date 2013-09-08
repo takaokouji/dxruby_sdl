@@ -1,5 +1,6 @@
 # dxruby_sdl
 
+[![Build Status](https://travis-ci.org/takaokouji/dxruby_sdl.png?branch=master)](https://travis-ci.org/takaokouji/dxruby_sdl)
 [![Coverage Status](https://coveralls.io/repos/takaokouji/dxruby_sdl/badge.png?branch=master)](https://coveralls.io/r/takaokouji/dxruby_sdl?branch=master)
 
 `dxruby_sdl` is a ruby library for 2D graphics and game. It has same
