@@ -6,12 +6,21 @@ module DXRubySDL
   module Window
     module_function
 
+    def _screen
+      return SDL::Screen.get
+    rescue SDL::Error
+      return SDL::Screen.open(DEFAULTS[:width], DEFAULTS[:height], 16,
+                              SDL::SWSURFACE)
+    end
+
+    def create
+      _screen
+    end
+
     def loop(&block)
-      screen = SDL.set_video_mode(DEFAULTS[:width], DEFAULTS[:height], 16,
-                                  SDL::SWSURFACE)
-      screen.fill_rect(0, 0, DEFAULTS[:width], DEFAULTS[:height],
-                       DEFAULTS[:background_color])
-      screen.update_rect(0, 0, 0, 0)
+      _screen.fill_rect(0, 0, DEFAULTS[:width], DEFAULTS[:height],
+                        DEFAULTS[:background_color])
+      _screen.update_rect(0, 0, 0, 0)
 
       timer = FPSTimer.new
       timer.reset
@@ -26,11 +35,13 @@ module DXRubySDL
 
         timer.wait_frame do
           yield
+          _screen.update_rect(0, 0, 0, 0)
         end
       end
     end
 
     def draw(x, y, image)
+      _screen.put(image.surface, x, y)
     end
 
     private
