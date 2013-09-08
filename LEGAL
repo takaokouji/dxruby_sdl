@@ -1,0 +1,11 @@
+LEGAL NOTICE INFORMATION
+------------------------
+
+All the files in this distribution are covered under either the
+dxruby_sdl's license (see the file LICENSE) except some files
+mentioned below.
+
+lib/dxruby_sdl/window/fpstimer.rb:
+
+  FPSTimer (Original name is FPSTimerSample) class is implemented in
+  http://www.kmc.gr.jp/~ohai/fpstimer.rb.
