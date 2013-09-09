@@ -89,10 +89,11 @@ module DXRubySDL
         when /^\d$/
           name = "K#{name}"
         when /^NUMPAD(.+)$/
-          if $1.length > 1
-            name = "KP_#{$1}"
+          md = Regexp.last_match
+          if md[1].length > 1
+            name = "KP_#{md[1]}"
           else
-            name = "KP#{$1}"
+            name = "KP#{md[1]}"
           end
         end
         begin

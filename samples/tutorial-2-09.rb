@@ -5,5 +5,5 @@ require 'dxruby'
 font = Font.new(32)  # 第２引数を省略するとＭＳ Pゴシックになります
 
 Window.loop do
-  Window.drawFont(100, 100, "ふぉんと", font)  # "ふぉんと"を描画する
+  Window.drawFont(100, 100, 'ふぉんと', font)  # "ふぉんと"を描画する
 end

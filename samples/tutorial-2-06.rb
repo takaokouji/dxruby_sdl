@@ -12,7 +12,7 @@ Window.loop do
   dx = Input.x  # x座標の移動量
   dy = Input.y  # y座標の移動量
 
-  if Input.padDown?(P_BUTTON0) then  # Zキーかパッドのボタン０を押しているか判定
+  if Input.padDown?(P_BUTTON0) # Zキーかパッドのボタン０を押しているか判定
     dx = dx * 2
     dy = dy * 2
   end

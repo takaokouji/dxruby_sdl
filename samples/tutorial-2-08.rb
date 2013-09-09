@@ -6,7 +6,7 @@ image = Image.load('data.png')  # data.pngを読み込む
 
 Window.loop do
   Window.draw(100, 100, image)  # data.pngを描画する
-  if Input.keyPush?(K_ESCAPE) then  # Escキーで終了
+  if Input.keyPush?(K_ESCAPE)   # Escキーで終了
     break
   end
 end
