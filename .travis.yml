@@ -8,4 +8,4 @@ env:
 
 before_install:
  - sudo apt-get update -qq
- - sudo apt-get install -qq libsdl1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl-sge-dev otf-ipafont-gothic
+ - sudo apt-get install -qq libsdl1.2-dev libsdl-mixer1.2-dev timidity libsdl-ttf2.0-dev libsdl-sge-dev otf-ipafont-gothic
