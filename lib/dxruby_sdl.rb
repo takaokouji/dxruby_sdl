@@ -209,5 +209,6 @@ require 'dxruby_sdl/color'
 require 'dxruby_sdl/image'
 require 'dxruby_sdl/font'
 require 'dxruby_sdl/input'
+require 'dxruby_sdl/sound'
 
 SDL.init(SDL::INIT_EVERYTHING)

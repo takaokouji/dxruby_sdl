@@ -18,3 +18,15 @@ samples/tutorial-2-09.rb, samples/tutorial-2-10.rb:
 
   These sample programs are copied from DXRuby's tutorial
   http://dxruby.sourceforge.jp/DXRubyReference/200953183259625.htm.
+
+spec/fixtures/sound.wav:
+
+  This is downloaded from maokai(魔王魂)
+  http://maoudamashii.jokersounds.com/.
+  Original name is 'se_maoudamashii_onepoint26.wav'.
+
+spec/fixtures/bgm.mid:
+
+  This is downloaded from maokai(魔王魂)
+  http://maoudamashii.jokersounds.com/.
+  Original name is 'song_32_grandiflora.mid'.
