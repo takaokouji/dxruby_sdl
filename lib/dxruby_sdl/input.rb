@@ -60,6 +60,19 @@ module DXRubySDL
       return SDL::Mouse.state[index]
     end
 
+    def mouse_push?(button)
+      case button
+      when M_LBUTTON
+        index = 2
+      when M_MBUTTON
+        index = 3
+      when M_RBUTTON
+        index = 4
+      end
+      return SDL::Mouse.state[index] &&
+        !Window.instance_variable_get('@last_mouse_state')[index]
+    end
+
     # rubocop:disable SymbolName
     class << self
       alias_method :padDown?, :pad_down?
@@ -67,6 +80,7 @@ module DXRubySDL
       alias_method :mousePosY, :mouse_pos_y
       alias_method :keyPush?, :key_push?
       alias_method :mouseDown?, :mouse_down?
+      alias_method :mousePush?, :mouse_push?
     end
     # rubocop:enable SymbolName
 

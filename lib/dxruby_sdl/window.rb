@@ -4,6 +4,8 @@ require 'dxruby_sdl/window/fpstimer'
 
 module DXRubySDL
   module Window
+    @last_mouse_state = [false, false, false]
+
     module_function
 
     def _screen
@@ -11,6 +13,10 @@ module DXRubySDL
     rescue SDL::Error
       return SDL::Screen.open(DEFAULTS[:width], DEFAULTS[:height], 16,
                               SDL::SWSURFACE)
+    end
+
+    def fps=(val)
+      FPSTimer.instance.fps = val
     end
 
     def loop(&block)
@@ -32,6 +38,8 @@ module DXRubySDL
           yield
 
           _screen.update_rect(0, 0, 0, 0)
+
+          @last_mouse_state = SDL::Mouse.state
         end
       end
     end
