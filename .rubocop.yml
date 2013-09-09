@@ -18,3 +18,7 @@ IfUnlessModifier:
 
 RedundantReturn:
   Enabled: false
+
+AsciiComments:
+  Enabled: false
+

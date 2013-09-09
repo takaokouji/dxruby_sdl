@@ -14,23 +14,23 @@ module DXRubySDL
     end
 
     def loop(&block)
-      _screen.fill_rect(0, 0, DEFAULTS[:width], DEFAULTS[:height],
-                        DEFAULTS[:background_color])
-      _screen.update_rect(0, 0, 0, 0)
-
       timer = FPSTimer.instance
       timer.reset
 
       Kernel.loop do
-        while (event = SDL::Event.poll)
-          case event
-          when SDL::Event::Quit
-            exit
-          end
-        end
-
         timer.wait_frame do
+          while (event = SDL::Event.poll)
+            case event
+            when SDL::Event::Quit
+              exit
+            end
+          end
+
+          _screen.fill_rect(0, 0, DEFAULTS[:width], DEFAULTS[:height],
+                            DEFAULTS[:background_color])
+
           yield
+
           _screen.update_rect(0, 0, 0, 0)
         end
       end

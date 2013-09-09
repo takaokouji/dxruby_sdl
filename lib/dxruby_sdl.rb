@@ -6,6 +6,7 @@ require 'dxruby_sdl/window'
 require 'dxruby_sdl/color'
 require 'dxruby_sdl/image'
 require 'dxruby_sdl/font'
+require 'dxruby_sdl/input'
 
 module DXRubySDL
 end
