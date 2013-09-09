@@ -49,14 +49,25 @@ module DXRubySDL
       return @_surface.h
     end
 
+    def slice(x, y, width, height)
+      s = @_surface.copy_rect(x, y, width, height)
+      image = Image.new(0, 0)
+      image.instance_variable_set('@_surface', s)
+      return image
+    end
+
     def line(x1, y1, x2, y2, color)
-      @_surface.draw_line(x1, y1, x2, y2,
-                          to_sdl_color(color), true, to_sdl_alpha(color))
+      lock do
+        @_surface.draw_line(x1, y1, x2, y2,
+                            to_sdl_color(color), true, to_sdl_alpha(color))
+      end
     end
 
     def circle(x, y, r, color)
-      @_surface.draw_circle(x, y, r, to_sdl_color(color), false, true,
-                            to_sdl_alpha(color))
+      lock do
+        @_surface.draw_circle(x, y, r, to_sdl_color(color), false, true,
+                              to_sdl_alpha(color))
+      end
     end
 
     def box(x1, y1, x2, y2, color)
@@ -64,7 +75,9 @@ module DXRubySDL
       w = (x2 - x1).abs
       y = y1 < y2 ? y1 : y2
       h = (y2 - y1).abs
-      @_surface.draw_rect(x, y, w, h, to_sdl_color(color))
+      lock do
+        @_surface.draw_rect(x, y, w, h, to_sdl_color(color))
+      end
     end
 
     # rubocop:disable SymbolName
@@ -74,5 +87,20 @@ module DXRubySDL
       alias_method :loadToArray, :load_to_array
     end
     # rubocop:enable SymbolName
+
+    private
+
+    def lock(&block)
+      if SDL::Surface.auto_lock?
+        yield
+      else
+        begin
+          @_surface.lock
+          yield
+        ensure
+          @_surface.unlock
+        end
+      end
+    end
   end
 end

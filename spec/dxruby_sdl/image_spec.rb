@@ -95,6 +95,28 @@ describe DXRubySDL::Image, '画像を表すクラス' do
     end
   end
 
+  describe '#slice' do
+    let(:image) { DXRubySDL::Image.load(fixture_path('logo.png')) }
+
+    subject { image.slice(100, 100, 20, 40) }
+
+    before do
+      SDL::Surface.auto_lock_on
+    end
+
+    after do
+      SDL::Surface.auto_lock_off
+    end
+
+    its(:width) { should eq(20) }
+    its(:height) { should eq(40) }
+    it { should be_instance_of(DXRubySDL::Image) }
+    it '各ピクセルデータが正しい' do
+      expect(subject._surface.pixels)
+        .to eq(image._surface.copy_rect(100, 100, 20, 40).pixels)
+    end
+  end
+
   describe '#line' do
     it '呼び出すことができる' do
       image.line(0, 0, 100, 100, [255, 255, 255])
