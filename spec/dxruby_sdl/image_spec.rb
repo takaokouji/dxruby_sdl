@@ -154,4 +154,22 @@ describe DXRubySDL::Image, '画像を表すクラス' do
 
     include_context 'draw methods'
   end
+
+  shared_context '#box_fill' do
+    include_context 'draw methods'
+  end
+
+  describe '#box_fill' do
+    subject { image.box_fill(0, 0, 100, 100, [255, 255, 255]) }
+
+    include_context '#box_fill'
+
+    describe 'alias' do
+      describe '#boxFill' do
+        it_behaves_like '#box_fill' do
+          subject { image.boxFill(0, 0, 100, 100, [255, 255, 255]) }
+        end
+      end
+    end
+  end
 end

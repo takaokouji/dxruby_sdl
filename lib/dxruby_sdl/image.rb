@@ -76,7 +76,19 @@ module DXRubySDL
       y = y1 < y2 ? y1 : y2
       h = (y2 - y1).abs
       lock do
-        @_surface.draw_rect(x, y, w, h, to_sdl_color(color))
+        @_surface.draw_rect(x, y, w, h, to_sdl_color(color), false,
+                            to_sdl_alpha(color))
+      end
+    end
+
+    def box_fill(x1, y1, x2, y2, color)
+      x = x1 < x2 ? x1 : x2
+      w = (x2 - x1).abs
+      y = y1 < y2 ? y1 : y2
+      h = (y2 - y1).abs
+      lock do
+        @_surface.draw_rect(x, y, w, h, to_sdl_color(color), true,
+                            to_sdl_alpha(color))
       end
     end
 
@@ -86,6 +98,7 @@ module DXRubySDL
       alias_method :load_to_array, :load_tiles
       alias_method :loadToArray, :load_to_array
     end
+    alias_method :boxFill, :box_fill
     # rubocop:enable SymbolName
 
     private

@@ -8,7 +8,7 @@ i.circle(350, 50, 10, [0, 255, 0])
 i.circle(50, 200, 10, [0, 255, 0])
 i.circle(350, 200, 10, [0, 255, 0])
 
-Font.new(50, 'MS Gothic')
+font = Font.new(50, 'MS Gothic')
 
 Window.loop do
   Window.draw(0, 0, i)
