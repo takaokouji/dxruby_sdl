@@ -48,12 +48,25 @@ module DXRubySDL
       return key_press?(to_sdl_key(key_code))
     end
 
+    def mouse_down?(button)
+      case button
+      when M_LBUTTON
+        index = 2
+      when M_MBUTTON
+        index = 3
+      when M_RBUTTON
+        index = 4
+      end
+      return SDL::Mouse.state[index]
+    end
+
     # rubocop:disable SymbolName
     class << self
       alias_method :padDown?, :pad_down?
       alias_method :mousePosX, :mouse_pos_x
       alias_method :mousePosY, :mouse_pos_y
       alias_method :keyPush?, :key_push?
+      alias_method :mouseDown?, :mouse_down?
     end
     # rubocop:enable SymbolName
 

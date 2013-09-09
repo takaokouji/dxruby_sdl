@@ -227,4 +227,95 @@ describe DXRubySDL::Input,
       end
     end
   end
+
+  shared_context '.mouse_down?' do
+    context 'マウスの左ボタンを押している場合' do
+      before do
+        allow(SDL::Mouse)
+          .to receive(:state).and_return([0, 0, true, false, false])
+      end
+
+      describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_LBUTTON }
+
+        it { should be_true }
+      end
+
+      describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_MBUTTON }
+
+        it { should be_false }
+      end
+
+      describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_RBUTTON }
+
+        it { should be_false }
+      end
+    end
+
+    context 'マウスの中ボタンを押している場合' do
+      before do
+        allow(SDL::Mouse)
+          .to receive(:state).and_return([0, 0, false, true, false])
+      end
+
+      describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_LBUTTON }
+
+        it { should be_false }
+      end
+
+      describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_MBUTTON }
+
+        it { should be_true }
+      end
+
+      describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_RBUTTON }
+
+        it { should be_false }
+      end
+    end
+
+    context 'マウスの右ボタンを押している場合' do
+      before do
+        allow(SDL::Mouse)
+          .to receive(:state).and_return([0, 0, false, false, true])
+      end
+
+      describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_LBUTTON }
+
+        it { should be_false }
+      end
+
+      describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_MBUTTON }
+
+        it { should be_false }
+      end
+
+      describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
+        let(:button) { DXRubySDL::M_RBUTTON }
+
+        it { should be_true }
+      end
+    end
+  end
+
+  describe '.mouse_down?' do
+    subject { described_class.mouse_down?(button) }
+
+    include_context '.mouse_down?'
+
+    describe 'alias' do
+      describe '.mouseDown?' do
+        it_behaves_like '.mouse_down?' do
+          subject { described_class.mouseDown?(button) }
+        end
+      end
+    end
+  end
 end
