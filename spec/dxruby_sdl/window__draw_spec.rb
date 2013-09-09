@@ -50,8 +50,7 @@ describe DXRubySDL::Window do
 
     context '画像を読み込んだImageオブジェクトを指定した場合' do
       let!(:image) {
-        path = File.expand_path('../../fixtures/logo.png', __FILE__)
-        DXRubySDL::Image.load(path)
+        DXRubySDL::Image.load(fixture_path('logo.png'))
       }
 
       it '画像を描画する' do
