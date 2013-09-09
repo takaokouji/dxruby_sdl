@@ -117,21 +117,41 @@ describe DXRubySDL::Image, '画像を表すクラス' do
     end
   end
 
-  describe '#line' do
+  shared_context 'draw methods' do
     it '呼び出すことができる' do
-      image.line(0, 0, 100, 100, [255, 255, 255])
+      subject
     end
+
+    context 'auto_lockを有効にした場合' do
+      before do
+        SDL::Surface.auto_lock_on
+      end
+
+      after do
+        SDL::Surface.auto_lock_off
+      end
+
+      it '呼び出すことができる' do
+        subject
+      end
+    end
+  end
+
+  describe '#line' do
+    subject { image.line(0, 0, 100, 100, [255, 255, 255]) }
+
+    include_context 'draw methods'
   end
 
   describe '#circle' do
-    it '呼び出すことができる' do
-      image.circle(50, 50, 25, [255, 255, 255])
-    end
+    subject { image.circle(50, 50, 25, [255, 255, 255]) }
+
+    include_context 'draw methods'
   end
 
   describe '#box' do
-    it '呼び出すことができる' do
-      image.box(0, 0, 100, 100, [255, 255, 255])
-    end
+    subject { image.box(0, 0, 100, 100, [255, 255, 255]) }
+
+    include_context 'draw methods'
   end
 end
