@@ -34,6 +34,68 @@ describe DXRubySDL::Image, '画像を表すクラス' do
     end
   end
 
+  shared_context '.load_tiles' do
+    context '画像の幅と高さが割り切れる(518x232、xcountが2、ycountが4)場合' do
+      let(:xcount) { 2 }
+      let(:ycount) { 4 }
+
+      subject {
+        DXRubySDL::Image.load_tiles(fixture_path('logo.png'),
+                                    xcount, ycount)
+      }
+
+      its(:length) { should eq(xcount * ycount) }
+
+      it '各オブジェクトの幅はxcount(2)等分したものである' do
+        subject.each do |image|
+          expect(image.width).to eq(518 / xcount)
+        end
+      end
+
+      it '各オブジェクトの高さはycount(4)等分したものである' do
+        subject.each do |image|
+          expect(image.height).to eq(232 / ycount)
+        end
+      end
+    end
+  end
+
+  describe '.load_tiles',
+           '画像を読み込み、横・縦がそれぞれxcount個、' \
+           'ycount個であると仮定して自動で分割し、' \
+           '左上から右に向かう順序でImageオブジェクトの配列を生成して返す' do
+    include_context '.load_tiles'
+
+    describe 'alias' do
+      describe '.loadTiles' do
+        it_behaves_like '.load_tiles' do
+          subject {
+            DXRubySDL::Image.loadTiles(fixture_path('logo.png'),
+                                       xcount, ycount)
+          }
+        end
+      end
+
+      describe '.load_to_array' do
+        it_behaves_like '.load_tiles' do
+          subject {
+            DXRubySDL::Image.load_to_array(fixture_path('logo.png'),
+                                           xcount, ycount)
+          }
+        end
+      end
+
+      describe '.loadToArray' do
+        it_behaves_like '.load_tiles' do
+          subject {
+            DXRubySDL::Image.loadToArray(fixture_path('logo.png'),
+                                         xcount, ycount)
+          }
+        end
+      end
+    end
+  end
+
   describe '#line' do
     it '呼び出すことができる' do
       image.line(0, 0, 100, 100, [255, 255, 255])

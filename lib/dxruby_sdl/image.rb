@@ -6,6 +6,29 @@ module DXRubySDL
 
     attr_reader :_surface
 
+    def self.load(filename, x = nil, y = nil, width = nil, height = nil)
+      image = new(0, 0)
+      surface = SDL::Surface.load(filename)
+      image.instance_variable_set('@_surface', surface)
+      return image
+    end
+
+    def self.load_tiles(filename, xcount, ycount)
+      surface = SDL::Surface.load(filename)
+      width = surface.w / xcount
+      height = surface.h / ycount
+      images = []
+      ycount.times do |y|
+        xcount.times do |x|
+          image = new(0, 0)
+          s = surface.copy_rect(x * width, y * height, width, height)
+          image.instance_variable_set('@_surface', s)
+          images << image
+        end
+      end
+      return images
+    end
+
     def initialize(width, height, color = [0, 0, 0, 0])
       @color = color
 
@@ -44,11 +67,12 @@ module DXRubySDL
       @_surface.draw_rect(x, y, w, h, to_sdl_color(color))
     end
 
-    def self.load(filename, x = nil, y = nil, width = nil, height = nil)
-      image = new(0, 0)
-      surface = SDL::Surface.load(filename)
-      image.instance_variable_set('@_surface', surface)
-      return image
+    # rubocop:disable SymbolName
+    class << self
+      alias_method :loadTiles, :load_tiles
+      alias_method :load_to_array, :load_tiles
+      alias_method :loadToArray, :load_to_array
     end
+    # rubocop:enable SymbolName
   end
 end
