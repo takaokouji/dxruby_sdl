@@ -27,7 +27,9 @@ module DXRubySDL
     end
 
     def pad_down?(button_code, pad_number = 0)
-      if key_press?(SDL::Key::Z) ||
+      if button_code == P_BUTTON0 && key_press?(SDL::Key::Z) ||
+          button_code == P_BUTTON1 && key_press?(SDL::Key::X) ||
+          button_code == P_BUTTON2 && key_press?(SDL::Key::C) ||
           ((j = joystick(pad_number)) && j.button(button_code))
         return true
       end

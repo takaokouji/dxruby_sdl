@@ -89,29 +89,37 @@ describe DXRubySDL::Input,
         allow(SDL::Joystick).to receive(:open).with(0).and_return(joystick)
       end
 
-      describe '0番目(P_BUTTON0)のボタン' do
-        subject { described_class.pad_down?(DXRubySDL::P_BUTTON0) }
+      [
+       # rubocop:disable SymbolName
+       [:P_BUTTON0, :Z],
+       [:P_BUTTON1, :X],
+       [:P_BUTTON2, :C],
+       # rubocop:enable SymbolName
+      ].each.with_index do |(_button, _key), i|
+        describe "#{i}番目(#{_button})のボタン" do
+          subject { described_class.pad_down?(DXRubySDL.const_get(_button)) }
 
-        context '0番目のボタンが押されている場合' do
-          let(:joystick) {
-            j = double('Joystick')
-            allow(j).to receive(:button) { |button_index|
-                          button_index == DXRubySDL::P_BUTTON0
-                        }
-            j
-          }
+          context "#{i}番目のボタンが押されている場合" do
+            let(:joystick) {
+              j = double('Joystick')
+              allow(j).to receive(:button) { |button_index|
+                            button_index == DXRubySDL.const_get(_button)
+                          }
+              j
+            }
 
-          it { should be_true }
-        end
+            it { should be_true }
+          end
 
-        context 'Zキーが押されている場合' do
-          let(:_keys) { SDL::Key::Z }
+          context "#{_key}キーが押されている場合" do
+            let(:_keys) { SDL::Key.const_get(_key) }
 
-          it { should be_true }
-        end
+            it { should be_true }
+          end
 
-        context 'ボタンやキーが押されていない場合' do
-          it { should be_false }
+          context 'ボタンやキーが押されていない場合' do
+            it { should be_false }
+          end
         end
       end
     end
@@ -121,17 +129,25 @@ describe DXRubySDL::Input,
         allow(SDL::Joystick).to receive(:num).and_return(0)
       end
 
-      describe '0番目(P_BUTTON0)のボタン' do
-        subject { described_class.pad_down?(DXRubySDL::P_BUTTON0) }
+      [
+       # rubocop:disable SymbolName
+       [:P_BUTTON0, :Z],
+       [:P_BUTTON1, :X],
+       [:P_BUTTON2, :C],
+       # rubocop:enable SymbolName
+      ].each.with_index do |(_button, _key), i|
+        describe "#{i}番目(#{_button})のボタン" do
+          subject { described_class.pad_down?(DXRubySDL.const_get(_button)) }
 
-        context 'Zキーが押されている場合' do
-          let(:_keys) { SDL::Key::Z }
+          context "#{_key}キーが押されている場合" do
+            let(:_keys) { SDL::Key.const_get(_key) }
 
-          it { should be_true }
-        end
+            it { should be_true }
+          end
 
-        context 'ボタンやキーが押されていない場合' do
-          it { should be_false }
+          context 'ボタンやキーが押されていない場合' do
+            it { should be_false }
+          end
         end
       end
     end
