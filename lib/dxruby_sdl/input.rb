@@ -44,8 +44,14 @@ module DXRubySDL
       return SDL::Mouse.state[1]
     end
 
-    def key_push?(key_code)
+    def key_down?(key_code)
       return key_press?(to_sdl_key(key_code))
+    end
+
+    def key_push?(key_code)
+      key = to_sdl_key(key_code)
+      return key_press?(key) &&
+        !Window.instance_variable_get('@last_key_state').include?(key)
     end
 
     def mouse_down?(button)
@@ -78,6 +84,7 @@ module DXRubySDL
       alias_method :padDown?, :pad_down?
       alias_method :mousePosX, :mouse_pos_x
       alias_method :mousePosY, :mouse_pos_y
+      alias_method :keyDown?, :key_down?
       alias_method :keyPush?, :key_push?
       alias_method :mouseDown?, :mouse_down?
       alias_method :mousePush?, :mouse_push?
@@ -133,7 +140,13 @@ module DXRubySDL
 
       def key_press?(key)
         SDL::Key.scan
-        return SDL::Key.press?(key)
+        if SDL::Key.press?(key)
+          Window.instance_variable_get('@current_key_state').add(key)
+          return true
+        else
+          Window.instance_variable_get('@current_key_state').delete(key)
+          return false
+        end
       end
 
       def joystick(pad_number)

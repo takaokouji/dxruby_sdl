@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe DXRubySDL::Input,
          'キーボード・ゲームパッド・マウスの入力を扱うモジュール' do
-  after do
+  before do
     DXRubySDL::Input.instance_variable_set('@joysticks', [])
   end
 
@@ -203,8 +203,38 @@ describe DXRubySDL::Input,
     end
   end
 
+  shared_context '.key_down?' do
+    include_context 'push_key'
+
+    context 'ESCAPEキーが押されている場合' do
+      let(:_keys) { SDL::Key::ESCAPE }
+      let(:key_code) { DXRubySDL::K_ESCAPE }
+
+      it { should be_true }
+    end
+  end
+
+  describe '.key_down?' do
+    subject { described_class.key_down?(key_code) }
+
+    include_context '.key_down?'
+
+    describe 'alias' do
+      describe '.keyDown?' do
+        it_behaves_like '.key_down?' do
+          subject { described_class.keyDown?(key_code) }
+        end
+      end
+    end
+  end
+
   shared_context '.key_push?' do
     include_context 'push_key'
+
+    before do
+      DXRubySDL::Window.instance_variable_set('@current_key_state', Set.new)
+      DXRubySDL::Window.instance_variable_set('@last_key_state', Set.new)
+    end
 
     context 'ESCAPEキーが押されている場合' do
       let(:_keys) { SDL::Key::ESCAPE }

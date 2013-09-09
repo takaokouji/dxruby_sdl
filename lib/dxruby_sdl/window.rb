@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
 require 'dxruby_sdl/window/fpstimer'
+require 'set'
 
 module DXRubySDL
   module Window
+    @current_key_state = Set.new
+    @last_key_state = Set.new
     @last_mouse_state = [false, false, false]
 
     module_function
@@ -39,6 +42,8 @@ module DXRubySDL
 
           _screen.update_rect(0, 0, 0, 0)
 
+          @last_mouse_state = @current_key_state
+          @current_key_state = Set.new
           @last_mouse_state = SDL::Mouse.state
         end
       end
