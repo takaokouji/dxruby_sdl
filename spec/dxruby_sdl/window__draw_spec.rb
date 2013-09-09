@@ -49,15 +49,13 @@ describe DXRubySDL::Window do
     end
 
     context '画像を読み込んだImageオブジェクトを指定した場合' do
+      let!(:image) {
+        path = File.expand_path('../../fixtures/logo.png', __FILE__)
+        DXRubySDL::Image.load(path)
+      }
+
       it '画像を描画する' do
-        expect {
-          path = File.expand_path('../../fixtures/logo.png', __FILE__)
-          i = DXRubySDL::Image.load(path)
-          DXRubySDL::Window.loop do
-            DXRubySDL::Window.draw(0, 0, i)
-            SDL::Event.push(SDL::Event::Quit.new)
-          end
-        }.to raise_error(SystemExit)
+        subject
       end
     end
   end
