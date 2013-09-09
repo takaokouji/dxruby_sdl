@@ -36,9 +36,19 @@ module DXRubySDL
       return false
     end
 
+    def mouse_pos_x
+      return SDL::Mouse.state[0]
+    end
+
+    def mouse_pos_y
+      return SDL::Mouse.state[1]
+    end
+
     # rubocop:disable SymbolName
     class << self
       alias_method :padDown?, :pad_down?
+      alias_method :mousePosX, :mouse_pos_x
+      alias_method :mousePosY, :mouse_pos_y
     end
     # rubocop:enable SymbolName
 

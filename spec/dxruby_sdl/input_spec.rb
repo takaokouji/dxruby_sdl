@@ -166,4 +166,40 @@ describe DXRubySDL::Input,
       end
     end
   end
+
+  shared_context '.mouse_pos_x' do
+    it { should be_kind_of(Integer) }
+  end
+
+  describe '.mouse_pos_x' do
+    subject { described_class.mouse_pos_x }
+
+    include_context '.mouse_pos_x'
+
+    describe 'alias' do
+      describe '.mousePosX' do
+        it_behaves_like '.mouse_pos_x' do
+          subject { described_class.mousePosX }
+        end
+      end
+    end
+  end
+
+  shared_context '.mouse_pos_y' do
+    it { should be_kind_of(Integer) }
+  end
+
+  describe '.mouse_pos_y' do
+    subject { described_class.mouse_pos_y }
+
+    include_context '.mouse_pos_y'
+
+    describe 'alias' do
+      describe '.mousePosY' do
+        it_behaves_like '.mouse_pos_y' do
+          subject { described_class.mousePosY }
+        end
+      end
+    end
+  end
 end
