@@ -26,19 +26,10 @@ describe DXRubySDL::Window do
     end
   end
 
-  describe '.draw_font', '文字列を描画する' do
+  shared_context '.draw_font' do
     context 'サイズのみを設定したフォントを指定した場合' do
       let!(:font) { DXRubySDL::Font.new(32) }
       let(:args) { [0, 0, 'やあ', font] }
-
-      subject do
-        expect {
-          DXRubySDL::Window.loop do
-            DXRubySDL::Window.draw_font(*args)
-            SDL::Event.push(SDL::Event::Quit.new)
-          end
-        }.to raise_error(SystemExit)
-      end
 
       it '文字列を描画する' do
         subject
@@ -51,6 +42,34 @@ describe DXRubySDL::Window do
         it '文字列を描画する' do
           subject
         end
+      end
+    end
+  end
+
+  describe '.draw_font', '文字列を描画する' do
+    include_context '.draw_font'
+
+    subject do
+      expect {
+        DXRubySDL::Window.loop do
+          DXRubySDL::Window.draw_font(*args)
+          SDL::Event.push(SDL::Event::Quit.new)
+        end
+      }.to raise_error(SystemExit)
+    end
+
+    describe 'alias' do
+      describe '.drawFont' do
+        subject do
+          expect {
+            DXRubySDL::Window.loop do
+              DXRubySDL::Window.drawFont(*args)
+              SDL::Event.push(SDL::Event::Quit.new)
+            end
+          }.to raise_error(SystemExit)
+        end
+
+        it_should_behave_like '.draw_font'
       end
     end
   end

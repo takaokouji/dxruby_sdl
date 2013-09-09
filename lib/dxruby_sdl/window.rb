@@ -49,6 +49,12 @@ module DXRubySDL
       font._ttf.draw_blended_utf8(_screen, string, x, y, r, g, b)
     end
 
+    # rubocop:disable SymbolName
+    class << self
+      alias_method :drawFont, :draw_font
+    end
+    # rubocop:enable SymbolName
+
     private
 
     DEFAULTS = {
