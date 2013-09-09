@@ -39,11 +39,6 @@ describe DXRubySDL::Image, '画像を表すクラス' do
       let(:xcount) { 2 }
       let(:ycount) { 4 }
 
-      subject {
-        DXRubySDL::Image.load_tiles(fixture_path('logo.png'),
-                                    xcount, ycount)
-      }
-
       its(:length) { should eq(xcount * ycount) }
 
       it '各オブジェクトの幅はxcount(2)等分したものである' do
@@ -64,6 +59,10 @@ describe DXRubySDL::Image, '画像を表すクラス' do
            '画像を読み込み、横・縦がそれぞれxcount個、' \
            'ycount個であると仮定して自動で分割し、' \
            '左上から右に向かう順序でImageオブジェクトの配列を生成して返す' do
+    subject {
+      DXRubySDL::Image.load_tiles(fixture_path('logo.png'), xcount, ycount)
+    }
+
     include_context '.load_tiles'
 
     describe 'alias' do
