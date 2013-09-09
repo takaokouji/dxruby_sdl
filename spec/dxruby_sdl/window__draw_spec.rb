@@ -57,5 +57,29 @@ describe DXRubySDL::Window do
         subject
       end
     end
+
+    context '画像を分割して読み込んだImageオブジェクトを指定した場合' do
+      let!(:images) {
+        DXRubySDL::Image.load_tiles(fixture_path('logo.png'), 2, 4)
+      }
+
+      specify '画像を描画する' do
+        expect {
+          DXRubySDL::Window.loop do
+            margin = 64
+            i = 0
+            4.times do |y|
+              2.times do |x|
+                DXRubySDL::Window.draw(x * (images[i].width + margin),
+                                       y * (images[i].height + margin),
+                                       images[i])
+                i += 1
+              end
+            end
+            SDL::Event.push(SDL::Event::Quit.new)
+          end
+        }.to raise_error(SystemExit)
+      end
+    end
   end
 end
