@@ -9,3 +9,12 @@ lib/dxruby_sdl/window/fpstimer.rb:
 
   FPSTimer (Original name is FPSTimerSample) class is implemented in
   http://www.kmc.gr.jp/~ohai/fpstimer.rb.
+
+samples/tutorial-2-01.rb, samples/tutorial-2-02.rb,
+samples/tutorial-2-03.rb, samples/tutorial-2-04.rb,
+samples/tutorial-2-05.rb, samples/tutorial-2-06.rb,
+samples/tutorial-2-07.rb, samples/tutorial-2-08.rb,
+samples/tutorial-2-09.rb, samples/tutorial-2-10.rb:
+
+  These sample programs are copied from DXRuby's tutorial
+  http://dxruby.sourceforge.jp/DXRubyReference/200953183259625.htm.
