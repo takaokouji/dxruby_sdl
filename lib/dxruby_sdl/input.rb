@@ -36,6 +36,12 @@ module DXRubySDL
       return false
     end
 
+    # rubocop:disable SymbolName
+    class << self
+      alias_method :padDown?, :pad_down?
+    end
+    # rubocop:enable SymbolName
+
     private
 
     @joysticks = []

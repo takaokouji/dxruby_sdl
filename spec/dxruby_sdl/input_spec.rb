@@ -74,7 +74,7 @@ describe DXRubySDL::Input,
     end
   end
 
-  describe '.pad_down?', 'パッドのボタン状態を返す' do
+  shared_context '.pad_down?' do
     include_context 'push_key'
 
     context 'Joystickが接続されている場合' do
@@ -97,7 +97,7 @@ describe DXRubySDL::Input,
        # rubocop:enable SymbolName
       ].each.with_index do |(_button, _key), i|
         describe "#{i}番目(#{_button})のボタン" do
-          subject { described_class.pad_down?(DXRubySDL.const_get(_button)) }
+          let(:button_code) { DXRubySDL.const_get(_button) }
 
           context "#{i}番目のボタンが押されている場合" do
             let(:joystick) {
@@ -137,7 +137,7 @@ describe DXRubySDL::Input,
        # rubocop:enable SymbolName
       ].each.with_index do |(_button, _key), i|
         describe "#{i}番目(#{_button})のボタン" do
-          subject { described_class.pad_down?(DXRubySDL.const_get(_button)) }
+          let(:button_code) { DXRubySDL.const_get(_button) }
 
           context "#{_key}キーが押されている場合" do
             let(:_keys) { SDL::Key.const_get(_key) }
@@ -148,6 +148,20 @@ describe DXRubySDL::Input,
           context 'ボタンやキーが押されていない場合' do
             it { should be_false }
           end
+        end
+      end
+    end
+  end
+
+  describe '.pad_down?', 'パッドのボタン状態を返す' do
+    subject { described_class.pad_down?(button_code) }
+
+    include_context '.pad_down?'
+
+    describe 'alias' do
+      describe '.padDown?' do
+        it_behaves_like '.pad_down?' do
+          subject { described_class.padDown?(button_code) }
         end
       end
     end
