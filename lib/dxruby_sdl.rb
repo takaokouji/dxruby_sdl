@@ -2,11 +2,6 @@
 
 require 'dxruby_sdl/version'
 require 'sdl'
-require 'dxruby_sdl/window'
-require 'dxruby_sdl/color'
-require 'dxruby_sdl/image'
-require 'dxruby_sdl/font'
-require 'dxruby_sdl/input'
 
 module DXRubySDL
   %w[
@@ -208,5 +203,11 @@ module DXRubySDL
     const_set(name.to_sym, i)
   end
 end
+
+require 'dxruby_sdl/window'
+require 'dxruby_sdl/color'
+require 'dxruby_sdl/image'
+require 'dxruby_sdl/font'
+require 'dxruby_sdl/input'
 
 SDL.init(SDL::INIT_EVERYTHING)

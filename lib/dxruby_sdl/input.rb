@@ -44,6 +44,10 @@ module DXRubySDL
       return SDL::Mouse.state[1]
     end
 
+    def key_push?(key_code)
+      return key_press?(to_sdl_key(key_code))
+    end
+
     # rubocop:disable SymbolName
     class << self
       alias_method :padDown?, :pad_down?
@@ -60,6 +64,44 @@ module DXRubySDL
 
       private
 
+      KEY_TABLE = {}
+      replace_table = {
+        'BACK' => 'BACKSPACE',
+        'ADD' => 'PLUS',
+        'DIVIDE' => 'SLASH',
+        'LCONTROL' => 'LCTRL',
+        'RCONTROL' => 'RCTRL',
+        'SCROLL' => 'SCROLLOCK',
+        'GRAVE' => 'BACKQUOTE',
+        'LBRACKET' => 'LEFTBRACKET',
+        'RBRACKET' => 'RIGHTBRACKET',
+        'LWIN' => 'LSUPER',
+        'RWIN' => 'RSUPER',
+        'YEN' => 'BACKSLASH',
+      }
+      ::DXRubySDL.constants.grep(/^K_/).each do |k|
+        name = k.to_s.sub(/^K_/, '')
+        name.gsub!('COMMA', 'PERIOD')
+        if replace_table.key?(name)
+          name = replace_table[name]
+        end
+        case name
+        when /^\d$/
+          name = "K#{name}"
+        when /^NUMPAD(.+)$/
+          if $1.length > 1
+            name = "KP_#{$1}"
+          else
+            name = "KP#{$1}"
+          end
+        end
+        begin
+          KEY_TABLE[DXRubySDL.const_get(k)] = SDL::Key.const_get(name.to_sym)
+        rescue NameError
+        end
+      end
+      private_constant :KEY_TABLE
+
       def key_press?(key)
         SDL::Key.scan
         return SDL::Key.press?(key)
@@ -73,6 +115,10 @@ module DXRubySDL
           @joysticks[pad_number] = SDL::Joystick.open(pad_number)
         end
         return @joysticks[pad_number]
+      end
+
+      def to_sdl_key(key_code)
+        return KEY_TABLE[key_code]
       end
     end
   end

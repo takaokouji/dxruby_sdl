@@ -202,4 +202,17 @@ describe DXRubySDL::Input,
       end
     end
   end
+
+  describe '.key_push?' do
+    subject { described_class.key_push?(key_code) }
+
+    include_context 'push_key'
+
+    context 'ESCAPEキーが押されている場合' do
+      let(:_keys) { SDL::Key::ESCAPE }
+      let(:key_code) { DXRubySDL::K_ESCAPE }
+
+      it { should be_true }
+    end
+  end
 end
