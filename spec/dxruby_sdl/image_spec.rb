@@ -149,6 +149,24 @@ describe DXRubySDL::Image, '画像を表すクラス' do
     include_context 'draw methods'
   end
 
+  shared_context '#circle_fill' do
+    include_context 'draw methods'
+  end
+
+  describe '#circle_fill' do
+    subject { image.circle_fill(50, 50, 25, [255, 255, 255]) }
+
+    include_context '#circle_fill'
+
+    describe 'alias' do
+      describe '#circleFill' do
+        it_behaves_like '#circle_fill' do
+          subject { image.circleFill(50, 50, 25, [255, 255, 255]) }
+        end
+      end
+    end
+  end
+
   describe '#box' do
     subject { image.box(0, 0, 100, 100, [255, 255, 255]) }
 

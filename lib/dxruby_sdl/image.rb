@@ -70,6 +70,13 @@ module DXRubySDL
       end
     end
 
+    def circle_fill(x, y, r, color)
+      lock do
+        @_surface.draw_circle(x, y, r, to_sdl_color(color), true, false,
+                              to_sdl_alpha(color))
+      end
+    end
+
     def box(x1, y1, x2, y2, color)
       x = x1 < x2 ? x1 : x2
       w = (x2 - x1).abs
@@ -98,6 +105,7 @@ module DXRubySDL
       alias_method :load_to_array, :load_tiles
       alias_method :loadToArray, :load_to_array
     end
+    alias_method :circleFill, :circle_fill
     alias_method :boxFill, :box_fill
     # rubocop:enable SymbolName
 
