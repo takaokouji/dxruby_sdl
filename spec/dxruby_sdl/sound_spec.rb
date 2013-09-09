@@ -37,6 +37,29 @@ describe DXRubySDL::Sound, '音を表すクラス' do
         expect(SDL::Mixer).to receive(:play_channel).with(-1, wave, 0)
         subject
       end
+
+      context '3回連続で呼び出した場合' do
+        before do
+          wave = sound.instance_variable_get('@sound')
+            .instance_variable_get('@wave')
+          count = 0
+          expect(SDL::Mixer)
+            .to receive(:play_channel).with(-1, wave, 0).exactly(4).times {
+                  count += 1
+                  if count == 3
+                    count = 0
+                    raise SDL::Error.new('couldn\'t play wave:' \
+                                         ' No free channels available')
+                  end
+                  (count - 1) % 2
+                }
+          expect(SDL::Mixer).to receive(:halt).with(0)
+        end
+
+        it '最初のものを停止する' do
+          3.times { sound.play }
+        end
+      end
     end
 
     context 'MIDI形式のファイルの場合' do
