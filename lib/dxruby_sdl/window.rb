@@ -42,7 +42,7 @@ module DXRubySDL
 
           _screen.update_rect(0, 0, 0, 0)
 
-          @last_mouse_state = @current_key_state
+          @last_key_state = @current_key_state
           @current_key_state = Set.new
           @last_mouse_state = SDL::Mouse.state
         end
