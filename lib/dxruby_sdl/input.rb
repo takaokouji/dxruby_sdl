@@ -53,6 +53,7 @@ module DXRubySDL
       alias_method :padDown?, :pad_down?
       alias_method :mousePosX, :mouse_pos_x
       alias_method :mousePosY, :mouse_pos_y
+      alias_method :keyPush?, :key_push?
     end
     # rubocop:enable SymbolName
 
