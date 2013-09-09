@@ -26,6 +26,22 @@ describe DXRubySDL::Window do
     end
   end
 
+  describe '.fps=', 'FPSを設定する' do
+    context '15に設定した場合' do
+      let(:fps) { 15 }
+
+      before do
+        DXRubySDL::Window.fps = fps
+      end
+
+      describe 'DXRubySDL::Window::FPSTimer.instance' do
+        subject { DXRubySDL::Window::FPSTimer.instance }
+
+        its(:fps) { should eq(fps) }
+      end
+    end
+  end
+
   shared_context '.draw_font' do
     context 'サイズのみを設定したフォントを指定した場合' do
       let!(:font) { DXRubySDL::Font.new(32) }
