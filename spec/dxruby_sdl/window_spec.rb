@@ -60,6 +60,22 @@ describe DXRubySDL::Window do
     end
   end
 
+  describe '.scale' do
+    subject { DXRubySDL::Window.scale }
+
+    context '初期状態' do
+      it { should eq(1) }
+    end
+
+    context '10に設定済みの場合' do
+      before do
+        DXRubySDL::Window.scale = 10
+      end
+
+      it { should eq(10) }
+    end
+  end
+
   describe '.fps=', 'FPSを設定する' do
     context '15に設定した場合' do
       let(:fps) { 15 }

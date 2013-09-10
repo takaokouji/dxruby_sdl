@@ -72,6 +72,7 @@ module DXRubySDL
     end
 
     def open_filename(filter, title)
+      # :nocov:
       if /darwin/ =~ RUBY_PLATFORM
         apple_script = <<-EOS
 on run
@@ -87,6 +88,7 @@ end run
       else
         raise NotImplementedError, 'Window.open_filename'
       end
+      # :nocov:
     end
 
     # rubocop:disable SymbolName
