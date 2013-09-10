@@ -18,7 +18,7 @@ module DXRubySDL
     end
 
     def scale
-      @scale ||= 1
+      @scale ||= DEFAULTS[:scale]
       return @scale
     end
 
@@ -107,6 +107,7 @@ end run
     DEFAULTS = {
       width: 640,
       height: 480,
+      scale: 1,
       background_color: [0, 0, 0],
     }
     private_constant :DEFAULTS
