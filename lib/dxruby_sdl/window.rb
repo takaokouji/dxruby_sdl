@@ -18,6 +18,14 @@ module DXRubySDL
                               SDL::SWSURFACE)
     end
 
+    def caption
+      return SDL::WM.caption[0]
+    end
+
+    def caption=(val)
+      SDL::WM.set_caption(val, SDL::WM.caption[1])
+    end
+
     def fps=(val)
       FPSTimer.instance.fps = val
     end
