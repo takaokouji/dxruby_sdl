@@ -427,7 +427,7 @@ describe DXRubySDL::Input,
 
     describe 'alias' do
       describe '.keyPush?' do
-        let(:method)  { :keyPush? }
+        let(:method)  { 'keyPush?' }
 
         it_behaves_like '.key_push?'
       end
