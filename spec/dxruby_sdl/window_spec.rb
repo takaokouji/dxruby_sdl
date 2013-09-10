@@ -26,6 +26,40 @@ describe DXRubySDL::Window do
     end
   end
 
+  describe '.caption', 'ウィンドウのタイトルを取得する' do
+    before do
+      allow(SDL::WM)
+        .to receive(:caption).and_return(['window title', 'icon name'])
+    end
+
+    subject { DXRubySDL::Window.caption }
+
+    it { should eq('window title') }
+
+    describe SDL::WM do
+      before do
+        DXRubySDL::Window.caption
+      end
+
+      subject { SDL::WM }
+
+      it { should have_received(:caption).once }
+    end
+  end
+
+  describe '.caption=', 'ウィンドウのタイトルを設定する' do
+    before do
+      allow(SDL::WM).to receive(:set_caption)
+      DXRubySDL::Window.caption = 'window title'
+    end
+
+    describe SDL::WM do
+      subject { SDL::WM }
+
+      it { should  have_received(:set_caption).with('window title', '').once }
+    end
+  end
+
   describe '.fps=', 'FPSを設定する' do
     context '15に設定した場合' do
       let(:fps) { 15 }
