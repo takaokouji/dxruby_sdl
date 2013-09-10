@@ -109,6 +109,14 @@ describe DXRubySDL::Window do
         end
       end
 
+      context '引数が複数行の場合' do
+        let(:args) { [0, 0, "やあ\n\nこんにちは\n\nHello\n", font] }
+
+        it 'なにもしない' do
+          expect { subject }.not_to raise_error
+        end
+      end
+
       hash = { color: [255, 0, 0] }
       context "第5引数に色(#{hash.inspect})を指定した場合" do
         let(:args) { [0, 0, 'やあ', font, hash] }

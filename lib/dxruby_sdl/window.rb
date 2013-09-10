@@ -71,7 +71,14 @@ module DXRubySDL
       else
         r, g, b = 255, 255, 255
       end
-      font._ttf.draw_blended_utf8(screen, string, x, y, r, g, b)
+      h = font._ttf.height + 1
+      string.lines.each.with_index do |line, i|
+        line.chomp!
+        if line.empty?
+          next
+        end
+        font._ttf.draw_blended_utf8(screen, line, x, y + i * h, r, g, b)
+      end
     end
 
     def open_filename(filter, title)
