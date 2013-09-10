@@ -370,6 +370,8 @@ describe DXRubySDL::Input,
   shared_context '.key_push?' do
     include_context 'push_key'
 
+    subject { described_class.send(method, key_code) }
+
     before do
       DXRubySDL::Window.instance_variable_set('@current_key_state', Set.new)
       DXRubySDL::Window.instance_variable_set('@last_key_state', Set.new)
@@ -380,19 +382,54 @@ describe DXRubySDL::Input,
       let(:key_code) { DXRubySDL::K_ESCAPE }
 
       it { should be_true }
+
+      context 'キーが押しっぱなしの場合' do
+        before do
+          last_key_state =
+            DXRubySDL::Window.instance_variable_get('@last_key_state')
+          last_key_state.add(*_keys)
+        end
+
+        it { should be_false }
+      end
+
+      context 'キーが押しっぱなしだが、' \
+              'Input.key_push?をメインループで毎回処理しない場合' do
+        it '最初の1回以外は全てfalseを返す' do
+          begin
+            first = true
+            i = 0
+            DXRubySDL::Window.loop do
+              if first
+                expect(described_class.send(method, key_code)).to be_true
+                first = false
+              else
+                if i.even?
+                  expect(described_class.send(method, key_code)).to be_false
+                end
+              end
+              i += 1
+              if i > 10
+                SDL::Event.push(SDL::Event::Quit.new)
+              end
+            end
+          rescue SystemExit
+          end
+        end
+      end
     end
   end
 
   describe '.key_push?' do
-    subject { described_class.key_push?(key_code) }
+    let(:method)  { :key_push? }
 
     include_context '.key_push?'
 
     describe 'alias' do
       describe '.keyPush?' do
-        it_behaves_like '.key_push?' do
-          subject { described_class.keyPush?(key_code) }
-        end
+        let(:method)  { :keyPush? }
+
+        it_behaves_like '.key_push?'
       end
     end
   end
