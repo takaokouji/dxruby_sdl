@@ -4,6 +4,10 @@ module DXRubySDL
   module Input
     module_function
 
+    def set_repeat(wait, interval)
+      SDL::Key.enable_key_repeat(wait, interval)
+    end
+
     def x(pad_number = 0)
       res = 0
       if key_press?(SDL::Key::LEFT)
@@ -30,6 +34,32 @@ module DXRubySDL
       if button_code == P_BUTTON0 && key_press?(SDL::Key::Z) ||
           button_code == P_BUTTON1 && key_press?(SDL::Key::X) ||
           button_code == P_BUTTON2 && key_press?(SDL::Key::C) ||
+          button_code == P_LEFT && key_press?(SDL::Key::LEFT) ||
+          button_code == P_RIGHT && key_press?(SDL::Key::RIGHT) ||
+          button_code == P_UP && key_press?(SDL::Key::UP) ||
+          button_code == P_DOWN && key_press?(SDL::Key::DOWN) ||
+          ((j = joystick(pad_number)) && j.button(button_code))
+        return true
+      end
+      return false
+    end
+
+    def pad_push?(button_code, pad_number = 0)
+      last_key_state = Window.instance_variable_get('@last_key_state')
+      if button_code == P_BUTTON0 && key_press?(SDL::Key::Z) &&
+          !last_key_state.include?(SDL::Key::Z) ||
+          button_code == P_BUTTON1 && key_press?(SDL::Key::X) &&
+          !last_key_state.include?(SDL::Key::X) ||
+          button_code == P_BUTTON2 && key_press?(SDL::Key::C) &&
+          !last_key_state.include?(SDL::Key::C) ||
+          button_code == P_LEFT && key_press?(SDL::Key::LEFT) &&
+          !last_key_state.include?(SDL::Key::LEFT) ||
+          button_code == P_RIGHT && key_press?(SDL::Key::RIGHT) &&
+          !last_key_state.include?(SDL::Key::RIGHT) ||
+          button_code == P_UP && key_press?(SDL::Key::UP) &&
+          !last_key_state.include?(SDL::Key::UP) ||
+          button_code == P_DOWN && key_press?(SDL::Key::DOWN) &&
+          !last_key_state.include?(SDL::Key::DOWN) ||
           ((j = joystick(pad_number)) && j.button(button_code))
         return true
       end
@@ -81,7 +111,9 @@ module DXRubySDL
 
     # rubocop:disable SymbolName
     class << self
+      alias_method :setRepeat, :set_repeat
       alias_method :padDown?, :pad_down?
+      alias_method :padPush?, :pad_push?
       alias_method :mousePosX, :mouse_pos_x
       alias_method :mousePosY, :mouse_pos_y
       alias_method :keyDown?, :key_down?

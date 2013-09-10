@@ -91,15 +91,19 @@ describe DXRubySDL::Input,
 
       [
        # rubocop:disable SymbolName
-       [:P_BUTTON0, :Z],
-       [:P_BUTTON1, :X],
-       [:P_BUTTON2, :C],
+       ['ボタン0', :P_BUTTON0, :Z],
+       ['ボタン1', :P_BUTTON1, :X],
+       ['ボタン2', :P_BUTTON2, :C],
+       ['左ボタン', :P_LEFT, :LEFT],
+       ['右ボタン', :P_RIGHT, :RIGHT],
+       ['上ボタン', :P_UP, :UP],
+       ['下ボタン', :P_DOWN, :DOWN],
        # rubocop:enable SymbolName
-      ].each.with_index do |(_button, _key), i|
-        describe "#{i}番目(#{_button})のボタン" do
+      ].each do |_button_name, _button, _key|
+        describe "ゲームパッドの#{_button_name}" do
           let(:button_code) { DXRubySDL.const_get(_button) }
 
-          context "#{i}番目のボタンが押されている場合" do
+          context "ゲームパッドの#{_button_name}が押されている場合" do
             let(:joystick) {
               j = double('Joystick')
               allow(j).to receive(:button) { |button_index|
@@ -131,12 +135,16 @@ describe DXRubySDL::Input,
 
       [
        # rubocop:disable SymbolName
-       [:P_BUTTON0, :Z],
-       [:P_BUTTON1, :X],
-       [:P_BUTTON2, :C],
+       ['ボタン0', :P_BUTTON0, :Z],
+       ['ボタン1', :P_BUTTON1, :X],
+       ['ボタン2', :P_BUTTON2, :C],
+       ['左ボタン', :P_LEFT, :LEFT],
+       ['右ボタン', :P_RIGHT, :RIGHT],
+       ['上ボタン', :P_UP, :UP],
+       ['下ボタン', :P_DOWN, :DOWN],
        # rubocop:enable SymbolName
-      ].each.with_index do |(_button, _key), i|
-        describe "#{i}番目(#{_button})のボタン" do
+      ].each do |_button_name, _button, _key|
+        describe "ゲームパッドの#{_button_name}" do
           let(:button_code) { DXRubySDL.const_get(_button) }
 
           context "#{_key}キーが押されている場合" do
@@ -162,6 +170,112 @@ describe DXRubySDL::Input,
       describe '.padDown?' do
         it_behaves_like '.pad_down?' do
           subject { described_class.padDown?(button_code) }
+        end
+      end
+    end
+  end
+
+  shared_context '.pad_push?' do
+    include_context 'push_key'
+
+    before do
+      DXRubySDL::Window.instance_variable_set('@current_key_state', Set.new)
+      DXRubySDL::Window.instance_variable_set('@last_key_state', Set.new)
+    end
+
+    context 'Joystickが接続されている場合' do
+      let(:joystick) {
+        j = double('Joystick')
+        allow(j).to receive(:button).with(anything).and_return(false)
+        j
+      }
+
+      before do
+        allow(SDL::Joystick).to receive(:num).and_return(1)
+        allow(SDL::Joystick).to receive(:open).with(0).and_return(joystick)
+      end
+
+      [
+       # rubocop:disable SymbolName
+       ['ボタン0', :P_BUTTON0, :Z],
+       ['ボタン1', :P_BUTTON1, :X],
+       ['ボタン2', :P_BUTTON2, :C],
+       ['左ボタン', :P_LEFT, :LEFT],
+       ['右ボタン', :P_RIGHT, :RIGHT],
+       ['上ボタン', :P_UP, :UP],
+       ['下ボタン', :P_DOWN, :DOWN],
+       # rubocop:enable SymbolName
+      ].each do |_button_name, _button, _key|
+        describe "ゲームパッドの#{_button_name}" do
+          let(:button_code) { DXRubySDL.const_get(_button) }
+
+          context "ゲームパッドの#{_button_name}が押されている場合" do
+            let(:joystick) {
+              j = double('Joystick')
+              allow(j).to receive(:button) { |button_index|
+                            button_index == DXRubySDL.const_get(_button)
+                          }
+              j
+            }
+
+            it { should be_true }
+          end
+
+          context "#{_key}キーが押されている場合" do
+            let(:_keys) { SDL::Key.const_get(_key) }
+
+            it { should be_true }
+          end
+
+          context 'ボタンやキーが押されていない場合' do
+            it { should be_false }
+          end
+        end
+      end
+    end
+
+    context 'Joystickが接続されていない場合' do
+      before do
+        allow(SDL::Joystick).to receive(:num).and_return(0)
+      end
+
+      [
+       # rubocop:disable SymbolName
+       ['ボタン0', :P_BUTTON0, :Z],
+       ['ボタン1', :P_BUTTON1, :X],
+       ['ボタン2', :P_BUTTON2, :C],
+       ['左ボタン', :P_LEFT, :LEFT],
+       ['右ボタン', :P_RIGHT, :RIGHT],
+       ['上ボタン', :P_UP, :UP],
+       ['下ボタン', :P_DOWN, :DOWN],
+       # rubocop:enable SymbolName
+      ].each do |_button_name, _button, _key|
+        describe "ゲームパッドの#{_button_name}" do
+          let(:button_code) { DXRubySDL.const_get(_button) }
+
+          context "#{_key}キーが押されている場合" do
+            let(:_keys) { SDL::Key.const_get(_key) }
+
+            it { should be_true }
+          end
+
+          context 'ボタンやキーが押されていない場合' do
+            it { should be_false }
+          end
+        end
+      end
+    end
+  end
+
+  describe '.pad_push?', 'パッドのボタン状態を返す' do
+    subject { described_class.pad_push?(button_code) }
+
+    include_context '.pad_push?'
+
+    describe 'alias' do
+      describe '.padPush?' do
+        it_behaves_like '.pad_push?' do
+          subject { described_class.padPush?(button_code) }
         end
       end
     end
