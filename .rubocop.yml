@@ -22,3 +22,7 @@ RedundantReturn:
 AsciiComments:
   Enabled: false
 
+CaseEquality:
+  Enabled: false
+
+
