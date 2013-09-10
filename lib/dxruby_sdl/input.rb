@@ -45,21 +45,13 @@ module DXRubySDL
     end
 
     def pad_push?(button_code, pad_number = 0)
-      last_key_state = Window.instance_variable_get('@last_key_state')
-      if button_code == P_BUTTON0 && sdl_key_press?(SDL::Key::Z) &&
-          !last_key_state.include?(SDL::Key::Z) ||
-          button_code == P_BUTTON1 && sdl_key_press?(SDL::Key::X) &&
-          !last_key_state.include?(SDL::Key::X) ||
-          button_code == P_BUTTON2 && sdl_key_press?(SDL::Key::C) &&
-          !last_key_state.include?(SDL::Key::C) ||
-          button_code == P_LEFT && sdl_key_press?(SDL::Key::LEFT) &&
-          !last_key_state.include?(SDL::Key::LEFT) ||
-          button_code == P_RIGHT && sdl_key_press?(SDL::Key::RIGHT) &&
-          !last_key_state.include?(SDL::Key::RIGHT) ||
-          button_code == P_UP && sdl_key_press?(SDL::Key::UP) &&
-          !last_key_state.include?(SDL::Key::UP) ||
-          button_code == P_DOWN && sdl_key_press?(SDL::Key::DOWN) &&
-          !last_key_state.include?(SDL::Key::DOWN) ||
+      if button_code == P_BUTTON0 && sdl_key_push?(SDL::Key::Z) ||
+          button_code == P_BUTTON1 && sdl_key_push?(SDL::Key::X) ||
+          button_code == P_BUTTON2 && sdl_key_push?(SDL::Key::C) ||
+          button_code == P_LEFT && sdl_key_push?(SDL::Key::LEFT) ||
+          button_code == P_RIGHT && sdl_key_push?(SDL::Key::RIGHT) ||
+          button_code == P_UP && sdl_key_push?(SDL::Key::UP) ||
+          button_code == P_DOWN && sdl_key_push?(SDL::Key::DOWN) ||
           ((j = joystick(pad_number)) && j.button(button_code))
         return true
       end
@@ -79,9 +71,7 @@ module DXRubySDL
     end
 
     def key_push?(key_code)
-      key = to_sdl_key(key_code)
-      return sdl_key_press?(key) &&
-        !Window.instance_variable_get('@last_key_state').include?(key)
+      return sdl_key_push?(to_sdl_key(key_code))
     end
 
     def mouse_down?(button)
@@ -179,6 +169,11 @@ module DXRubySDL
           Window.instance_variable_get('@current_key_state').delete(key)
           return false
         end
+      end
+
+      def sdl_key_push?(key)
+        return sdl_key_press?(key) &&
+          !Window.instance_variable_get('@last_key_state').include?(key)
       end
 
       def joystick(pad_number)
