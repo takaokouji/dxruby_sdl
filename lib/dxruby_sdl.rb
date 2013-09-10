@@ -152,6 +152,8 @@ module DXRubySDL
   ].each.with_index do |dik_name, i|
     const_set(dik_name.sub(/\ADI/, '').to_sym, i)
   end
+  K_BACKSPACE = K_BACK
+  K_NUMPADSTAR = K_MULTIPLY
 
   %w[
     P_LEFT
