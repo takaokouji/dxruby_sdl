@@ -37,7 +37,7 @@ module DXRubySDL
       end
 
       @_surface =
-        SDL::Surface.new(SDL::SWSURFACE, width, height, Window._screen)
+        SDL::Surface.new(SDL::SWSURFACE, width, height, Window.send(:screen))
       @_surface.fill_rect(0, 0, width, height, @color)
     end
 
