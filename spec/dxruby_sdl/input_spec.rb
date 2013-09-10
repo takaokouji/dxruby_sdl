@@ -7,6 +7,29 @@ describe DXRubySDL::Input,
     DXRubySDL::Input.instance_variable_set('@joysticks', [])
   end
 
+  shared_context '.set_repeat' do
+    before do
+      SDL::Key.stub(:enable_key_repeat)
+      subject
+    end
+
+    specify { expect(SDL::Key).to have_received(:enable_key_repeat).with(15, 2) }
+  end
+
+  describe '.set_repeat', 'キーリピートを設定する' do
+    subject { DXRubySDL::Input.set_repeat(15, 2) }
+
+    include_context '.set_repeat'
+
+    describe 'alias' do
+      describe '.setRepeat' do
+        it_behaves_like '.set_repeat' do
+          subject { DXRubySDL::Input.setRepeat(15, 2) }
+        end
+      end
+    end
+  end
+
   shared_context 'push_key' do
     let(:_keys) { [] }
 
