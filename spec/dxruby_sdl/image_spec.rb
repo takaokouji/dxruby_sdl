@@ -122,6 +122,10 @@ describe DXRubySDL::Image, '画像を表すクラス' do
       subject
     end
 
+    it '戻り値はレシーバである' do
+      expect(subject).to eq(image)
+    end
+
     context 'auto_lockを有効にした場合' do
       before do
         SDL::Surface.auto_lock_on
@@ -133,6 +137,10 @@ describe DXRubySDL::Image, '画像を表すクラス' do
 
       it '呼び出すことができる' do
         subject
+      end
+
+      it '戻り値はレシーバである' do
+        expect(subject).to eq(image)
       end
     end
   end

@@ -61,6 +61,7 @@ module DXRubySDL
         @_surface.draw_line(x1, y1, x2, y2,
                             to_sdl_color(color), true, to_sdl_alpha(color))
       end
+      return self
     end
 
     def circle(x, y, r, color)
@@ -68,6 +69,7 @@ module DXRubySDL
         @_surface.draw_circle(x, y, r, to_sdl_color(color), false, true,
                               to_sdl_alpha(color))
       end
+      return self
     end
 
     def circle_fill(x, y, r, color)
@@ -75,6 +77,7 @@ module DXRubySDL
         @_surface.draw_circle(x, y, r, to_sdl_color(color), true, false,
                               to_sdl_alpha(color))
       end
+      return self
     end
 
     def box(x1, y1, x2, y2, color)
@@ -86,6 +89,7 @@ module DXRubySDL
         @_surface.draw_rect(x, y, w, h, to_sdl_color(color), false,
                             to_sdl_alpha(color))
       end
+      return self
     end
 
     def box_fill(x1, y1, x2, y2, color)
@@ -97,6 +101,7 @@ module DXRubySDL
         @_surface.draw_rect(x, y, w, h, to_sdl_color(color), true,
                             to_sdl_alpha(color))
       end
+      return self
     end
 
     # rubocop:disable SymbolName
