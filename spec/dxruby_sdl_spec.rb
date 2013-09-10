@@ -213,4 +213,13 @@ describe DXRubySDL do
   ].each.with_index do |name, i|
     include_examples 'constant', name, i
   end
+
+  %w[
+    WAVE_SIN
+    WAVE_SAW
+    WAVE_TRI
+    WAVE_RECT
+  ].each.with_index do |name, i|
+    include_examples 'constant', name, i
+  end
 end

@@ -202,6 +202,15 @@ module DXRubySDL
   ].each.with_index do |name, i|
     const_set(name.to_sym, i)
   end
+
+  %w[
+    WAVE_SIN
+    WAVE_SAW
+    WAVE_TRI
+    WAVE_RECT
+  ].each.with_index do |name, i|
+    const_set(name.to_sym, i)
+  end
 end
 
 require 'dxruby_sdl/window'
@@ -210,5 +219,6 @@ require 'dxruby_sdl/image'
 require 'dxruby_sdl/font'
 require 'dxruby_sdl/input'
 require 'dxruby_sdl/sound'
+require 'dxruby_sdl/sound_effect'
 
 SDL.init(SDL::INIT_EVERYTHING)
