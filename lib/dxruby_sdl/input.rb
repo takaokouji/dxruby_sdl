@@ -173,7 +173,7 @@ module DXRubySDL
           end
         end
         @last_key_state = @current_key_state
-        @current_key_state.clear
+        @current_key_state = Set.new
         @last_mouse_state = SDL::Mouse.state
       end
 
