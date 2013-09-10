@@ -5,10 +5,6 @@ require 'set'
 
 module DXRubySDL
   module Window
-    @current_key_state = Set.new
-    @last_key_state = Set.new
-    @last_mouse_state = [false, false, false]
-
     module_function
 
     def width
@@ -57,18 +53,7 @@ module DXRubySDL
 
           screen.update_rect(0, 0, 0, 0)
 
-          keys = (@last_key_state - @current_key_state)
-          if keys.length > 0
-            SDL::Key.scan
-            keys.each do |key|
-              if SDL::Key.press?(key)
-                @current_key_state.add(key)
-              end
-            end
-          end
-          @last_key_state = @current_key_state
-          @current_key_state = Set.new
-          @last_mouse_state = SDL::Mouse.state
+          Input.send(:store_last_state)
         end
       end
     end

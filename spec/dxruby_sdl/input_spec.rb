@@ -204,8 +204,8 @@ describe DXRubySDL::Input,
     include_context 'push_key'
 
     before do
-      DXRubySDL::Window.instance_variable_set('@current_key_state', Set.new)
-      DXRubySDL::Window.instance_variable_set('@last_key_state', Set.new)
+      DXRubySDL::Input.instance_variable_set('@current_key_state', Set.new)
+      DXRubySDL::Input.instance_variable_set('@last_key_state', Set.new)
     end
 
     context 'Joystickが接続されている場合' do
@@ -373,8 +373,8 @@ describe DXRubySDL::Input,
     subject { described_class.send(method, key_code) }
 
     before do
-      DXRubySDL::Window.instance_variable_set('@current_key_state', Set.new)
-      DXRubySDL::Window.instance_variable_set('@last_key_state', Set.new)
+      DXRubySDL::Input.instance_variable_set('@current_key_state', Set.new)
+      DXRubySDL::Input.instance_variable_set('@last_key_state', Set.new)
     end
 
     context 'ESCAPEキーが押されている場合' do
@@ -386,7 +386,7 @@ describe DXRubySDL::Input,
       context 'キーが押しっぱなしの場合' do
         before do
           last_key_state =
-            DXRubySDL::Window.instance_variable_get('@last_key_state')
+            DXRubySDL::Input.instance_variable_get('@last_key_state')
           last_key_state.add(*_keys)
         end
 
@@ -528,8 +528,8 @@ describe DXRubySDL::Input,
   shared_context '.mouse_push?' do
     context '直前にマウスのボタンを押していない場合' do
       before do
-        DXRubySDL::Window.instance_variable_set('@last_mouse_state',
-                                                [0, 0, false, false, false])
+        DXRubySDL::Input.instance_variable_set('@last_mouse_state',
+                                               [0, 0, false, false, false])
       end
 
       context 'マウスの左ボタンを押している場合' do
@@ -610,8 +610,8 @@ describe DXRubySDL::Input,
 
     context '直前にマウスのボタンを全て押していた場合' do
       before do
-        DXRubySDL::Window.instance_variable_set('@last_mouse_state',
-                                                [0, 0, true, true, true])
+        DXRubySDL::Input.instance_variable_set('@last_mouse_state',
+                                               [0, 0, true, true, true])
       end
 
       context 'マウスの左ボタンを押している場合' do

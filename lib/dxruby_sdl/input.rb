@@ -95,8 +95,7 @@ module DXRubySDL
       when M_RBUTTON
         index = 4
       end
-      return SDL::Mouse.state[index] &&
-        !Window.instance_variable_get('@last_mouse_state')[index]
+      return SDL::Mouse.state[index] && !@last_mouse_state[index]
     end
 
     # rubocop:disable SymbolName
@@ -115,6 +114,9 @@ module DXRubySDL
 
     private
 
+    @current_key_state = Set.new
+    @last_key_state = Set.new
+    @last_mouse_state = [false, false, false]
     @joysticks = []
 
     class << self
@@ -160,20 +162,34 @@ module DXRubySDL
       end
       private_constant :KEY_TABLE
 
+      def store_last_state
+        keys = (@last_key_state - @current_key_state)
+        if keys.length > 0
+          SDL::Key.scan
+          keys.each do |key|
+            if SDL::Key.press?(key)
+              @current_key_state.add(key)
+            end
+          end
+        end
+        @last_key_state = @current_key_state
+        @current_key_state.clear
+        @last_mouse_state = SDL::Mouse.state
+      end
+
       def sdl_key_press?(key)
         SDL::Key.scan
         if SDL::Key.press?(key)
-          Window.instance_variable_get('@current_key_state').add(key)
+          @current_key_state.add(key)
           return true
         else
-          Window.instance_variable_get('@current_key_state').delete(key)
+          @current_key_state.delete(key)
           return false
         end
       end
 
       def sdl_key_push?(key)
-        return sdl_key_press?(key) &&
-          !Window.instance_variable_get('@last_key_state').include?(key)
+        return sdl_key_press?(key) && !@last_key_state.include?(key)
       end
 
       def joystick(pad_number)
