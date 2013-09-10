@@ -10,10 +10,10 @@ module DXRubySDL
 
     def x(pad_number = 0)
       res = 0
-      if key_press?(SDL::Key::LEFT)
+      if sdl_key_press?(SDL::Key::LEFT)
         res -= 1
       end
-      if key_press?(SDL::Key::RIGHT)
+      if sdl_key_press?(SDL::Key::RIGHT)
         res += 1
       end
       return res
@@ -21,23 +21,23 @@ module DXRubySDL
 
     def y(pad_number = 0)
       res = 0
-      if key_press?(SDL::Key::UP)
+      if sdl_key_press?(SDL::Key::UP)
         res -= 1
       end
-      if key_press?(SDL::Key::DOWN)
+      if sdl_key_press?(SDL::Key::DOWN)
         res += 1
       end
       return res
     end
 
     def pad_down?(button_code, pad_number = 0)
-      if button_code == P_BUTTON0 && key_press?(SDL::Key::Z) ||
-          button_code == P_BUTTON1 && key_press?(SDL::Key::X) ||
-          button_code == P_BUTTON2 && key_press?(SDL::Key::C) ||
-          button_code == P_LEFT && key_press?(SDL::Key::LEFT) ||
-          button_code == P_RIGHT && key_press?(SDL::Key::RIGHT) ||
-          button_code == P_UP && key_press?(SDL::Key::UP) ||
-          button_code == P_DOWN && key_press?(SDL::Key::DOWN) ||
+      if button_code == P_BUTTON0 && sdl_key_press?(SDL::Key::Z) ||
+          button_code == P_BUTTON1 && sdl_key_press?(SDL::Key::X) ||
+          button_code == P_BUTTON2 && sdl_key_press?(SDL::Key::C) ||
+          button_code == P_LEFT && sdl_key_press?(SDL::Key::LEFT) ||
+          button_code == P_RIGHT && sdl_key_press?(SDL::Key::RIGHT) ||
+          button_code == P_UP && sdl_key_press?(SDL::Key::UP) ||
+          button_code == P_DOWN && sdl_key_press?(SDL::Key::DOWN) ||
           ((j = joystick(pad_number)) && j.button(button_code))
         return true
       end
@@ -46,19 +46,19 @@ module DXRubySDL
 
     def pad_push?(button_code, pad_number = 0)
       last_key_state = Window.instance_variable_get('@last_key_state')
-      if button_code == P_BUTTON0 && key_press?(SDL::Key::Z) &&
+      if button_code == P_BUTTON0 && sdl_key_press?(SDL::Key::Z) &&
           !last_key_state.include?(SDL::Key::Z) ||
-          button_code == P_BUTTON1 && key_press?(SDL::Key::X) &&
+          button_code == P_BUTTON1 && sdl_key_press?(SDL::Key::X) &&
           !last_key_state.include?(SDL::Key::X) ||
-          button_code == P_BUTTON2 && key_press?(SDL::Key::C) &&
+          button_code == P_BUTTON2 && sdl_key_press?(SDL::Key::C) &&
           !last_key_state.include?(SDL::Key::C) ||
-          button_code == P_LEFT && key_press?(SDL::Key::LEFT) &&
+          button_code == P_LEFT && sdl_key_press?(SDL::Key::LEFT) &&
           !last_key_state.include?(SDL::Key::LEFT) ||
-          button_code == P_RIGHT && key_press?(SDL::Key::RIGHT) &&
+          button_code == P_RIGHT && sdl_key_press?(SDL::Key::RIGHT) &&
           !last_key_state.include?(SDL::Key::RIGHT) ||
-          button_code == P_UP && key_press?(SDL::Key::UP) &&
+          button_code == P_UP && sdl_key_press?(SDL::Key::UP) &&
           !last_key_state.include?(SDL::Key::UP) ||
-          button_code == P_DOWN && key_press?(SDL::Key::DOWN) &&
+          button_code == P_DOWN && sdl_key_press?(SDL::Key::DOWN) &&
           !last_key_state.include?(SDL::Key::DOWN) ||
           ((j = joystick(pad_number)) && j.button(button_code))
         return true
@@ -75,12 +75,12 @@ module DXRubySDL
     end
 
     def key_down?(key_code)
-      return key_press?(to_sdl_key(key_code))
+      return sdl_key_press?(to_sdl_key(key_code))
     end
 
     def key_push?(key_code)
       key = to_sdl_key(key_code)
-      return key_press?(key) &&
+      return sdl_key_press?(key) &&
         !Window.instance_variable_get('@last_key_state').include?(key)
     end
 
@@ -170,7 +170,7 @@ module DXRubySDL
       end
       private_constant :KEY_TABLE
 
-      def key_press?(key)
+      def sdl_key_press?(key)
         SDL::Key.scan
         if SDL::Key.press?(key)
           Window.instance_variable_get('@current_key_state').add(key)
