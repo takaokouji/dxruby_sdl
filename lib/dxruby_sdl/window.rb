@@ -63,6 +63,9 @@ module DXRubySDL
     end
 
     def draw_font(x, y, string, font, hash = {})
+      if string.empty?
+        return
+      end
       if hash[:color]
         r, g, b = *hash[:color]
       else

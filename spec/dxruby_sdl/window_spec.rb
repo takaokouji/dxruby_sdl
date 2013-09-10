@@ -101,6 +101,14 @@ describe DXRubySDL::Window do
         subject
       end
 
+      context '引数が空文字列の場合' do
+        let(:args) { [0, 0, '', font] }
+
+        it 'なにもしない' do
+          expect { subject }.not_to raise_error
+        end
+      end
+
       hash = { color: [255, 0, 0] }
       context "第5引数に色(#{hash.inspect})を指定した場合" do
         let(:args) { [0, 0, 'やあ', font, hash] }
