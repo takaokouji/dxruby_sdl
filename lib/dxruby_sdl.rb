@@ -220,5 +220,6 @@ require 'dxruby_sdl/font'
 require 'dxruby_sdl/input'
 require 'dxruby_sdl/sound'
 require 'dxruby_sdl/sound_effect'
+require 'dxruby_sdl/sprite'
 
 SDL.init(SDL::INIT_EVERYTHING)
