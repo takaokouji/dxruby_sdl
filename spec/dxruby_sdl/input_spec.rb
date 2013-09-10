@@ -13,7 +13,9 @@ describe DXRubySDL::Input,
       subject
     end
 
-    specify { expect(SDL::Key).to have_received(:enable_key_repeat).with(15, 2) }
+    specify do
+      expect(SDL::Key).to have_received(:enable_key_repeat).with(15, 2)
+    end
   end
 
   describe '.set_repeat', 'キーリピートを設定する' do
