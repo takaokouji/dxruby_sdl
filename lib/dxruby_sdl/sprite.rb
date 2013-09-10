@@ -20,16 +20,44 @@ module DXRubySDL
     attr_accessor :visible
 
     class << self
-      def check(o, d, shot = :shot, hit = :hit)
+      def check(o_sprites, d_sprites, shot = :shot, hit = :hit)
+        res = false
+        o_sprites = [o_sprites].flatten
+        d_sprites = [d_sprites].flatten
+        o_sprites.each do |o_sprite|
+          d_sprites.each do |d_sprite|
+            if o_sprite === d_sprite
+              if shot
+                o_sprite.send(shot, d_sprite)
+              end
+              if hit
+                d_sprite.send(hit, o_sprite)
+              end
+              res = true
+            end
+          end
+        end
+        return res
       end
 
-      def update(ary)
+      def update(sprites)
+        sprites.flatten.each do |s|
+          if s.respond_to?(:update)
+            s.update
+          end
+        end
       end
 
-      def draw(ary)
+      def draw(sprites)
+        sprites.flatten.each do |s|
+          if s.respond_to?(:draw)
+            s.draw
+          end
+        end
       end
 
-      def clean(ary)
+      def clean(sprites)
+        return [sprites].flatten.reject(&:vanished?)
       end
     end
 
@@ -45,14 +73,28 @@ module DXRubySDL
     end
 
     def draw
+      if !@visible || vanished?
+        return
+      end
+      if target
+        raise NotImplementedError, 'Sprite#draw with target'
+      else
+        Window.draw(x, y, image)
+      end
     end
 
     def ===(other)
-      return true
+      if !@collision_enable || vanished? ||
+          !other.collision_enable || other.vanished? ||
+          !other.image && !other.collision
+        return false
+      end
+      return other.x + other.image.width > x && other.x < x + image.width &&
+        other.y + other.image.height > y && other.y < y + image.height
     end
 
-    def check(s)
-      return []
+    def check(sprites)
+      return [sprites].flatten.select { |s| self === s }
     end
 
     def vanish
