@@ -38,32 +38,32 @@ module DXRubySDL
       font_info =
         [
          %w[
-            ＭＳ\ Ｐゴシック
-            /Library/Fonts/Microsoft/MS\ PGothic.ttf
-            MS\ Pゴシック
-            MS\ PGothic
+           ＭＳ\ Ｐゴシック
+           /Library/Fonts/Microsoft/MS\ PGothic.ttf
+           MS\ Pゴシック
+           MS\ PGothic
          ],
          %w[
-            ＭＳ\ ゴシック
-            /Library/Fonts/Microsoft/MS\ Gothic.ttf
-            MS\ ゴシック
-            MS\ Gothic
+           ＭＳ\ ゴシック
+           /Library/Fonts/Microsoft/MS\ Gothic.ttf
+           MS\ ゴシック
+           MS\ Gothic
          ],
          %w[
-            ＭＳ\ P明朝
-            /Library/Fonts/Microsoft/MS\ PMincho.ttf
-            MS\ P明朝
-            MS\ PMincho
+           ＭＳ\ P明朝
+           /Library/Fonts/Microsoft/MS\ PMincho.ttf
+           MS\ P明朝
+           MS\ PMincho
          ],
          %w[
-            ＭＳ\ 明朝
-            /Library/Fonts/Microsoft/MS\ Mincho.ttf
-            MS\ 明朝
-            MS\ Mincho
+           ＭＳ\ 明朝
+           /Library/Fonts/Microsoft/MS\ Mincho.ttf
+           MS\ 明朝
+           MS\ Mincho
          ],
          %w[
-            osaka
-            /Library/Fonts/osaka.ttf
+           osaka
+           /Library/Fonts/osaka.ttf
          ],
          %w[
            IPA\ Pゴシック
@@ -82,16 +82,40 @@ module DXRubySDL
       font_info =
         [
          %w[
-          IPA\ Pゴシック
-          /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf
-          IPA\ PGothic
-          ipagp
+           IPA\ Pゴシック
+           /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf
+           IPA\ PGothic
+           ipagp
+           ＭＳ\ Ｐゴシック
+           MS\ Pゴシック
+           MS\ PGothic
          ],
          %w[
            IPA\ ゴシック
            /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf
            IPA\ Gothic
            ipag
+           ＭＳ\ ゴシック
+           MS\ ゴシック
+           MS\ Gothic
+         ],
+         %w[
+           IPA\ P明朝
+           /usr/share/fonts/opentype/ipafont-mincho/ipamp.ttf
+           IPA\ PMincho
+           ipamp
+           ＭＳ\ P明朝
+           MS\ P明朝
+           MS\ PMincho
+         ],
+         %w[
+           IPA\ 明朝
+           /usr/share/fonts/opentype/ipafont-mincho/ipam.ttf
+           IPA\ Mincho
+           ipam
+           ＭＳ\ 明朝
+           MS\ 明朝
+           MS\ Mincho
          ],
         ]
     end
