@@ -35,6 +35,10 @@ DXRuby API. It use SDL/Ruby.
 
 Install Microsoft Office:mac from http://www.microsoft.com/japan/mac.
 
+#### Linux
+
+    $ sudo apt-get install libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev timidity libsdl-ttf2.0-dev libsdl-sge-dev fonts-ipafont
+
 ### dxruby_sdl
 
 Add this line to your application's Gemfile:
