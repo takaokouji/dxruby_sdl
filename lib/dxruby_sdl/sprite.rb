@@ -27,10 +27,10 @@ module DXRubySDL
         o_sprites.each do |o_sprite|
           d_sprites.each do |d_sprite|
             if o_sprite === d_sprite
-              if shot
+              if o_sprite.respond_to?(shot) && shot
                 o_sprite.send(shot, d_sprite)
               end
-              if hit
+              if d_sprite.respond_to?(hit) && hit
                 d_sprite.send(hit, o_sprite)
               end
               res = true
