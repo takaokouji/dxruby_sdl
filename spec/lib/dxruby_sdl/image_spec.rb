@@ -14,10 +14,7 @@ describe DXRubySDL::Image, '画像を表すクラス' do
   end
 
   describe '.load' do
-    subject {
-      path = File.expand_path("../../fixtures/#{filename}", __FILE__)
-      DXRubySDL::Image.load(path)
-    }
+    subject { DXRubySDL::Image.load(fixture_path(filename)) }
 
     context 'PNG形式のファイルの場合' do
       let(:filename) { 'logo.png' }
