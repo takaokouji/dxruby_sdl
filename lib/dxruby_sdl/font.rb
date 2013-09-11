@@ -13,8 +13,7 @@ module DXRubySDL
       if !SDL::TTF.init?
         SDL::TTF.init
       end
-      if !(path = FONTS[fontname.downcase] ||
-           path = FONT_ALIASES[fontname.downcase])
+      if !(path = FONTS[fontname] || path = FONT_ALIASES[fontname])
         path = FONTS.first.last
       end
       font_cache = Font.instance_variable_get('@font_cache')
@@ -42,25 +41,25 @@ module DXRubySDL
             ＭＳ\ Ｐゴシック
             /Library/Fonts/Microsoft/MS\ PGothic.ttf
             MS\ Pゴシック
-            MS PGothic
+            MS\ PGothic
          ],
          %w[
             ＭＳ\ ゴシック
             /Library/Fonts/Microsoft/MS\ Gothic.ttf
             MS\ ゴシック
-            MS Gothic
+            MS\ Gothic
          ],
          %w[
             ＭＳ\ P明朝
             /Library/Fonts/Microsoft/MS\ PMincho.ttf
             MS\ P明朝
-            MS PMincho
+            MS\ PMincho
          ],
          %w[
             ＭＳ\ 明朝
             /Library/Fonts/Microsoft/MS\ Mincho.ttf
             MS\ 明朝
-            MS Mincho
+            MS\ Mincho
          ],
          %w[
             osaka
@@ -69,13 +68,13 @@ module DXRubySDL
          %w[
            IPA\ Pゴシック
            /Library/Fonts/ipagp.ttf
-           IPA PGothic
+           IPA\ PGothic
            ipagp
          ],
          %w[
            IPA\ ゴシック
            /Library/Fonts/ipag.ttf
-           IPA Gothic
+           IPA\ Gothic
            ipag
          ],
         ]
@@ -85,13 +84,13 @@ module DXRubySDL
          %w[
           IPA\ Pゴシック
           /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf
-          IPA PGothic
+          IPA\ PGothic
           ipagp
          ],
          %w[
            IPA\ ゴシック
            /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf
-           IPA Gothic
+           IPA\ Gothic
            ipag
          ],
         ]
