@@ -82,40 +82,60 @@ module DXRubySDL
       font_info =
         [
          %w[
+           梅Pゴシック
+           /usr/share/fonts/truetype/horai-umefont/ume-pgo4.ttf
+           ume-pgo4
+           ＭＳ\ Ｐゴシック
+           MS\ Pゴシック
+           MS\ PGothic
+         ],
+         %w[
+           梅ゴシック
+           /usr/share/fonts/truetype/horai-umefont/ume-tgo4.ttf
+           ume-tgo4
+           ＭＳ\ ゴシック
+           MS\ ゴシック
+           MS\ Gothic
+         ],
+         %w[
+           梅P明朝
+           /usr/share/fonts/truetype/horai-umefont/ume-pmo3.ttf
+           ume-pmo3
+           ＭＳ\ P明朝
+           MS\ P明朝
+           MS\ PMincho
+         ],
+         %w[
+           梅明朝
+           /usr/share/fonts/truetype/horai-umefont/ume-tmo3.ttf
+           ume-tmo3
+           ＭＳ\ 明朝
+           MS\ 明朝
+           MS\ Mincho
+         ],
+         %w[
            IPA\ Pゴシック
            /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf
            IPA\ PGothic
            ipagp
-           ＭＳ\ Ｐゴシック
-           MS\ Pゴシック
-           MS\ PGothic
          ],
          %w[
            IPA\ ゴシック
            /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf
            IPA\ Gothic
            ipag
-           ＭＳ\ ゴシック
-           MS\ ゴシック
-           MS\ Gothic
          ],
          %w[
            IPA\ P明朝
            /usr/share/fonts/opentype/ipafont-mincho/ipamp.ttf
            IPA\ PMincho
            ipamp
-           ＭＳ\ P明朝
-           MS\ P明朝
-           MS\ PMincho
          ],
          %w[
            IPA\ 明朝
            /usr/share/fonts/opentype/ipafont-mincho/ipam.ttf
            IPA\ Mincho
            ipam
-           ＭＳ\ 明朝
-           MS\ 明朝
-           MS\ Mincho
          ],
         ]
     end
