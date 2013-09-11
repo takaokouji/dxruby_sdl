@@ -49,6 +49,15 @@ module DXRubySDL
       return @_surface.h
     end
 
+    def set_color_key(color)
+      @_surface.set_color_key(SDL::RLEACCEL, color)
+    end
+
+    def compare(x, y, color)
+      pixel = lock { @_surface.get_pixel(x, y) }
+      return @_surface.format.get_rgb(pixel) == color
+    end
+
     def slice(x, y, width, height)
       s = @_surface.copy_rect(x, y, width, height)
       image = Image.new(0, 0)
@@ -110,6 +119,7 @@ module DXRubySDL
       alias_method :load_to_array, :load_tiles
       alias_method :loadToArray, :load_to_array
     end
+    alias_method :setColorKey, :set_color_key
     alias_method :circleFill, :circle_fill
     alias_method :boxFill, :box_fill
     # rubocop:enable SymbolName
@@ -122,7 +132,7 @@ module DXRubySDL
       else
         begin
           @_surface.lock
-          yield
+          return yield
         ensure
           @_surface.unlock
         end
