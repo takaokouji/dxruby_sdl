@@ -13,7 +13,8 @@ module DXRubySDL
       if !SDL::TTF.init?
         SDL::TTF.init
       end
-      if !(path = FONTS[fontname.downcase])
+      if !(path = FONTS[fontname.downcase] ||
+           path = FONT_ALIASES[fontname.downcase])
         path = FONTS.first.last
       end
       font_cache = Font.instance_variable_get('@font_cache')
@@ -27,19 +28,82 @@ module DXRubySDL
 
     private
 
+    FONTS = {}
+    private_constant :FONTS
+
+    FONT_ALIASES = {}
+    private_constant :FONT_ALIASES
+
     # :nocov:
     if /darwin/ =~ RUBY_PLATFORM
-      FONTS = {
-        'osaka' => '/Library/Fonts/osaka.ttf',
-        'IPA ゴシック' => '/Library/Fonts/ipag.ttf',
-        'IPA Pゴシック' => '/Library/Fonts/ipagp.ttf',
-      }
+      font_info =
+        [
+         %w[
+            ＭＳ\ Ｐゴシック
+            /Library/Fonts/Microsoft/MS\ PGothic.ttf
+            MS\ Pゴシック
+            MS PGothic
+         ],
+         %w[
+            ＭＳ\ ゴシック
+            /Library/Fonts/Microsoft/MS\ Gothic.ttf
+            MS\ ゴシック
+            MS Gothic
+         ],
+         %w[
+            ＭＳ\ P明朝
+            /Library/Fonts/Microsoft/MS\ PMincho.ttf
+            MS\ P明朝
+            MS PMincho
+         ],
+         %w[
+            ＭＳ\ 明朝
+            /Library/Fonts/Microsoft/MS\ Mincho.ttf
+            MS\ 明朝
+            MS Mincho
+         ],
+         %w[
+            osaka
+            /Library/Fonts/osaka.ttf
+         ],
+         %w[
+           IPA\ Pゴシック
+           /Library/Fonts/ipagp.ttf
+           IPA PGothic
+           ipagp
+         ],
+         %w[
+           IPA\ ゴシック
+           /Library/Fonts/ipag.ttf
+           IPA Gothic
+           ipag
+         ],
+        ]
     elsif /linux/ =~ RUBY_PLATFORM
-      FONTS = {
-        'IPA ゴシック' => '/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf',
-        'IPA Pゴシック' => '/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf',
-      }
+      font_info =
+        [
+         %w[
+          IPA\ Pゴシック
+          /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf
+          IPA PGothic
+          ipagp
+         ],
+         %w[
+           IPA\ ゴシック
+           /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf
+           IPA Gothic
+           ipag
+         ],
+        ]
     end
     # :nocov:
+    font_info.each do |name, path, *aliases|
+      if File.exist?(path)
+        FONTS[name] = path
+        aliases.each do |a|
+          FONT_ALIASES[a] = path
+        end
+      end
+    end
   end
 end
