@@ -59,6 +59,9 @@ module DXRubySDL
     end
 
     def draw(x, y, image, z = 0)
+      if z != 0
+        raise NotImplementedError, 'Window.draw(x, y, image, z != 0)'
+      end
       screen.put(image._surface, x, y)
     end
 
