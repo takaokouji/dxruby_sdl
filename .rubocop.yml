@@ -1,3 +1,7 @@
+AllCops:
+  Excludes:
+    - tmp/**
+
 MethodLength:
   Enabled: false
 
@@ -25,4 +29,5 @@ AsciiComments:
 CaseEquality:
   Enabled: false
 
-
+SymbolName:
+  Enabled: false
