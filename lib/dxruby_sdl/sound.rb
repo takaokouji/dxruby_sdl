@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
+require 'forwardable'
+
 module DXRubySDL
   class Sound
+    extend Forwardable
+
     @sdl_mixer_openend = false
 
     def initialize(filename)
@@ -17,9 +21,9 @@ module DXRubySDL
       end
     end
 
-    def play
-      @sound.play
-    end
+    def_delegators :@sound, :play, :set_volume
+
+    alias_method :setVolume, :set_volume
 
     private
 
@@ -31,10 +35,16 @@ module DXRubySDL
       def play
         SDL::Mixer.play_music(@music, -1)
       end
+
+      def set_volume(volume, time = 0)
+        raise NotImplementedError, 'Sound#set_volume(volume, time) with MIDI'
+      end
     end
     private_constant :Music
 
     class Wave
+      extend Forwardable
+
       def initialize(filename)
         @wave = SDL::Mixer::Wave.load(filename)
         @last_played_channel = nil
@@ -47,6 +57,13 @@ module DXRubySDL
           SDL::Mixer.halt(@last_played_channel == 0 ? 1 : 0)
           retry
         end
+      end
+
+      def set_volume(volume, time = 0)
+        if time > 0
+          raise NotImplementedError, 'Sound#set_volume(volume, time != 0)'
+        end
+        @wave.set_volume(volume)
       end
     end
     private_constant :Wave
