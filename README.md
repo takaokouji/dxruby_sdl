@@ -1,5 +1,6 @@
 # dxruby_sdl
 
+[![Gem Version](https://badge.fury.io/rb/dxruby_sdl.png)](http://badge.fury.io/rb/dxruby_sdl)
 [![Build Status](https://travis-ci.org/takaokouji/dxruby_sdl.png?branch=master)](https://travis-ci.org/takaokouji/dxruby_sdl)
 [![Coverage Status](https://coveralls.io/repos/takaokouji/dxruby_sdl/badge.png?branch=master)](https://coveralls.io/r/takaokouji/dxruby_sdl?branch=master)
 [![Dependency Status](https://gemnasium.com/takaokouji/dxruby_sdl.png)](https://gemnasium.com/takaokouji/dxruby_sdl)
