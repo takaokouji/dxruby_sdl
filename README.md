@@ -14,14 +14,14 @@ DXRuby API. It use SDL/Ruby.
 
 #### Mac OS X
 
-1. SDL
+(1) SDL
 
 ```
 (if you use MacPorts.)
 $ sudo port install libsdl libsdl_image libsdl_mixer libsdl_sound libsdl_ttf
 ```
 
-2. SGE
+(2) SGE
 
 ```
 $ curl -O http://www.digitalfanatics.org/cal/sge/files/sge030809.tar.gz
@@ -35,7 +35,7 @@ $ make
 $ sudo make install
 ```
 
-3. MS PGohic (DXRuby's default font)
+(3) MS PGohic (DXRuby's default font)
 
 Install Microsoft Office:mac from http://www.microsoft.com/japan/mac.
 
