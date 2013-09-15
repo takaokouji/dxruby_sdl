@@ -98,5 +98,15 @@ describe DXRubySDL::Window do
         DXRubySDL::Window.draw_ex(x, y, image, z: z)
       end
     end
+
+    describe 'alias' do
+      describe '.drawEx' do
+        it_behaves_like '.draw' do
+          def call_draw(x, y, image, z = 0)
+            DXRubySDL::Window.drawEx(x, y, image, z: z)
+          end
+        end
+      end
+    end
   end
 end
