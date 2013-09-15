@@ -69,7 +69,16 @@ module DXRubySDL
       if hash[:z] && hash[:z] != 0
         raise NotImplementedError, 'Window.draw_ex(x, y, image, z: != 0)'
       end
-      screen.put(image._surface, x, y)
+      option = {
+        angle: 0,
+        scale_x: 1,
+        scale_y: 1,
+      }.merge(hash)
+      SDL::Surface.transform_draw(image._surface, screen,
+                                  option[:angle], option[:scale_x],
+                                  option[:scale_y],
+                                  0, 0, x, y,
+                                  SDL::Surface::TRANSFORM_SAFE)
     end
 
     def draw_font(x, y, string, font, hash = {})

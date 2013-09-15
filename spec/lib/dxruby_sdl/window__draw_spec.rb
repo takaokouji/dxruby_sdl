@@ -99,6 +99,38 @@ describe DXRubySDL::Window do
       end
     end
 
+    context 'hash引数を指定した場合' do
+      let!(:image) {
+        DXRubySDL::Image.load(fixture_path('logo.png'))
+      }
+      let(:hash) { {} }
+
+      subject do
+        expect {
+          DXRubySDL::Window.loop do
+            DXRubySDL::Window.draw_ex(320, 240, image, hash)
+            SDL::Event.push(SDL::Event::Quit.new)
+          end
+        }.to raise_error(SystemExit)
+      end
+
+      context '上下反転' do
+        let(:hash) { { scale_x: 1, scale_y: -1 } }
+
+        it '描画する' do
+          subject
+        end
+      end
+
+      context '左右反転' do
+        let(:hash) { { scale_x: -1, scale_y: 1 } }
+
+        it '描画する' do
+          subject
+        end
+      end
+    end
+
     describe 'alias' do
       describe '.drawEx' do
         it_behaves_like '.draw' do
