@@ -80,7 +80,7 @@ module DXRubySDL
                                   option[:angle],
                                   option[:scale_x], option[:scale_y],
                                   option[:center_x], option[:center_y],
-                                  x, y,
+                                  x + option[:center_x], y + option[:center_y],
                                   SDL::Surface::TRANSFORM_SAFE)
     end
 
