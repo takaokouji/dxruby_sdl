@@ -73,11 +73,14 @@ module DXRubySDL
         angle: 0,
         scale_x: 1,
         scale_y: 1,
+        center_x: 0,
+        center_y: 0,
       }.merge(hash)
       SDL::Surface.transform_blit(image._surface, screen,
-                                  option[:angle], option[:scale_x],
-                                  option[:scale_y],
-                                  0, 0, x, y,
+                                  option[:angle],
+                                  option[:scale_x], option[:scale_y],
+                                  option[:center_x], option[:center_y],
+                                  x, y,
                                   SDL::Surface::TRANSFORM_SAFE)
     end
 

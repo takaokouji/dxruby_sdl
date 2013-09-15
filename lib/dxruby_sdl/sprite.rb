@@ -71,17 +71,41 @@ module DXRubySDL
       @collision_sync = true
       @visible = true
       @vanished = false
+
+      calc_center
+    end
+
+    def image=(val)
+      @image = val
+      calc_center
     end
 
     def draw
       if !@visible || vanished?
         return
       end
-      if target
-        raise NotImplementedError, 'Sprite#draw with target'
-      else
-        Window.draw(x, y, image)
+      [:target, :blend, :shader].each do |method|
+        if send(method)
+          raise NotImplementedError, "Sprite#draw with #{method}"
+        end
       end
+      options = {}
+      if angle
+        options[:angle] = angle
+      end
+      if scale_x
+        options[:scale_x] = scale_x
+      end
+      if scale_y
+        options[:scale_y] = scale_y
+      end
+      if center_x
+        options[:center_x] = center_x
+      end
+      if center_y
+        options[:center_y] = center_y
+      end
+      Window.draw_ex(x, y, image, options)
     end
 
     def ===(other)
@@ -104,6 +128,18 @@ module DXRubySDL
 
     def vanished?
       return @vanished
+    end
+
+    private
+
+    def calc_center
+      if @image
+        @center_x = @image.width / 2
+        @center_y = @image.height / 2
+      else
+        @center_x = 0
+        @center_y = 0
+      end
     end
   end
 end

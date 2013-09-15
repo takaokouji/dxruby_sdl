@@ -3,7 +3,6 @@ require 'spec_helper'
 
 describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本となるクラス' do
   let(:image) { DXRubySDL::Image.load(fixture_path('logo.png')) }
-
   let(:sprite) { described_class.new(50, 150, image) }
 
   describe '.new' do
@@ -117,23 +116,42 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
   end
 
   describe '#check' do
-    let(:sprite) { described_class.new(50, 150, image) }
     let(:others) { [1, 2, 3, 4, 5] }
 
     subject { sprite.check(others) }
 
     before do
       allow(sprite).to receive(:===) { |other|
-        if [1, 3, 5].include?(other)
-          true
-        else
-          false
-        end
-      }
+                         if [1, 3, 5].include?(other)
+                           true
+                         else
+                           false
+                         end
+                       }
     end
 
     it { should include(1, 3, 5) }
     it { should have(3).items }
   end
-end
 
+  describe '#draw' do
+    subject do
+      expect {
+        DXRubySDL::Window.loop do
+          sprite.draw
+          SDL::Event.push(SDL::Event::Quit.new)
+        end
+      }.to raise_error(SystemExit)
+    end
+
+    context '左右反転' do
+      before do
+        sprite.scale_x = -1.0
+      end
+
+      it '描画できる' do
+        subject
+      end
+    end
+  end
+end

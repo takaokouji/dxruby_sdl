@@ -9,5 +9,3 @@ require 'dxruby_sdl'
 Dir.glob(File.expand_path('../support/**/*.rb', __FILE__)).each do |path|
   require path
 end
-
-RSpec::Mocks::setup(self)
