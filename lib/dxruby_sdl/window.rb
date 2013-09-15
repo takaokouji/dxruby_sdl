@@ -65,6 +65,13 @@ module DXRubySDL
       screen.put(image._surface, x, y)
     end
 
+    def draw_ex(x, y, image, hash = {})
+      if hash[:z] && hash[:z] != 0
+        raise NotImplementedError, 'Window.draw_ex(x, y, image, z: != 0)'
+      end
+      screen.put(image._surface, x, y)
+    end
+
     def draw_font(x, y, string, font, hash = {})
       if string.empty?
         return
@@ -104,16 +111,15 @@ end run
       # :nocov:
     end
 
-    # rubocop:disable SymbolName
     class << self
       attr_writer :width
       attr_writer :height
       attr_writer :scale
 
+      alias_method :drawEx, :draw_ex
       alias_method :drawFont, :draw_font
       alias_method :openFilename, :open_filename
     end
-    # rubocop:enable SymbolName
 
     private
 

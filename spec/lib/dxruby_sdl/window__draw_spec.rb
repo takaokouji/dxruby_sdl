@@ -2,11 +2,15 @@
 require 'spec_helper'
 
 describe DXRubySDL::Window do
-  describe '.draw', 'Imageオブジェクトを描画する' do
+  shared_context '.draw' do
+    def call_draw(x, y, image, z = 0)
+      DXRubySDL::Window.draw(0, 0, image)
+    end
+
     subject do
       expect {
         DXRubySDL::Window.loop do
-          DXRubySDL::Window.draw(0, 0, image)
+          call_draw(0, 0, image)
           SDL::Event.push(SDL::Event::Quit.new)
         end
       }.to raise_error(SystemExit)
@@ -70,15 +74,28 @@ describe DXRubySDL::Window do
             i = 0
             4.times do |y|
               2.times do |x|
-                DXRubySDL::Window.draw(x * (images[i].width + margin),
-                                       y * (images[i].height + margin),
-                                       images[i])
+                call_draw(x * (images[i].width + margin),
+                          y * (images[i].height + margin),
+                          images[i])
                 i += 1
               end
             end
             SDL::Event.push(SDL::Event::Quit.new)
           end
         }.to raise_error(SystemExit)
+      end
+    end
+  end
+
+  describe '.draw', 'Imageオブジェクトを描画する' do
+    include_context '.draw'
+  end
+
+  describe '.draw_ex',
+           '拡縮回転半透明加算合成を行ったImageオブジェクトを描画する' do
+    it_behaves_like '.draw' do
+      def call_draw(x, y, image, z = 0)
+        DXRubySDL::Window.draw_ex(x, y, image, z: z)
       end
     end
   end
