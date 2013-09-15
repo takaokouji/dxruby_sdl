@@ -13,7 +13,7 @@ module DXRubySDL
       if !SDL::TTF.init?
         SDL::TTF.init
       end
-      if !(path = FONTS[fontname] || path = FONT_ALIASES[fontname])
+      if !(path = (FONTS[fontname] || FONT_ALIASES[fontname]))
         path = FONTS.first.last
       end
       font_cache = Font.instance_variable_get('@font_cache')
