@@ -38,7 +38,6 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
 
       its(:x) { should eq(50) }
       its(:y) { should eq(0) }
-      its(:z) { should eq(0) }
       include_examples 'default'
     end
 
@@ -55,6 +54,7 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
   {
     x: [-1, 0, 1, 100, 639, 640, 641],
     y: [-1, 0, 1, 100, 479, 480, 481],
+    image: [DXRubySDL::Image.load(fixture_path('logo.png'))],
     z: [-1, 0, 1, 99, 100, 101],
     angle: [0, 90, 180, 260, 360],
     scale_x: [10.0, 1.0, 0.5, 0, -0.5, -1.0, -10.0],
@@ -65,9 +65,9 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
     blend: [:alpha, :none, :add, :add2, :sub],
     shader: [:shader],
   }.each do |method, vals|
-    describe ".#{method}=" do
+    describe "##{method}=" do
       vals.each do |val|
-        context "#{val}を指定した場合" do
+        context "#{val.inspect}を指定した場合" do
           subject {
             sprite.send("#{method}=".to_sym, val)
             sprite.send(method)
@@ -76,6 +76,38 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
           it { should eq(val) }
         end
       end
+    end
+  end
+
+  describe '#vanish' do
+    describe 'レシーバ' do
+      subject { sprite }
+
+      context '呼び出す前' do
+        its(:vanished?) { should be_false }
+      end
+
+      context '呼び出した後' do
+        before do
+          sprite.vanish
+        end
+
+        its(:vanished?) { should be_true }
+      end
+    end
+  end
+
+  describe '#vanished?' do
+    subject { sprite.vanished? }
+
+    context 'Spriteが有効な場合' do
+      it { should be_false }
+    end
+
+    context 'vanishを呼び出してSpriteを無効化している場合' do
+      before { sprite.vanish }
+
+      it { should be_true }
     end
   end
 end
