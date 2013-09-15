@@ -74,7 +74,7 @@ module DXRubySDL
         scale_x: 1,
         scale_y: 1,
       }.merge(hash)
-      SDL::Surface.transform_draw(image._surface, screen,
+      SDL::Surface.transform_blit(image._surface, screen,
                                   option[:angle], option[:scale_x],
                                   option[:scale_y],
                                   0, 0, x, y,
