@@ -52,42 +52,31 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
     end
   end
 
-  describe '.x=' do
-    [-1, 0, 1, 100, 639, 640, 641].each do |val|
-      context "#{val}を指定した場合" do
-        subject {
-          sprite.x = val
-          sprite.x
-        }
+  {
+    x: [-1, 0, 1, 100, 639, 640, 641],
+    y: [-1, 0, 1, 100, 479, 480, 481],
+    z: [-1, 0, 1, 99, 100, 101],
+    angle: [0, 90, 180, 260, 360],
+    scale_x: [10.0, 1.0, 0.5, 0, -0.5, -1.0, -10.0],
+    scale_y: [10.0, 1.0, 0.5, 0, -0.5, -1.0, -10.0],
+    center_x: [-1, 0, 1, 100, 639, 640, 641],
+    center_y: [-1, 0, 1, 100, 479, 480, 481],
+    alpha: [0, 1, 254, 255],
+    blend: [:alpha, :none, :add, :add2, :sub],
+    shader: [:shader],
+  }.each do |method, vals|
+    describe ".#{method}=" do
+      vals.each do |val|
+        context "#{val}を指定した場合" do
+          subject {
+            sprite.send("#{method}=".to_sym, val)
+            sprite.send(method)
+          }
 
-        it { should eq(val) }
-      end
-    end
-  end
-
-  describe '.y=' do
-    [-1, 0, 1, 100, 479, 480, 481].each do |val|
-      context "#{val}を指定した場合" do
-        subject {
-          sprite.y = val
-          sprite.y
-        }
-
-        it { should eq(val) }
-      end
-    end
-  end
-
-  describe '.z=' do
-    [-1, 0, 1, 99, 100, 101].each do |val|
-      context "#{val}を指定した場合" do
-        subject {
-          sprite.z = val
-          sprite.z
-        }
-
-        it { should eq(val) }
+          it { should eq(val) }
+        end
       end
     end
   end
 end
+
