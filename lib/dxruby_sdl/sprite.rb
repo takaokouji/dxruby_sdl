@@ -114,8 +114,22 @@ module DXRubySDL
           !other.image && !other.collision
         return false
       end
-      return other.x + other.image.width > x && other.x < x + image.width &&
-        other.y + other.image.height > y && other.y < y + image.height
+      if @collision_enable && @collision
+        x, y, width, height =
+          @collision[0] + @x, @collision[1] + @y, @collision[2], @collision[3]
+      else
+        x, y, width, height =
+          @x, @y, @image.width, @image.height
+      end
+      if other.collision_enable && other.collision
+        other_x, other_y, other_width, other_height =
+          other.collision
+      else
+        other_x, other_y, other_width, other_height =
+          other.x, other.y, other.image.width, other.image.height
+      end
+      return other_x + other_width > x && other_x < x + width &&
+        other_y + other_height > y && other_y < y + height
     end
 
     def check(sprites)
