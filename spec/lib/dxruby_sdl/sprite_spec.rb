@@ -115,5 +115,25 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
       it { should be_true }
     end
   end
+
+  describe '#check' do
+    let(:sprite) { described_class.new(50, 150, image) }
+    let(:others) { [1, 2, 3, 4, 5] }
+
+    subject { sprite.check(others) }
+
+    before do
+      allow(sprite).to receive(:===) { |other|
+        if [1, 3, 5].include?(other)
+          true
+        else
+          false
+        end
+      }
+    end
+
+    it { should include(1, 3, 5) }
+    it { should have(3).items }
+  end
 end
 
