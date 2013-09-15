@@ -54,7 +54,6 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
   {
     x: [-1, 0, 1, 100, 639, 640, 641],
     y: [-1, 0, 1, 100, 479, 480, 481],
-    image: [DXRubySDL::Image.load(fixture_path('logo.png'))],
     z: [-1, 0, 1, 99, 100, 101],
     angle: [0, 90, 180, 260, 360],
     scale_x: [10.0, 1.0, 0.5, 0, -0.5, -1.0, -10.0],
@@ -64,6 +63,12 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
     alpha: [0, 1, 254, 255],
     blend: [:alpha, :none, :add, :add2, :sub],
     shader: [:shader],
+    image: [DXRubySDL::Image.load(fixture_path('logo.png'))],
+    target: [:render_target1, :render_target2],
+    collision: [1, [0, 0, 639, 439]],
+    collision_sync: [true, false],
+    collision_enable: [true, false],
+    visible: [true, false],
   }.each do |method, vals|
     describe "##{method}=" do
       vals.each do |val|
