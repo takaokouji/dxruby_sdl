@@ -5,6 +5,7 @@ module DXRubySDL
     attr_accessor :x
     attr_accessor :y
     attr_accessor :image
+    attr_accessor :z
     attr_accessor :angle
     attr_accessor :scale_x
     attr_accessor :scale_y
