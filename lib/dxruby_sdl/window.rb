@@ -51,7 +51,7 @@ module DXRubySDL
 
           yield
 
-          screen.update_rect(0, 0, 0, 0)
+          screen.flip
 
           Input.send(:store_last_state)
         end
@@ -132,7 +132,9 @@ end run
       def screen
         return SDL::Screen.get
       rescue SDL::Error
-        return SDL::Screen.open(width, height, 16, SDL::SWSURFACE)
+        flags =
+          SDL::HWSURFACE | SDL::ASYNCBLIT | SDL::HWPALETTE | SDL::DOUBLEBUF
+        return SDL::Screen.open(width, height, 0, flags)
       end
     end
   end
