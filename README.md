@@ -9,6 +9,8 @@
 `dxruby_sdl` is a ruby library for 2D graphics and game. It has same
 DXRuby API. It use SDL/Ruby.
 
+Current API compatibility status: http://dxruby-apis.herokuapp.com/en/
+
 ## Installation
 
 ### SDL, SGE, etc...
