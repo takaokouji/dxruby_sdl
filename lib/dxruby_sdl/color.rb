@@ -8,7 +8,7 @@ module DXRubySDL
       if color.length == 4
         return color[0..2]
       else
-        color
+        return color
       end
     end
 

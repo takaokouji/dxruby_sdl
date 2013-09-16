@@ -152,7 +152,7 @@ end run
       rescue SDL::Error
         flags =
           SDL::HWSURFACE | SDL::ASYNCBLIT | SDL::HWPALETTE | SDL::DOUBLEBUF
-        return SDL::Screen.open(width, height, 0, flags)
+        return SDL::Screen.open(width, height, 16, flags)
       end
     end
   end
