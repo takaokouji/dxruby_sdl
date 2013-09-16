@@ -113,7 +113,22 @@ module DXRubySDL
       return self
     end
 
-    # rubocop:disable SymbolName
+    def draw_font(x, y, string, font, color = [255, 255, 255])
+      if string.empty?
+        return
+      end
+      r, g, b = *color
+      h = font._ttf.height + 1
+      string.lines.each.with_index do |line, i|
+        line.chomp!
+        if line.empty?
+          next
+        end
+        font._ttf.draw_blended_utf8(@_surface, line, x, y + i * h, r, g, b)
+      end
+      return self
+    end
+
     class << self
       alias_method :loadTiles, :load_tiles
       alias_method :load_to_array, :load_tiles
@@ -122,7 +137,7 @@ module DXRubySDL
     alias_method :setColorKey, :set_color_key
     alias_method :circleFill, :circle_fill
     alias_method :boxFill, :box_fill
-    # rubocop:enable SymbolName
+    alias_method :drawFont, :draw_font
 
     private
 

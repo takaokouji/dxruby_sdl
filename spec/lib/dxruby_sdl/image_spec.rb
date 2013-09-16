@@ -195,4 +195,50 @@ describe DXRubySDL::Image, '画像を表すクラス' do
       end
     end
   end
+
+  shared_context '#draw_font' do
+    let!(:font) { DXRubySDL::Font.new(32) }
+    let(:args) { [0, 0, 'やあ', font] }
+
+    include_context 'draw methods'
+
+    context '引数が空文字列の場合' do
+      let(:args) { [0, 0, '', font] }
+
+      it 'なにもしない' do
+        expect { subject }.not_to raise_error
+      end
+    end
+
+    context '引数が複数行の場合' do
+      let(:args) { [0, 0, "やあ\n\nこんにちは\n\nHello\n", font] }
+
+      it 'なにもしない' do
+        expect { subject }.not_to raise_error
+      end
+    end
+
+    color = [255, 0, 0]
+    context "第5引数の色(#{color.inspect})を指定した場合" do
+      let(:args) { [0, 0, 'やあ', font, color] }
+
+      it '文字列を描画する' do
+        subject
+      end
+    end
+  end
+
+  describe '#draw_font' do
+    subject { image.draw_font(*args) }
+
+    include_context '#draw_font'
+
+    describe 'alias' do
+      describe '#drawFont' do
+        it_behaves_like '#draw_font' do
+          subject { image.drawFont(*args) }
+        end
+      end
+    end
+  end
 end
