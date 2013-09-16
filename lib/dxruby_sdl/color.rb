@@ -16,7 +16,7 @@ module DXRubySDL
       if color.length == 4
         return color[3]
       else
-        return 255
+        return nil
       end
     end
   end

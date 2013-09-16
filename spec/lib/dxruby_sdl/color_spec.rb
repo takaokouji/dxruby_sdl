@@ -25,8 +25,8 @@ describe DXRubySDL::Color, 'カラーを変換するモジュール' do
     context '引数が3つの要素の配列の場合' do
       let(:color) { [0, 125, 255] }
 
-      it '常に255を返す' do
-        should eq(255)
+      it '常にnilを返す' do
+        should eq(nil)
       end
     end
 
