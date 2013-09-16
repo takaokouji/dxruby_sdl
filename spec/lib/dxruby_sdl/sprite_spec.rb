@@ -5,6 +5,230 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
   let(:image) { DXRubySDL::Image.load(fixture_path('logo.png')) }
   let(:sprite) { described_class.new(50, 150, image) }
 
+  describe '.check' do
+    def make_o_sprite(collision, discard = false)
+      s = described_class.new(0, 0)
+      allow(s).to receive(:===).and_return(collision)
+      if discard
+        allow(s).to receive(:shot).and_return(:discard)
+      else
+        allow(s).to receive(:shot)
+      end
+      return s
+    end
+
+    def make_d_sprite(discard = false)
+      s = described_class.new(0, 0)
+      if discard
+        allow(s).to receive(:hit).and_return(:discard)
+      else
+        allow(s).to receive(:hit)
+      end
+      return s
+    end
+
+    let(:o_sprites) {
+      Array.new(5) {
+        make_o_sprite(true)
+      }
+    }
+    let(:d_sprites) {
+      Array.new(5) {
+        make_d_sprite
+      }
+    }
+
+    subject { described_class.check(o_sprites, d_sprites) }
+
+    before do
+      subject
+    end
+
+    shared_examples 'return' do |val|
+      describe '戻り値' do
+        if val
+          it { should be_true }
+        else
+          it { should be_false }
+        end
+      end
+    end
+
+    context 'Spriteが衝突している場合' do
+      context 'o_sprites引数がSpriteオブジェクトの場合' do
+        let(:o_sprites) { make_o_sprite(true) }
+
+        specify 'o_spritesに対して#shotが呼ばれる' do
+          d_sprites.each do |d_sprite|
+            expect(o_sprites).to have_received(:shot).with(d_sprite).once
+          end
+        end
+
+        specify 'd_spritesの各要素に対して#hitが呼ばれる' do
+          d_sprites.each do |d_sprite|
+            expect(d_sprite).to have_received(:hit).with(o_sprites).once
+          end
+        end
+
+        include_examples 'return', true
+      end
+
+      context 'd_sprites引数がSpriteオブジェクトの場合' do
+        let(:d_sprites) { make_d_sprite }
+
+        specify 'o_spritesに対して#shotが呼ばれる' do
+          o_sprites.each do |o_sprite|
+            expect(o_sprite).to have_received(:shot).with(d_sprites).once
+          end
+        end
+
+        specify 'd_spritesに対して#hitが呼ばれる' do
+          o_sprites.each do |o_sprite|
+            expect(d_sprites).to have_received(:hit).with(o_sprite).once
+          end
+        end
+
+        include_examples 'return', true
+      end
+
+      context 'o_sprites引数がSpriteオブジェクトの配列の場合' do
+        specify 'o_spritesの各要素に対して#shotが呼ばれる' do
+          o_sprites.each do |o_sprite|
+            d_sprites.each do |d_sprite|
+              expect(o_sprite).to have_received(:shot).with(d_sprite).once
+            end
+          end
+        end
+
+        specify 'd_spritesの各要素に対して#hitが呼ばれる' do
+          d_sprites.each do |d_sprite|
+            o_sprites.each do |o_sprite|
+              expect(d_sprite).to have_received(:hit).with(o_sprite)
+            end
+          end
+        end
+
+        include_examples 'return', true
+      end
+
+      context 'o_sprites引数の#shotが:discardを返す場合' do
+        let(:o_sprites) {
+          Array.new(5) {
+            make_o_sprite(true, true)
+          }
+        }
+
+        specify 'o_spritesの各要素は#shotが1回だけ呼ばれる' do
+          o_sprites.each.with_index do |o_sprite, i|
+            d_sprites.each.with_index do |d_sprite, j|
+              if i == j
+                expect(o_sprite).to have_received(:shot).with(d_sprite).once
+              else
+                expect(o_sprite).not_to have_received(:shot).with(d_sprite)
+              end
+            end
+          end
+        end
+
+        specify 'd_spritesの各要素は#hitが1回だけ呼ばれる' do
+          o_sprites.each.with_index do |o_sprite, i|
+            d_sprites.each.with_index do |d_sprite, j|
+              if i == j
+                expect(d_sprite).to have_received(:hit).with(o_sprite).once
+              else
+                expect(d_sprite).not_to have_received(:hit).with(o_sprite)
+              end
+            end
+          end
+        end
+
+        include_examples 'return', true
+      end
+
+      context 'd_sprites引数の#hitが:discardを返す場合' do
+        let(:d_sprites) {
+          Array.new(5) {
+            make_d_sprite(true)
+          }
+        }
+
+        specify 'o_spritesの各要素は#shotが1回だけ呼ばれる' do
+          o_sprites.each.with_index do |o_sprite, i|
+            d_sprites.each.with_index do |d_sprite, j|
+              if i == j
+                expect(o_sprite).to have_received(:shot).with(d_sprite).once
+              else
+                expect(o_sprite).not_to have_received(:shot).with(d_sprite)
+              end
+            end
+          end
+        end
+
+        specify 'd_spritesの各要素は#hitが1回だけ呼ばれる' do
+          o_sprites.each.with_index do |o_sprite, i|
+            d_sprites.each.with_index do |d_sprite, j|
+              if i == j
+                expect(d_sprite).to have_received(:hit).with(o_sprite).once
+              else
+                expect(d_sprite).not_to have_received(:hit).with(o_sprite)
+              end
+            end
+          end
+        end
+
+        include_examples 'return', true
+      end
+    end
+
+    context 'Spriteが衝突していない場合' do
+      let(:o_sprites) {
+        Array.new(5) {
+          make_o_sprite(false)
+        }
+      }
+
+      specify 'o_spritesの各要素に対してSprite#shotが呼ばれない' do
+        o_sprites.each do |o_sprite|
+          expect(o_sprite).not_to have_received(:shot)
+        end
+      end
+
+      specify 'd_spritesの各要素に対してSprite#hitが呼ばれない' do
+        d_sprites.each do |d_sprite|
+          expect(d_sprite).not_to have_received(:hit)
+        end
+      end
+
+      include_examples 'return', false
+    end
+
+    context 'o_sprites引数やd_sprites引数に' \
+            'Spriteオブジェクト以外を指定した場合' do
+      let(:o_sprites) {
+        s = double('Some Object')
+        allow(s).to receive(:===).and_return(true)
+        allow(s).to receive(:shot)
+        s
+      }
+      let(:d_sprites) {
+        s = double('Some Object')
+        allow(s).to receive(:hit)
+        s
+      }
+
+      describe 'o_sprites引数' do
+        it { expect(o_sprites).not_to have_received(:===) }
+        it { expect(o_sprites).not_to have_received(:shot) }
+      end
+
+      describe 'd_sprites引数' do
+        it { expect(d_sprites).not_to have_received(:hit) }
+      end
+
+      include_examples 'return', false
+    end
+  end
+
   describe '.new' do
     subject { sprite }
 

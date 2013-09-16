@@ -23,18 +23,37 @@ module DXRubySDL
     class << self
       def check(o_sprites, d_sprites, shot = :shot, hit = :hit)
         res = false
-        o_sprites = [o_sprites].flatten
-        d_sprites = [d_sprites].flatten
+        o_sprites = [o_sprites].flatten.select { |s| s.is_a?(self) }
+        d_sprites = [d_sprites].flatten.select { |s| s.is_a?(self) }
+        discards = []
         o_sprites.each do |o_sprite|
+          if discards.include?(o_sprite)
+            next
+          end
           d_sprites.each do |d_sprite|
+            if discards.include?(o_sprite)
+              break
+            end
+            if discards.include?(d_sprite)
+              next
+            end
             if o_sprite === d_sprite
+              res = true
+              discard = false
               if o_sprite.respond_to?(shot) && shot
-                o_sprite.send(shot, d_sprite)
+                if o_sprite.send(shot, d_sprite) == :discard
+                  discard = true
+                end
               end
               if d_sprite.respond_to?(hit) && hit
-                d_sprite.send(hit, o_sprite)
+                if d_sprite.send(hit, o_sprite) == :discard
+                  discard = true
+                end
               end
-              res = true
+              if discard
+                discards << o_sprite
+                discards << d_sprite
+              end
             end
           end
         end
