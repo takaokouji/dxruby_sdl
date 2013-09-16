@@ -10,6 +10,10 @@ describe 'require \'dxruby\'' do
     Window
     Image
     Font
+    Input
+    Sound
+    SoundEffect
+    Sprite
   ].each do |klass_name|
     it "トップレベルに#{klass_name}が定義されている" do
       expect {
