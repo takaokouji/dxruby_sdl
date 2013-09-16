@@ -4,7 +4,7 @@ module DXRubySDL
   class Sprite
     attr_accessor :x
     attr_accessor :y
-    attr_accessor :image
+    attr_reader :image
     attr_accessor :z
     attr_accessor :angle
     attr_accessor :scale_x
