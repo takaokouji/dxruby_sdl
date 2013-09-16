@@ -50,7 +50,8 @@ module DXRubySDL
     end
 
     def set_color_key(color)
-      @_surface.set_color_key(SDL::RLEACCEL, color)
+      @_surface.set_color_key(SDL::SRCCOLORKEY | SDL::RLEACCEL, color)
+      @_surface = @_surface.display_format_alpha
     end
 
     def compare(x, y, color)
