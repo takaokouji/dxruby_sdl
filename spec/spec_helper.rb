@@ -13,6 +13,8 @@ end
 RSpec.configure do |config|
   config.before(:each) do
     DXRubySDL::Input.instance_variable_set('@keys', Set.new)
+    DXRubySDL::Input.instance_variable_set('@checked_keys', Set.new)
+    DXRubySDL::Input.instance_variable_set('@down_keys', Set.new)
     DXRubySDL::Input.instance_variable_set('@joysticks', [])
   end
 end

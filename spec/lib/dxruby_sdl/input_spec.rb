@@ -3,6 +3,32 @@ require 'spec_helper'
 
 describe DXRubySDL::Input,
          'キーボード・ゲームパッド・マウスの入力を扱うモジュール' do
+  def push_key_down_event(sym)
+    e = SDL::Event::KeyDown.new
+    e.press = true
+    e.sym = sym
+    e.mod = 0
+    e.unicode = 0
+    SDL::Event.push(e)
+  end
+
+  def push_key_up_event(sym)
+    e = SDL::Event::KeyUp.new
+    e.press = false
+    e.sym = sym
+    e.mod = 0
+    e.unicode = 0
+    SDL::Event.push(e)
+  end
+
+  def update_input_keys
+    expect {
+      DXRubySDL::Window.loop do
+        SDL::Event.push(SDL::Event::Quit.new)
+      end
+    }.to raise_error(SystemExit)
+  end
+
   shared_context '.set_repeat' do
     before do
       SDL::Key.stub(:enable_key_repeat)
@@ -28,30 +54,28 @@ describe DXRubySDL::Input,
     end
   end
 
-  shared_context 'push_key' do
+  shared_context 'push key_down events' do
     let(:_keys) { [] }
 
     before do
-      allow(SDL::Key).to receive(:scan)
-      allow(SDL::Key).to receive(:press?) { |key|
-                           [_keys].flatten.include?(key) ? true : false
-                         }
+      _keys.each { |key| push_key_down_event(key) }
+      update_input_keys
     end
   end
 
   describe '.x' do
-    include_context 'push_key'
+    include_context 'push key_down events'
 
     subject { described_class.x }
 
     context '左カーソルが押されている場合' do
-      let(:_keys) { SDL::Key::LEFT }
+      let(:_keys) { [SDL::Key::LEFT] }
 
       it { should eq(-1) }
     end
 
     context '右カーソルが押されている場合' do
-      let(:_keys) { SDL::Key::RIGHT }
+      let(:_keys) { [SDL::Key::RIGHT] }
 
       it { should eq(1) }
     end
@@ -68,18 +92,18 @@ describe DXRubySDL::Input,
   end
 
   describe '.y' do
-    include_context 'push_key'
+    include_context 'push key_down events'
 
     subject { described_class.y }
 
     context '上カーソルが押されている場合' do
-      let(:_keys) { SDL::Key::UP }
+      let(:_keys) { [SDL::Key::UP] }
 
       it { should eq(-1) }
     end
 
     context '下カーソルが押されている場合' do
-      let(:_keys) { SDL::Key::DOWN }
+      let(:_keys) { [SDL::Key::DOWN] }
 
       it { should eq(1) }
     end
@@ -96,7 +120,7 @@ describe DXRubySDL::Input,
   end
 
   shared_context '.pad_down?' do
-    include_context 'push_key'
+    include_context 'push key_down events'
 
     context 'Joystickが接続されている場合' do
       let(:joystick) {
@@ -137,7 +161,7 @@ describe DXRubySDL::Input,
           end
 
           context "#{_key}キーが押されている場合" do
-            let(:_keys) { SDL::Key.const_get(_key) }
+            let(:_keys) { [SDL::Key.const_get(_key)] }
 
             it { should be_true }
           end
@@ -169,7 +193,7 @@ describe DXRubySDL::Input,
           let(:button_code) { DXRubySDL.const_get(_button) }
 
           context "#{_key}キーが押されている場合" do
-            let(:_keys) { SDL::Key.const_get(_key) }
+            let(:_keys) { [SDL::Key.const_get(_key)] }
 
             it { should be_true }
           end
@@ -197,12 +221,7 @@ describe DXRubySDL::Input,
   end
 
   shared_context '.pad_push?' do
-    include_context 'push_key'
-
-    before do
-      described_class.instance_variable_set('@current_key_state', Set.new)
-      described_class.instance_variable_set('@last_key_state', Set.new)
-    end
+    include_context 'push key_down events'
 
     context 'Joystickが接続されている場合' do
       let(:joystick) {
@@ -243,7 +262,7 @@ describe DXRubySDL::Input,
           end
 
           context "#{_key}キーが押されている場合" do
-            let(:_keys) { SDL::Key.const_get(_key) }
+            let(:_keys) { [SDL::Key.const_get(_key)] }
 
             it { should be_true }
           end
@@ -275,7 +294,7 @@ describe DXRubySDL::Input,
           let(:button_code) { DXRubySDL.const_get(_button) }
 
           context "#{_key}キーが押されている場合" do
-            let(:_keys) { SDL::Key.const_get(_key) }
+            let(:_keys) { [SDL::Key.const_get(_key)] }
 
             it { should be_true }
           end
@@ -339,10 +358,10 @@ describe DXRubySDL::Input,
   end
 
   shared_context '.key_down?' do
-    include_context 'push_key'
+    include_context 'push key_down events'
 
     context 'ESCAPEキーが押されている場合' do
-      let(:_keys) { SDL::Key::ESCAPE }
+      let(:_keys) { [SDL::Key::ESCAPE] }
       let(:key_code) { DXRubySDL::K_ESCAPE }
 
       it { should be_true }
@@ -364,26 +383,20 @@ describe DXRubySDL::Input,
   end
 
   shared_context '.key_push?' do
-    include_context 'push_key'
+    include_context 'push key_down events'
 
     subject { described_class.send(method, key_code) }
 
-    before do
-      described_class.instance_variable_set('@current_key_state', Set.new)
-      described_class.instance_variable_set('@last_key_state', Set.new)
-    end
-
     context 'ESCAPEキーが押されている場合' do
-      let(:_keys) { SDL::Key::ESCAPE }
+      let(:_keys) { [SDL::Key::ESCAPE] }
       let(:key_code) { DXRubySDL::K_ESCAPE }
 
       it { should be_true }
 
       context 'キーが押しっぱなしの場合' do
         before do
-          last_key_state =
-            described_class.instance_variable_get('@last_key_state')
-          last_key_state.add(*_keys)
+          down_keys = described_class.instance_variable_get('@down_keys')
+          down_keys.add(key_code)
         end
 
         it { should be_false }
@@ -391,7 +404,7 @@ describe DXRubySDL::Input,
 
       context 'キーが押しっぱなしだが、' \
               'Input.key_push?をメインループで毎回処理しない場合' do
-        it '最初の1回以外は全てfalseを返す' do
+        specify '最初の1回以外は全てfalseを返す' do
           begin
             first = true
             i = 0
@@ -702,40 +715,18 @@ describe DXRubySDL::Input,
   end
 
   describe '.keys' do
-    def make_key_down_event(sym)
-      e = SDL::Event::KeyDown.new
-      e.press = true
-      e.sym = sym
-      e.mod = 0
-      e.unicode = 0
-      return e
-    end
-
-    def make_key_up_event(sym)
-      e = SDL::Event::KeyUp.new
-      e.press = false
-      e.sym = sym
-      e.mod = 0
-      e.unicode = 0
-      return e
-    end
-
     subject {
-      expect {
-        DXRubySDL::Window.loop do
-          SDL::Event.push(SDL::Event::Quit.new)
-        end
-      }.to raise_error(SystemExit)
+      update_input_keys
       described_class.keys
     }
 
     context 'スペースキー、上カーソルキー、Aキーを押している場合' do
       before do
-        SDL::Event.push(make_key_down_event(SDL::Key::SPACE))
-        SDL::Event.push(make_key_down_event(SDL::Key::UP))
-        SDL::Event.push(make_key_down_event(SDL::Key::DOWN))
-        SDL::Event.push(make_key_up_event(SDL::Key::DOWN))
-        SDL::Event.push(make_key_down_event(SDL::Key::A))
+        push_key_down_event(SDL::Key::SPACE)
+        push_key_down_event(SDL::Key::UP)
+        push_key_down_event(SDL::Key::DOWN)
+        push_key_up_event(SDL::Key::DOWN)
+        push_key_down_event(SDL::Key::A)
       end
 
       it {
@@ -745,8 +736,8 @@ describe DXRubySDL::Input,
 
     context '下カーソルキーを押したあとに離した場合' do
       before do
-        SDL::Event.push(make_key_down_event(SDL::Key::DOWN))
-        SDL::Event.push(make_key_up_event(SDL::Key::DOWN))
+        push_key_down_event(SDL::Key::DOWN)
+        push_key_up_event(SDL::Key::DOWN)
       end
 
       it { should be_empty }

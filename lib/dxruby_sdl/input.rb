@@ -118,10 +118,10 @@ module DXRubySDL
 
     private
 
-    @current_key_state = Set.new
-    @last_key_state = Set.new
-    @last_mouse_state = [false, false, false]
     @keys = Set.new
+    @checked_keys = Set.new
+    @down_keys = Set.new
+    @last_mouse_state = [false, false, false]
     @joysticks = []
 
     class << self
@@ -172,33 +172,24 @@ module DXRubySDL
       private_constant :DXRUBY_KEY_TABLE
 
       def store_last_state
-        keys = (@last_key_state - @current_key_state)
-        if keys.length > 0
-          SDL::Key.scan
-          keys.each do |key|
-            if SDL::Key.press?(key)
-              @current_key_state.add(key)
-            end
-          end
-        end
-        @last_key_state = @current_key_state
-        @current_key_state = Set.new
+        @down_keys.merge(@checked_keys)
+        @checked_keys.clear
         @last_mouse_state = SDL::Mouse.state
       end
 
       def sdl_key_press?(key)
-        SDL::Key.scan
-        if SDL::Key.press?(key)
-          @current_key_state.add(key)
+        dkey = to_dxruby_key(key)
+        if @keys.include?(dkey)
+          @checked_keys.add(dkey)
           return true
         else
-          @current_key_state.delete(key)
           return false
         end
       end
 
       def sdl_key_push?(key)
-        return sdl_key_press?(key) && !@last_key_state.include?(key)
+        dkey = to_dxruby_key(key)
+        return sdl_key_press?(key) && !@down_keys.include?(dkey)
       end
 
       def joystick(pad_number)
@@ -220,11 +211,14 @@ module DXRubySDL
       end
 
       def handle_key_event(event)
+        dkey = to_dxruby_key(event.sym)
         case event
         when SDL::Event::KeyDown
-          @keys.add(to_dxruby_key(event.sym))
+          @keys.add(dkey)
         when SDL::Event::KeyUp
-          @keys.delete(to_dxruby_key(event.sym))
+          @keys.delete(dkey)
+          @checked_keys.delete(dkey)
+          @down_keys.delete(dkey)
         end
       end
     end
