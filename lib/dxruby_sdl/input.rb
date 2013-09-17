@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+require 'set'
+
 module DXRubySDL
   module Input
     module_function
@@ -98,7 +100,10 @@ module DXRubySDL
       return SDL::Mouse.state[index] && !@last_mouse_state[index]
     end
 
-    # rubocop:disable SymbolName
+    def keys
+      return @keys
+    end
+
     class << self
       alias_method :setRepeat, :set_repeat
       alias_method :padDown?, :pad_down?
@@ -110,20 +115,20 @@ module DXRubySDL
       alias_method :mouseDown?, :mouse_down?
       alias_method :mousePush?, :mouse_push?
     end
-    # rubocop:enable SymbolName
 
     private
 
     @current_key_state = Set.new
     @last_key_state = Set.new
     @last_mouse_state = [false, false, false]
+    @keys = Set.new
     @joysticks = []
 
     class << self
 
       private
 
-      KEY_TABLE = {}
+      SDL_KEY_TABLE = {}
       replace_table = {
         'BACK' => 'BACKSPACE',
         'ADD' => 'PLUS',
@@ -156,11 +161,15 @@ module DXRubySDL
           end
         end
         begin
-          KEY_TABLE[DXRubySDL.const_get(k)] = SDL::Key.const_get(name.to_sym)
+          SDL_KEY_TABLE[DXRubySDL.const_get(k)] =
+            SDL::Key.const_get(name.to_sym)
         rescue NameError
         end
       end
-      private_constant :KEY_TABLE
+      private_constant :SDL_KEY_TABLE
+
+      DXRUBY_KEY_TABLE = SDL_KEY_TABLE.invert
+      private_constant :DXRUBY_KEY_TABLE
 
       def store_last_state
         keys = (@last_key_state - @current_key_state)
@@ -203,7 +212,20 @@ module DXRubySDL
       end
 
       def to_sdl_key(key_code)
-        return KEY_TABLE[key_code]
+        return SDL_KEY_TABLE[key_code]
+      end
+
+      def to_dxruby_key(key_code)
+        return DXRUBY_KEY_TABLE[key_code]
+      end
+
+      def handle_key_event(event)
+        case event
+        when SDL::Event::KeyDown
+          @keys.add(to_dxruby_key(event.sym))
+        when SDL::Event::KeyUp
+          @keys.delete(to_dxruby_key(event.sym))
+        end
       end
     end
   end

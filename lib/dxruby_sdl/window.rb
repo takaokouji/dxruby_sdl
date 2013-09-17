@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 require 'dxruby_sdl/window/fpstimer'
-require 'set'
 
 module DXRubySDL
   module Window
@@ -44,6 +43,8 @@ module DXRubySDL
             case event
             when SDL::Event::Quit
               exit
+            when SDL::Event::KeyDown, SDL::Event::KeyUp
+              Input.send(:handle_key_event, event)
             end
           end
 
