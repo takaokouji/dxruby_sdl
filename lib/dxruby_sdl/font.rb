@@ -25,6 +25,12 @@ module DXRubySDL
       end
     end
 
+    def get_width(string)
+      return @_ttf.text_size(string).first
+    end
+
+    alias_method :getWidth, :get_width
+
     private
 
     FONTS = {}
