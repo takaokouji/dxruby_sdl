@@ -229,6 +229,75 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
     end
   end
 
+  describe '.update',
+           '配列内のすべてのオブジェクトのupdateメソッドを呼び出す' do
+    subject do
+      expect {
+        described_class.update(ary)
+      }.not_to raise_error
+    end
+
+    shared_context 'updateメソッドを呼び出す' do
+      context '配列内のすべてのオブジェクトにupdateメソッドがある場合' do
+        def make_sprite(i)
+          s = double('Sprite')
+          expect(s).to receive(:update).once
+          return s
+        end
+
+        specify '配列内のすべてのオブジェクトのupdateメソッドを1回呼び出す' do
+          subject
+        end
+      end
+
+      context '配列内のオブジェクトの一部にupdateメソッドがある場合' do
+        def make_sprite(i)
+          s = double('Sprite')
+          if i.even?
+            expect(s).to receive(:update).once
+          end
+          return s
+        end
+
+        specify '配列内の一部のオブジェクトのupdateメソッドを1回呼び出す' do
+          subject
+        end
+      end
+
+      context '配列内のオブジェクトにupdateメソッドがない場合' do
+        def make_sprite(i)
+          return double('Sprite')
+        end
+
+        specify '配列内のすべてのオブジェクトのupdateメソッドを呼び出さない' do
+          subject
+        end
+      end
+    end
+
+    context '引数がネストしていない配列の場合' do
+      let(:ary) {
+        5.times.map { |i|
+          make_sprite(i)
+        }
+      }
+
+      include_context 'updateメソッドを呼び出す'
+    end
+
+    context '引数がネストした配列の場合' do
+      let(:ary) {
+        Array.new(5) {
+          5.times.map { |i|
+            make_sprite(i)
+          }
+        }
+      }
+
+      include_context 'updateメソッドを呼び出す'
+    end
+  end
+
   describe '.new' do
     subject { sprite }
 
