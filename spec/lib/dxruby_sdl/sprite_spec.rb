@@ -229,74 +229,84 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
     end
   end
 
-  describe '.update',
-           '配列内のすべてのオブジェクトのupdateメソッドを呼び出す' do
-    subject do
-      expect {
-        described_class.update(ary)
-      }.not_to raise_error
-    end
+  shared_context '配列内のオブジェクトのメソッドの呼び出し' do |_method|
+    describe ".#{_method}",
+             "配列内のすべてのオブジェクトの#{_method}メソッドを呼び出す" do
+      let(:method) { _method }
 
-    shared_context 'updateメソッドを呼び出す' do
-      context '配列内のすべてのオブジェクトにupdateメソッドがある場合' do
-        def make_sprite(i)
-          s = double('Sprite')
-          expect(s).to receive(:update).once
-          return s
-        end
-
-        specify '配列内のすべてのオブジェクトのupdateメソッドを1回呼び出す' do
-          subject
-        end
+      subject do
+        expect {
+          described_class.send(method, ary)
+        }.not_to raise_error
       end
 
-      context '配列内のオブジェクトの一部にupdateメソッドがある場合' do
-        def make_sprite(i)
-          s = double('Sprite')
-          if i.even?
-            expect(s).to receive(:update).once
+      shared_context 'メソッドを呼び出す' do
+        context "配列内のすべてのオブジェクトに#{_method}メソッドがある場合" do
+          def make_sprite(i)
+            s = double('Sprite')
+            expect(s).to receive(method).once
+            return s
           end
-          return s
+
+          specify "配列内のすべてのオブジェクトの#{_method}メソッドを" \
+                  '1回呼び出す' do
+            subject
+          end
         end
 
-        specify '配列内の一部のオブジェクトのupdateメソッドを1回呼び出す' do
-          subject
+        context "配列内のオブジェクトの一部に#{_method}メソッドがある場合" do
+          def make_sprite(i)
+            s = double('Sprite')
+            if i.even?
+              expect(s).to receive(method).once
+            end
+            return s
+          end
+
+          specify "配列内の一部のオブジェクトの#{_method}メソッドを" \
+                  '1回呼び出す' do
+            subject
+          end
+        end
+
+        context "配列内のオブジェクトに#{_method}メソッドがない場合" do
+          def make_sprite(i)
+            return double('Sprite')
+          end
+
+          specify "配列内のすべてのオブジェクトの#{_method}メソッドを" \
+                  '呼び出さない' do
+            subject
+          end
         end
       end
 
-      context '配列内のオブジェクトにupdateメソッドがない場合' do
-        def make_sprite(i)
-          return double('Sprite')
-        end
-
-        specify '配列内のすべてのオブジェクトのupdateメソッドを呼び出さない' do
-          subject
-        end
-      end
-    end
-
-    context '引数がネストしていない配列の場合' do
-      let(:ary) {
-        5.times.map { |i|
-          make_sprite(i)
-        }
-      }
-
-      include_context 'updateメソッドを呼び出す'
-    end
-
-    context '引数がネストした配列の場合' do
-      let(:ary) {
-        Array.new(5) {
+      context '引数がネストしていない配列の場合' do
+        let(:ary) {
           5.times.map { |i|
             make_sprite(i)
           }
         }
-      }
 
-      include_context 'updateメソッドを呼び出す'
+        include_context 'メソッドを呼び出す'
+      end
+
+      context '引数がネストした配列の場合' do
+        let(:ary) {
+          Array.new(5) {
+            5.times.map { |i|
+              make_sprite(i)
+            }
+          }
+        }
+
+        include_context 'メソッドを呼び出す'
+      end
     end
   end
+
+  include_context '配列内のオブジェクトのメソッドの呼び出し', :update
+  include_context '配列内のオブジェクトのメソッドの呼び出し', :draw
 
   describe '.new' do
     subject { sprite }
