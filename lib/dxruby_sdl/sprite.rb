@@ -77,7 +77,7 @@ module DXRubySDL
       end
 
       def clean(sprites)
-        return [sprites].flatten.reject(&:vanished?)
+        return [sprites].flatten.compact.reject(&:vanished?)
       end
     end
 
