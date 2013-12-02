@@ -121,33 +121,34 @@ module DXRubySDL
          ],
          %w[
            IPA\ Pゴシック
-           /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf
+           /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf:/usr/share/fonts/ipa-pgothic/ipagp.ttf
            IPA\ PGothic
            ipagp
          ],
          %w[
            IPA\ ゴシック
-           /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf
+           /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf:/usr/share/fonts/ipa-gothic/ipag.ttf
            IPA\ Gothic
            ipag
          ],
          %w[
            IPA\ P明朝
-           /usr/share/fonts/opentype/ipafont-mincho/ipamp.ttf
+           /usr/share/fonts/opentype/ipafont-mincho/ipamp.ttf:/usr/share/fonts/ipa-pmincho/ipamp.ttf
            IPA\ PMincho
            ipamp
          ],
          %w[
            IPA\ 明朝
-           /usr/share/fonts/opentype/ipafont-mincho/ipam.ttf
+           /usr/share/fonts/opentype/ipafont-mincho/ipam.ttf:/usr/share/fonts/ipa-mincho/ipam.ttf
            IPA\ Mincho
            ipam
          ],
         ]
     end
     # :nocov:
-    font_info.each do |name, path, *aliases|
-      if File.exist?(path)
+    font_info.each do |name, paths, *aliases|
+      path = paths.split(':').find { |s| File.exist?(s) }
+      if path
         FONTS[name] = path
         aliases.each do |a|
           FONT_ALIASES[a] = path
