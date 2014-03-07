@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-require 'dxruby_sdl/window/fpstimer'
+require_relative './window/fpstimer'
 
 module DXRubySDL
   module Window
