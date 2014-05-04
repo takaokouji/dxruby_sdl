@@ -33,6 +33,14 @@ module DXRubySDL
       FPSTimer.instance.fps = val
     end
 
+    def bgcolor
+      @bgcolor ||= DEFAULTS[:background_color]
+    end
+
+    def bgcolor=(val)
+      @bgcolor = val
+    end
+
     def loop(&block)
       timer = FPSTimer.instance
       timer.reset
@@ -48,7 +56,7 @@ module DXRubySDL
             end
           end
 
-          screen.fill_rect(0, 0, width, height, DEFAULTS[:background_color])
+          screen.fill_rect(0, 0, width, height, bgcolor)
 
           yield
 
