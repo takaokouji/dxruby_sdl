@@ -109,8 +109,8 @@ module DXRubySDL
         end
       end
       options = {}
-      if angle
-        options[:angle] = angle
+      if @angle
+        options[:angle] = @angle
       end
       if scale_x
         options[:scale_x] = scale_x
