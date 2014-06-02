@@ -132,6 +132,14 @@ end run
       # :nocov:
     end
 
+    def windowed?
+      !@_fullscreen
+    end
+
+    def windowed=(val)
+      @_fullscreen = !val
+    end
+
     class << self
       attr_writer :width
       attr_writer :height
@@ -160,8 +168,8 @@ end run
         return SDL::Screen.get
       rescue SDL::Error
         flags =
-          SDL::HWSURFACE | SDL::ASYNCBLIT | SDL::HWPALETTE | SDL::DOUBLEBUF |
-          SDL::FULLSCREEN
+          SDL::HWSURFACE | SDL::ASYNCBLIT | SDL::HWPALETTE | SDL::DOUBLEBUF
+        flags |= SDL::FULLSCREEN unless windowed?
         return SDL::Screen.open(width, height, 0, flags)
       end
     end
