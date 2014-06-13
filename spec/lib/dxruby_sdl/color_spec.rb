@@ -12,8 +12,8 @@ describe DXRubySDL::Color, 'カラーを変換するモジュール' do
       it { should be(color) }
     end
 
-    context "引数が4つの要素の配列で最初の3つが(#{expected.inspect})の場合" do
-      let(:color) { expected + [0] }
+    context "引数が4つの要素の配列で最後の3つが(#{expected.inspect})の場合" do
+      let(:color) { [0] + expected }
 
       it { should eq(expected) }
     end
@@ -31,8 +31,8 @@ describe DXRubySDL::Color, 'カラーを変換するモジュール' do
     end
 
     [0, 125, 255].each do |expected|
-      context "引数が4つの要素の配列で最後の値が#{expected}の場合" do
-        let(:color) { [0, 125, 255, expected] }
+      context "引数が4つの要素の配列で最初の値が#{expected}の場合" do
+        let(:color) { [expected, 0, 125, 255] }
 
         it { should eq(expected) }
       end
