@@ -3,18 +3,6 @@
 module DXRubySDL
   module Color
 
-    # preset constant color names. [alpha, R, G, B]
-    # C_DEFAULT is a transparent color.
-    C_BLACK   = [255,   0,   0,   0]
-    C_RED     = [255, 255,   0,   0]
-    C_GREEN   = [255,   0, 255,   0]
-    C_BLUE    = [255,   0,   0, 255]
-    C_YELLOW  = [255, 255, 255,   0]
-    C_CYAN    = [255,   0, 255, 255]
-    C_MAGENTA = [255, 255,   0, 255]
-    C_WHITE   = [255, 255, 255, 255]
-    C_DEFAULT = [  0,   0,   0,   0]
-
     module_function
 
     def to_sdl_color(color)
