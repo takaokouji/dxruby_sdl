@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard-rubocop'
 
-  spec.add_runtime_dependency 'rubysdl'
+  spec.add_runtime_dependency 'rubysdl', '~> 2.1.3'
   spec.add_runtime_dependency 'rsdl'
 end
