@@ -62,22 +62,30 @@ module DXRubySDL
 
       def update(sprites)
         sprites.flatten.each do |s|
-          if s.respond_to?(:update)
-            s.update
+          if !s.respond_to?(:vanished?) or !s.vanished?
+            if s.respond_to?(:update)
+              s.update
+            end
           end
         end
       end
 
       def draw(sprites)
         sprites.flatten.each do |s|
-          if s.respond_to?(:draw)
-            s.draw
+          if !s.respond_to?(:vanished?) or !s.vanished?
+            if s.respond_to?(:draw)
+              s.draw
+            end
           end
         end
       end
 
       def clean(sprites)
-        return [sprites].flatten.compact.reject(&:vanished?)
+        sprites.flatten.each do |s|
+          if s.respond_to?(:vanished?)
+            s.vanished?
+          end
+        end
       end
     end
 
