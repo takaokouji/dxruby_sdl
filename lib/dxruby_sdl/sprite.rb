@@ -83,14 +83,16 @@ module DXRubySDL
       def clean(sprites)
         sprites.size.times do |i|
           s = sprites[i]
-          Sprite.clean(s) if s.kind_of?(Array)
-          if s.respond_to?(:vanished?)
-            sprites[i] = nil if s.vanished?
+          if s.kind_of?(Array)
+            Sprite.clean(s)
+          else
+            if s.respond_to?(:vanished?)
+              sprites[i] = nil if s.vanished?
+            end
           end
         end
         sprites.compact!
         nil
-        p sprites.size
       end
     end
 
