@@ -62,22 +62,37 @@ module DXRubySDL
 
       def update(sprites)
         sprites.flatten.each do |s|
-          if s.respond_to?(:update)
-            s.update
+          if !s.respond_to?(:vanished?) or !s.vanished?
+            if s.respond_to?(:update)
+              s.update
+            end
           end
         end
       end
 
       def draw(sprites)
         sprites.flatten.each do |s|
-          if s.respond_to?(:draw)
-            s.draw
+          if !s.respond_to?(:vanished?) or !s.vanished?
+            if s.respond_to?(:draw)
+              s.draw
+            end
           end
         end
       end
 
       def clean(sprites)
-        return [sprites].flatten.compact.reject(&:vanished?)
+        sprites.size.times do |i|
+          s = sprites[i]
+          if s.kind_of?(Array)
+            Sprite.clean(s)
+          else
+            if s.respond_to?(:vanished?)
+              sprites[i] = nil if s.vanished?
+            end
+          end
+        end
+        sprites.compact!
+        nil
       end
     end
 
@@ -134,21 +149,22 @@ module DXRubySDL
         return false
       end
       if @collision_enable && @collision
-        x, y, width, height =
-          @collision[0] + @x, @collision[1] + @y, @collision[2], @collision[3]
+        x1, y1, x2, y2 =
+          @collision[0] + @x, @collision[1] + @y, @collision[2] + @x, @collision[3] + @y
       else
-        x, y, width, height =
-          @x, @y, @image.width, @image.height
+        x1, y1, x2, y2 =
+          @x, @y, @image.width + @x - 1, @image.height + @y - 1
       end
       if other.collision_enable && other.collision
-        other_x, other_y, other_width, other_height =
-          other.collision
+        other_x1, other_y1, other_x2, other_y2 =
+          other.collision[0] + other.x, other.collision[1] + other.y,
+          other.collision[2] + other.x, other.collision[3] + other.y
       else
-        other_x, other_y, other_width, other_height =
-          other.x, other.y, other.image.width, other.image.height
+        other_x1, other_y1, other_x2, other_y2 =
+          other.x, other.y, other.image.width + other.x - 1, other.image.height + other.y - 1
       end
-      return other_x + other_width > x && other_x < x + width &&
-        other_y + other_height > y && other_y < y + height
+      return other_x2 >= x1 && other_x1 <= x2 &&
+        other_y2 >= y1 && other_y1 <= y2
     end
 
     def check(sprites)
