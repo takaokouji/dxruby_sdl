@@ -311,7 +311,10 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
   describe '.clean',
            '配列内のすべてのオブジェクトのvanished?メソッドを呼び出し、' \
            'trueが返ってきた要素と、もともとnilだった要素を削除する' do
-    subject { described_class.clean(ary) }
+    subject {
+      described_class.clean(ary)
+      ary
+    }
 
     shared_examples 'vanished?メソッドを呼び出す' do
       it '配列内のすべてのオブジェクトのvanished?メソッドを呼び出す' do
@@ -322,21 +325,28 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
       end
     end
 
-    shared_context '.clean' do
+    context '引数がネストしていない配列の場合' do
+      let(:ary) {
+        5.times.map { |i|
+          make_sprite(i)
+        }
+      }
+
       context 'すべてのvanished?がtrueを返す場合' do
         def make_sprite(i)
-          s = double('Sprite')
+          s = double('Sprite', index: i)
           allow(s).to receive(:vanished?).and_return(true)
           return s
         end
 
         include_examples 'vanished?メソッドを呼び出す'
+
         it { should be_empty }
       end
 
       context '一部のvanished?がtrueを返す場合' do
         def make_sprite(i)
-          s = double('Sprite')
+          s = double('Sprite', index: i)
           if i.even?
             allow(s).to receive(:vanished?).and_return(true)
           else
@@ -348,14 +358,14 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
         include_examples 'vanished?メソッドを呼び出す'
 
         it 'vanished?がtrueのものが取り除かれた配列を返す' do
-          should eq(ary.flatten.reject(&:vanished?))
+          expect(subject.map(&:index)).to eq([1, 3])
         end
       end
 
       context '一部がnil、それ以外のvanished?がfalseを返す場合' do
         def make_sprite(i)
           if i.even?
-            s = double('Sprite')
+            s = double('Sprite', index: i)
             allow(s).to receive(:vanished?).and_return(false)
             return s
           else
@@ -376,33 +386,23 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
         end
 
         it 'nilのものが取り除かれた配列を返す' do
-          should eq(ary.flatten.reject(&:nil?))
+          expect(subject.map(&:index)).to eq([0, 2, 4])
         end
       end
 
       context 'すべてのvanished?がfalseを返す場合' do
         def make_sprite(i)
-          s = double('Sprite')
+          s = double('Sprite', index: i)
           allow(s).to receive(:vanished?).and_return(false)
           return s
         end
 
         include_examples 'vanished?メソッドを呼び出す'
 
-        it 'なにも取り除かずにフラットにした配列を返す' do
-          should eq(ary.flatten)
+        it 'なにも取り除かない' do
+          expect(subject.map(&:index)).to eq([0, 1, 2, 3, 4])
         end
       end
-    end
-
-    context '引数がネストしていない配列の場合' do
-      let(:ary) {
-        5.times.map { |i|
-          make_sprite(i)
-        }
-      }
-
-      include_context '.clean'
     end
 
     context '引数がネストした配列の場合' do
@@ -414,7 +414,80 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
         }
       }
 
-      include_context '.clean'
+      context 'すべてのvanished?がtrueを返す場合' do
+        def make_sprite(i)
+          s = double('Sprite', index: i)
+          allow(s).to receive(:vanished?).and_return(true)
+          return s
+        end
+
+        include_examples 'vanished?メソッドを呼び出す'
+
+        it { expect(subject).to eq(Array.new(5) { [] }) }
+      end
+
+      context '一部のvanished?がtrueを返す場合' do
+        def make_sprite(i)
+          s = double('Sprite', index: i)
+          if i.even?
+            allow(s).to receive(:vanished?).and_return(true)
+          else
+            allow(s).to receive(:vanished?).and_return(false)
+          end
+          return s
+        end
+
+        include_examples 'vanished?メソッドを呼び出す'
+
+        it 'vanished?がtrueのものが取り除かれた配列を返す' do
+          expect(subject.map { |i| i.map(&:index) })
+            .to eq(Array.new(5) { [1, 3] })
+        end
+      end
+
+      context '一部がnil、それ以外のvanished?がfalseを返す場合' do
+        def make_sprite(i)
+          if i.even?
+            s = double('Sprite', index: i)
+            allow(s).to receive(:vanished?).and_return(false)
+            return s
+          else
+            return nil
+          end
+        end
+
+        it '配列内のnilではないオブジェクトのvanished?メソッドを呼び出す' do
+          expect {
+            subject
+          }.not_to raise_error
+
+          ary.flatten.each do |s|
+            if !s.nil?
+              expect(s).to have_received(:vanished?).once
+            end
+          end
+        end
+
+        it 'nilのものが取り除かれた配列を返す' do
+          expect(subject.map { |i| i.map(&:index) })
+            .to eq(Array.new(5) { [0, 2, 4] })
+        end
+      end
+
+      context 'すべてのvanished?がfalseを返す場合' do
+        def make_sprite(i)
+          s = double('Sprite', index: i)
+          allow(s).to receive(:vanished?).and_return(false)
+          return s
+        end
+
+        include_examples 'vanished?メソッドを呼び出す'
+
+        it 'なにも取り除かない' do
+          expect(subject.map { |i| i.map(&:index) })
+            .to eq(Array.new(5) { [0, 1, 2, 3, 4] })
+        end
+      end
     end
   end
 

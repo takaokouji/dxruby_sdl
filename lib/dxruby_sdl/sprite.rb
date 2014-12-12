@@ -61,7 +61,7 @@ module DXRubySDL
       end
 
       def update(sprites)
-        sprites.flatten.each do |s|
+        [sprites].flatten.each do |s|
           if !s.respond_to?(:vanished?) or !s.vanished?
             if s.respond_to?(:update)
               s.update
@@ -71,7 +71,7 @@ module DXRubySDL
       end
 
       def draw(sprites)
-        sprites.flatten.each do |s|
+        [sprites].flatten.each do |s|
           if !s.respond_to?(:vanished?) or !s.vanished?
             if s.respond_to?(:draw)
               s.draw
@@ -84,7 +84,7 @@ module DXRubySDL
         sprites.size.times do |i|
           s = sprites[i]
           if s.kind_of?(Array)
-            Sprite.clean(s)
+            clean(s)
           else
             if s.respond_to?(:vanished?)
               sprites[i] = nil if s.vanished?
