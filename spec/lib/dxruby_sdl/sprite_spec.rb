@@ -325,6 +325,59 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
       end
     end
 
+    shared_context 'vanished_true', vanished_true: true do
+      def make_sprite(i)
+        s = double('Sprite', index: i)
+        allow(s).to receive(:vanished?).and_return(true)
+        return s
+      end
+    end
+
+    shared_context 'some_item_vanished', some_item_vanished: true do
+      def make_sprite(i)
+        s = double('Sprite', index: i)
+        if i.even?
+          allow(s).to receive(:vanished?).and_return(true)
+        else
+          allow(s).to receive(:vanished?).and_return(false)
+        end
+        return s
+      end
+    end
+
+    shared_context 'vanished_false_or_nil', vanished_false_or_nil: true do
+      def make_sprite(i)
+        if i.even?
+          s = double('Sprite', index: i)
+          allow(s).to receive(:vanished?).and_return(false)
+          return s
+        else
+          return nil
+        end
+      end
+
+      it '配列内のnilではないオブジェクトのvanished?メソッドを呼び出す' do
+        expect {
+          subject
+        }.not_to raise_error
+
+        ary.flatten.each do |s|
+          if !s.nil?
+            expect(s).to have_received(:vanished?).once
+          end
+        end
+      end
+    end
+
+    shared_context 'vanished_false', vanished_false: true do
+      def make_sprite(i)
+        s = double('Sprite', index: i)
+        allow(s).to receive(:vanished?).and_return(false)
+        return s
+      end
+    end
+
+
     context '引数がネストしていない配列の場合' do
       let(:ary) {
         5.times.map { |i|
@@ -332,29 +385,13 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
         }
       }
 
-      context 'すべてのvanished?がtrueを返す場合' do
-        def make_sprite(i)
-          s = double('Sprite', index: i)
-          allow(s).to receive(:vanished?).and_return(true)
-          return s
-        end
-
+      context 'すべてのvanished?がtrueを返す場合', vanished_true: true do
         include_examples 'vanished?メソッドを呼び出す'
 
         it { should be_empty }
       end
 
-      context '一部のvanished?がtrueを返す場合' do
-        def make_sprite(i)
-          s = double('Sprite', index: i)
-          if i.even?
-            allow(s).to receive(:vanished?).and_return(true)
-          else
-            allow(s).to receive(:vanished?).and_return(false)
-          end
-          return s
-        end
-
+      context '一部のvanished?がtrueを返す場合', some_item_vanished: true do
         include_examples 'vanished?メソッドを呼び出す'
 
         it 'vanished?がtrueのものが取り除かれた配列を返す' do
@@ -362,41 +399,14 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
         end
       end
 
-      context '一部がnil、それ以外のvanished?がfalseを返す場合' do
-        def make_sprite(i)
-          if i.even?
-            s = double('Sprite', index: i)
-            allow(s).to receive(:vanished?).and_return(false)
-            return s
-          else
-            return nil
-          end
-        end
-
-        it '配列内のnilではないオブジェクトのvanished?メソッドを呼び出す' do
-          expect {
-            subject
-          }.not_to raise_error
-
-          ary.flatten.each do |s|
-            if !s.nil?
-              expect(s).to have_received(:vanished?).once
-            end
-          end
-        end
-
+      context '一部がnil、それ以外のvanished?がfalseを返す場合',
+              vanished_false_or_nil: true do
         it 'nilのものが取り除かれた配列を返す' do
           expect(subject.map(&:index)).to eq([0, 2, 4])
         end
       end
 
-      context 'すべてのvanished?がfalseを返す場合' do
-        def make_sprite(i)
-          s = double('Sprite', index: i)
-          allow(s).to receive(:vanished?).and_return(false)
-          return s
-        end
-
+      context 'すべてのvanished?がfalseを返す場合', vanished_false: true do
         include_examples 'vanished?メソッドを呼び出す'
 
         it 'なにも取り除かない' do
@@ -414,29 +424,13 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
         }
       }
 
-      context 'すべてのvanished?がtrueを返す場合' do
-        def make_sprite(i)
-          s = double('Sprite', index: i)
-          allow(s).to receive(:vanished?).and_return(true)
-          return s
-        end
-
+      context 'すべてのvanished?がtrueを返す場合', vanished_true: true do
         include_examples 'vanished?メソッドを呼び出す'
 
         it { expect(subject).to eq(Array.new(5) { [] }) }
       end
 
-      context '一部のvanished?がtrueを返す場合' do
-        def make_sprite(i)
-          s = double('Sprite', index: i)
-          if i.even?
-            allow(s).to receive(:vanished?).and_return(true)
-          else
-            allow(s).to receive(:vanished?).and_return(false)
-          end
-          return s
-        end
-
+      context '一部のvanished?がtrueを返す場合', some_item_vanished: true do
         include_examples 'vanished?メソッドを呼び出す'
 
         it 'vanished?がtrueのものが取り除かれた配列を返す' do
@@ -445,42 +439,15 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
         end
       end
 
-      context '一部がnil、それ以外のvanished?がfalseを返す場合' do
-        def make_sprite(i)
-          if i.even?
-            s = double('Sprite', index: i)
-            allow(s).to receive(:vanished?).and_return(false)
-            return s
-          else
-            return nil
-          end
-        end
-
-        it '配列内のnilではないオブジェクトのvanished?メソッドを呼び出す' do
-          expect {
-            subject
-          }.not_to raise_error
-
-          ary.flatten.each do |s|
-            if !s.nil?
-              expect(s).to have_received(:vanished?).once
-            end
-          end
-        end
-
+      context '一部がnil、それ以外のvanished?がfalseを返す場合',
+              vanished_false_or_nil: true do
         it 'nilのものが取り除かれた配列を返す' do
           expect(subject.map { |i| i.map(&:index) })
             .to eq(Array.new(5) { [0, 2, 4] })
         end
       end
 
-      context 'すべてのvanished?がfalseを返す場合' do
-        def make_sprite(i)
-          s = double('Sprite', index: i)
-          allow(s).to receive(:vanished?).and_return(false)
-          return s
-        end
-
+      context 'すべてのvanished?がfalseを返す場合', vanished_false: true do
         include_examples 'vanished?メソッドを呼び出す'
 
         it 'なにも取り除かない' do
