@@ -90,7 +90,7 @@ module DXRubySDL
                                   option[:scale_x], option[:scale_y],
                                   option[:center_x], option[:center_y],
                                   x + option[:center_x], y + option[:center_y],
-                                  SDL::Surface::TRANSFORM_SAFE)
+                                  0)
     end
 
     def draw_font(x, y, string, font, hash = {})
