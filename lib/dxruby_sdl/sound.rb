@@ -21,7 +21,7 @@ module DXRubySDL
       end
     end
 
-    def_delegators :@sound, :play, :set_volume
+    def_delegators :@sound, :play, :stop, :set_volume
 
     alias_method :setVolume, :set_volume
 
@@ -35,6 +35,10 @@ module DXRubySDL
       def play
         SDL::Mixer.play_music(@music, -1)
       end
+
+	  def stop
+		  SDL::Mixer.halt_music
+	  end
 
       def set_volume(volume, time = 0)
         raise NotImplementedError, 'Sound#set_volume(volume, time) with MIDI'

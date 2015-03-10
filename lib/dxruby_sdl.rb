@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-require 'dxruby_sdl/version'
+require_relative './dxruby_sdl/version'
 require 'sdl'
 
 module DXRubySDL
@@ -215,13 +215,13 @@ module DXRubySDL
   end
 end
 
-require 'dxruby_sdl/window'
-require 'dxruby_sdl/color'
-require 'dxruby_sdl/image'
-require 'dxruby_sdl/font'
-require 'dxruby_sdl/input'
-require 'dxruby_sdl/sound'
-require 'dxruby_sdl/sound_effect'
-require 'dxruby_sdl/sprite'
+require_relative './dxruby_sdl/window'
+require_relative './dxruby_sdl/color'
+require_relative './dxruby_sdl/image'
+require_relative './dxruby_sdl/font'
+require_relative './dxruby_sdl/input'
+require_relative './dxruby_sdl/sound'
+require_relative './dxruby_sdl/sound_effect'
+require_relative './dxruby_sdl/sprite'
 
 SDL.init(SDL::INIT_EVERYTHING)
