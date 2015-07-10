@@ -37,7 +37,10 @@ module DXRubySDL
       end
 
       def set_volume(volume, time = 0)
-        raise NotImplementedError, 'Sound#set_volume(volume, time) with MIDI'
+        if time > 0
+          raise NotImplementedError, 'Sound#set_volume(volume, time != 0)'
+        end
+        @music.set_volume_music((volume * 128 / 255).to_i)
       end
     end
     private_constant :Music
@@ -63,7 +66,7 @@ module DXRubySDL
         if time > 0
           raise NotImplementedError, 'Sound#set_volume(volume, time != 0)'
         end
-        @wave.set_volume(volume)
+        @wave.set_volume((volume * 128 / 255).to_i)
       end
     end
     private_constant :Wave
