@@ -78,29 +78,37 @@ describe DXRubySDL::Sound, '音を表すクラス' do
   end
 
   describe '#stop' do
-    context 'WAVE形式のファイルの場合' do
+    context 'WAVE file' do
       let(:path) { fixture_path('sound.wav') }
       let(:sound) { DXRubySDL::Sound.new(path) }
 
       subject { sound.stop }
 
-      it 'SDL::Mixer.halt_musicが呼び出される' do
+      before do
+        allow(SDL::Mixer).to receive(:halt)
         sound.play
-        expect(SDL::Mixer).to receive(:halt)
         subject
+      end
+
+      describe SDL::Mixer do
+        it { expect(SDL::Mixer).to have_received(:halt).with(0).once }
       end
     end
 
-    context 'MIDI形式のファイルの場合' do
+    context 'MIDI file' do
       let(:path) { fixture_path('bgm.mid') }
       let(:sound) { DXRubySDL::Sound.new(path) }
 
       subject { sound.stop }
 
-      it 'SDL::Mixer.halt_musicが呼び出される' do
+      before do
+        allow(SDL::Mixer).to receive(:halt_music)
         sound.play
-        expect(SDL::Mixer).to receive(:halt_music)
         subject
+      end
+
+      describe SDL::Mixer do
+        it { expect(SDL::Mixer).to have_received(:halt_music).with(no_args).once }
       end
     end
   end
