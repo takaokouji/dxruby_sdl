@@ -2,6 +2,16 @@
 require 'spec_helper'
 
 describe DXRubySDL::Sound, '音を表すクラス' do
+  shared_context 'WAVE file', wave: true do
+    let(:path) { fixture_path('sound.wav') }
+    let(:sound) { DXRubySDL::Sound.new(path) }
+  end
+
+  shared_context 'MIDI file', midi: true do
+    let(:path) { fixture_path('bgm.mid') }
+    let(:sound) { DXRubySDL::Sound.new(path) }
+  end
+
   describe '.new' do
     shared_context '.new' do
       subject { DXRubySDL::Sound.new(fixture_path(filename)) }
@@ -25,10 +35,7 @@ describe DXRubySDL::Sound, '音を表すクラス' do
   end
 
   describe '#play' do
-    context 'WAVE形式のファイルの場合' do
-      let(:path) { fixture_path('sound.wav') }
-      let(:sound) { DXRubySDL::Sound.new(path) }
-
+    context 'WAVE file', wave: true do
       subject { sound.play }
 
       it 'SDL::Mixer.play_channelを呼び出す' do
@@ -62,10 +69,7 @@ describe DXRubySDL::Sound, '音を表すクラス' do
       end
     end
 
-    context 'MIDI形式のファイルの場合' do
-      let(:path) { fixture_path('bgm.mid') }
-      let(:sound) { DXRubySDL::Sound.new(path) }
-
+    context 'MIDI file', midi: true do
       subject { sound.play }
 
       it 'SDL::Mixer.play_musicを呼び出す' do
@@ -78,7 +82,7 @@ describe DXRubySDL::Sound, '音を表すクラス' do
   end
 
   describe '#stop' do
-    context 'WAVE file' do
+    context 'WAVE file', wave: true do
       let(:path) { fixture_path('sound.wav') }
       let(:sound) { DXRubySDL::Sound.new(path) }
 
@@ -95,7 +99,7 @@ describe DXRubySDL::Sound, '音を表すクラス' do
       end
     end
 
-    context 'MIDI file' do
+    context 'MIDI file', midi: true do
       let(:path) { fixture_path('bgm.mid') }
       let(:sound) { DXRubySDL::Sound.new(path) }
 
