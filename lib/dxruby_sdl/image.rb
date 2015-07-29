@@ -115,7 +115,7 @@ module DXRubySDL
     end
 
     def draw(x, y, image, x1 = 0, y1 = 0, width = image.width, height = image.height)
-      SDL.blitSurface(image, x1, y1, width, height, self, x, y)
+      SDL.blitSurface(image._surface, x1, y1, width, height, self._surface, x, y)
     end
 
     def draw_font(x, y, string, font, color = [255, 255, 255])
