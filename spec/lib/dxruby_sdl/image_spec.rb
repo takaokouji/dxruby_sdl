@@ -213,7 +213,7 @@ describe DXRubySDL::Image, '画像を表すクラス' do
       end
 
       describe SDL do
-        it { expect(SDL).to have_received(:blitSurface).with( dest_image, 0, 0, dest_image.width, dest_image.height, source_image, 0, 0).once }
+        it { expect(SDL).to have_received(:blitSurface).with( dest_image._surface, 0, 0, dest_image.width, dest_image.height, source_image._surface, 0, 0).once }
       end
     end
 
@@ -228,7 +228,7 @@ describe DXRubySDL::Image, '画像を表すクラス' do
       end
 
       describe SDL do
-        it { expect(SDL).to have_received(:blitSurface).with(dest_image, 100, 200, 300, 400, source_image, 0, 0).once }
+        it { expect(SDL).to have_received(:blitSurface).with(dest_image._surface, 100, 200, 300, 400, source_image._surface, 0, 0).once }
       end
     end
   end
