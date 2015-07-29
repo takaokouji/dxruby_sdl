@@ -39,6 +39,10 @@ module DXRubySDL
       @_surface =
         SDL::Surface.new(SDL::SWSURFACE, width, height, Window.send(:screen))
       @_surface.fill_rect(0, 0, width, height, @color)
+
+      if color[3] == 0
+        set_color_key(@color[0..2])
+      end
     end
 
     def width
@@ -51,7 +55,7 @@ module DXRubySDL
 
     def set_color_key(color)
       @_surface.set_color_key(SDL::SRCCOLORKEY | SDL::RLEACCEL, color)
-      @_surface = @_surface.display_format_alpha
+      # @_surface = @_surface.display_format_alpha
     end
 
     def compare(x, y, color)
