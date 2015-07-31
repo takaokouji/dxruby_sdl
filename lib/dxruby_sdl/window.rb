@@ -74,6 +74,16 @@ module DXRubySDL
       screen.put(image._surface, x, y)
     end
 
+    def draw_scale(x, y, image, scalex, scaley, centerx = nil, centery = nil, z = 0)
+      opt = {
+        scale_x: scalex,
+        scale_y: scaley,
+        center_x: centerx,
+        center_y: centery,
+      }
+      draw_ex(x, y, image, opt)
+    end
+
     def draw_ex(x, y, image, hash = {})
       if hash[:z] && hash[:z] != 0
         raise NotImplementedError, 'Window.draw_ex(x, y, image, z: != 0)'
@@ -145,6 +155,7 @@ end run
       attr_writer :height
       attr_writer :scale
 
+      alias_method :drawScale, :draw_scale
       alias_method :drawEx, :draw_ex
       alias_method :drawFont, :draw_font
       alias_method :openFilename, :open_filename
