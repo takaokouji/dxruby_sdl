@@ -21,6 +21,5 @@ module DXRubySDL
     end
 
     alias_method :drawFont, :draw_font
-
   end
 end
