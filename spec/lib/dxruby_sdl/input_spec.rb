@@ -157,17 +157,17 @@ describe DXRubySDL::Input,
               j
             }
 
-            it { should be_true }
+            it { should be true }
           end
 
           context "#{_key}キーが押されている場合" do
             let(:_keys) { [SDL::Key.const_get(_key)] }
 
-            it { should be_true }
+            it { should be true }
           end
 
           context 'ボタンやキーが押されていない場合' do
-            it { should be_false }
+            it { should be false }
           end
         end
       end
@@ -195,11 +195,11 @@ describe DXRubySDL::Input,
           context "#{_key}キーが押されている場合" do
             let(:_keys) { [SDL::Key.const_get(_key)] }
 
-            it { should be_true }
+            it { should be true }
           end
 
           context 'ボタンやキーが押されていない場合' do
-            it { should be_false }
+            it { should be false }
           end
         end
       end
@@ -258,17 +258,17 @@ describe DXRubySDL::Input,
               j
             }
 
-            it { should be_true }
+            it { should be true }
           end
 
           context "#{_key}キーが押されている場合" do
             let(:_keys) { [SDL::Key.const_get(_key)] }
 
-            it { should be_true }
+            it { should be true }
           end
 
           context 'ボタンやキーが押されていない場合' do
-            it { should be_false }
+            it { should be false }
           end
         end
       end
@@ -296,11 +296,11 @@ describe DXRubySDL::Input,
           context "#{_key}キーが押されている場合" do
             let(:_keys) { [SDL::Key.const_get(_key)] }
 
-            it { should be_true }
+            it { should be true }
           end
 
           context 'ボタンやキーが押されていない場合' do
-            it { should be_false }
+            it { should be false }
           end
         end
       end
@@ -364,7 +364,7 @@ describe DXRubySDL::Input,
       let(:_keys) { [SDL::Key::ESCAPE] }
       let(:key_code) { DXRubySDL::K_ESCAPE }
 
-      it { should be_true }
+      it { should be true }
     end
   end
 
@@ -391,7 +391,7 @@ describe DXRubySDL::Input,
       let(:_keys) { [SDL::Key::ESCAPE] }
       let(:key_code) { DXRubySDL::K_ESCAPE }
 
-      it { should be_true }
+      it { should be true }
 
       context 'キーが押しっぱなしの場合' do
         before do
@@ -399,7 +399,7 @@ describe DXRubySDL::Input,
           down_keys.add(key_code)
         end
 
-        it { should be_false }
+        it { should be false }
       end
 
       context 'キーが押しっぱなしだが、' \
@@ -410,11 +410,11 @@ describe DXRubySDL::Input,
             i = 0
             DXRubySDL::Window.loop do
               if first
-                expect(described_class.send(method, key_code)).to be_true
+                expect(described_class.send(method, key_code)).to be true
                 first = false
               else
                 if i.even?
-                  expect(described_class.send(method, key_code)).to be_false
+                  expect(described_class.send(method, key_code)).to be false
                 end
               end
               i += 1
@@ -453,19 +453,19 @@ describe DXRubySDL::Input,
       describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_LBUTTON }
 
-        it { should be_true }
+        it { should be true }
       end
 
       describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_MBUTTON }
 
-        it { should be_false }
+        it { should be false }
       end
 
       describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_RBUTTON }
 
-        it { should be_false }
+        it { should be false }
       end
     end
 
@@ -478,19 +478,19 @@ describe DXRubySDL::Input,
       describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_LBUTTON }
 
-        it { should be_false }
+        it { should be false }
       end
 
       describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_MBUTTON }
 
-        it { should be_true }
+        it { should be true }
       end
 
       describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_RBUTTON }
 
-        it { should be_false }
+        it { should be false }
       end
     end
 
@@ -503,19 +503,19 @@ describe DXRubySDL::Input,
       describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_LBUTTON }
 
-        it { should be_false }
+        it { should be false }
       end
 
       describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_MBUTTON }
 
-        it { should be_false }
+        it { should be false }
       end
 
       describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
         let(:button) { DXRubySDL::M_RBUTTON }
 
-        it { should be_true }
+        it { should be true }
       end
     end
   end
@@ -550,19 +550,19 @@ describe DXRubySDL::Input,
         describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_LBUTTON }
 
-          it { should be_true }
+          it { should be true }
         end
 
         describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_MBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_RBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
       end
 
@@ -575,19 +575,19 @@ describe DXRubySDL::Input,
         describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_LBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_MBUTTON }
 
-          it { should be_true }
+          it { should be true }
         end
 
         describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_RBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
       end
 
@@ -600,19 +600,19 @@ describe DXRubySDL::Input,
         describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_LBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_MBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_RBUTTON }
 
-          it { should be_true }
+          it { should be true }
         end
       end
     end
@@ -632,19 +632,19 @@ describe DXRubySDL::Input,
         describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_LBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_MBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_RBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
       end
 
@@ -657,19 +657,19 @@ describe DXRubySDL::Input,
         describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_LBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_MBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_RBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
       end
 
@@ -682,19 +682,19 @@ describe DXRubySDL::Input,
         describe 'マウスの左ボタン(M_LBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_LBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの中ボタン(M_MBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_MBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
 
         describe 'マウスの右ボタン(M_RBUTTON)を指定する' do
           let(:button) { DXRubySDL::M_RBUTTON }
 
-          it { should be_false }
+          it { should be false }
         end
       end
     end

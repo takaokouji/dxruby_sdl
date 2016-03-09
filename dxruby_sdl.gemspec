@@ -21,6 +21,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake', '~> 10.4'
   spec.add_development_dependency 'rspec', '~> 2.14'
+  spec.add_development_dependency 'rspec-its'
+  spec.add_development_dependency 'rspec-collection_matchers'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'travis-lint'
   spec.add_development_dependency 'rubocop', '0.15.0'

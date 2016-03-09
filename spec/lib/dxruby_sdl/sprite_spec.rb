@@ -47,9 +47,9 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
     shared_examples 'return' do |val|
       describe '戻り値' do
         if val
-          it { should be_true }
+          it { should be true }
         else
-          it { should be_false }
+          it { should be false }
         end
       end
     end
@@ -541,7 +541,7 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
       subject { sprite }
 
       context '呼び出す前' do
-        its(:vanished?) { should be_false }
+        its(:vanished?) { should be false }
       end
 
       context '呼び出した後' do
@@ -549,7 +549,7 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
           sprite.vanish
         end
 
-        its(:vanished?) { should be_true }
+        its(:vanished?) { should be true }
       end
     end
   end
@@ -558,13 +558,13 @@ describe DXRubySDL::Sprite, 'ゲームのキャラを扱う場合の基本とな
     subject { sprite.vanished? }
 
     context 'Spriteが有効な場合' do
-      it { should be_false }
+      it { should be false }
     end
 
     context 'vanishを呼び出してSpriteを無効化している場合' do
       before { sprite.vanish }
 
-      it { should be_true }
+      it { should be true }
     end
   end
 
