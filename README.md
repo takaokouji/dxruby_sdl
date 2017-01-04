@@ -9,8 +9,6 @@
 `dxruby_sdl` is a ruby library for 2D graphics and game. It has same
 DXRuby API. It use SDL/Ruby.
 
-Current API compatibility status: http://dxruby-apis.herokuapp.com/en/
-
 ## Installation
 
 ### SDL, SGE, etc...
@@ -58,7 +56,7 @@ $ brew install https://gist.githubusercontent.com/ymmtmdk/5b15f2b06aef5549eb5a/r
 
 (3) MS PGohic (DXRuby's default font)
 
-Install Microsoft Office:mac from http://www.microsoft.com/japan/mac.
+Search and download from internet. A keyword example is "ms pgothic download".
 
 #### Linux
 
