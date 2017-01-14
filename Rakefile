@@ -52,7 +52,7 @@ task :release do
   File.open('lib/dxruby_sdl/version.rb', 'r+') do |f|
     lines = []
     while line = f.gets
-      line = "#{$1} '#{next_version}'\n" if /(\s*VERSION = )/.match(line)
+      line = "#{$1}'#{next_version}'\n" if /(\s*VERSION =\s*)/.match(line)
       lines << line
     end
     f.rewind
