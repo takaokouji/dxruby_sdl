@@ -82,6 +82,11 @@ describe DXRubySDL::Sound, '音を表すクラス' do
   end
 
   describe '#stop' do
+    it '再生していないサウンドを停止でエラーが発生しない' do
+      sound = DXRubySDL::Sound.new(fixture_path('sound.wav'))
+      expect { sound.stop }.to_not raise_error
+    end
+
     context 'WAVE file', wave: true do
       let(:path) { fixture_path('sound.wav') }
       let(:sound) { DXRubySDL::Sound.new(path) }

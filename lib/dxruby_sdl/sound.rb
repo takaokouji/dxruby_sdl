@@ -88,7 +88,7 @@ module DXRubySDL
       end
 
       def stop
-        SDL::Mixer.halt(@last_played_channel)
+        SDL::Mixer.halt(@last_played_channel) if @last_played_channel
       end
     end
     private_constant :Wave
