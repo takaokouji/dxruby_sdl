@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 
 module DXRubySDL
-  VERSION =  '0.0.13'
+  VERSION =  '0.0.16'
 end

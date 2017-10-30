@@ -39,6 +39,12 @@ module DXRubySDL
       @_surface =
         SDL::Surface.new(SDL::SWSURFACE, width, height, Window.send(:screen))
       @_surface.fill_rect(0, 0, width, height, @color)
+
+      # TODO: a値が0の時にしか対応していない。
+      # 1から254の値に対応すること
+      if color[3] == 0
+        set_color_key(@color[0..2])
+      end
     end
 
     def width
@@ -51,7 +57,6 @@ module DXRubySDL
 
     def set_color_key(color)
       @_surface.set_color_key(SDL::SRCCOLORKEY | SDL::RLEACCEL, color)
-      @_surface = @_surface.display_format_alpha
     end
 
     def compare(x, y, color)
@@ -112,6 +117,10 @@ module DXRubySDL
                             to_sdl_alpha(color))
       end
       return self
+    end
+
+    def draw(x, y, image, x1 = 0, y1 = 0, width = image.width, height = image.height)
+      SDL.blitSurface(image._surface, x1, y1, width, height, self._surface, x, y)
     end
 
     def draw_font(x, y, string, font, color = [255, 255, 255])

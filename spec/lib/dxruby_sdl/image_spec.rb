@@ -196,6 +196,43 @@ describe DXRubySDL::Image, '画像を表すクラス' do
     end
   end
 
+  shared_context 'Source and Destination Images' do
+    let(:source_image) { DXRubySDL::Image.new(640, 480) }
+    let(:dest_image) { DXRubySDL::Image.new(640, 480) }
+  end
+
+  describe '#draw' do
+    context 'nothing argumet' do
+      include_context 'Source and Destination Images'
+
+      subject { source_image.draw(0, 0, dest_image) }
+
+      before do
+        allow(SDL).to receive(:blitSurface)
+        subject
+      end
+
+      describe SDL do
+        it { expect(SDL).to have_received(:blitSurface).with( dest_image._surface, 0, 0, dest_image.width, dest_image.height, source_image._surface, 0, 0).once }
+      end
+    end
+
+    context 'Specify argument' do
+      include_context 'Source and Destination Images'
+
+      subject { source_image.draw(0, 0, dest_image, 100, 200, 300, 400) }
+
+      before do
+        allow(SDL).to receive(:blitSurface)
+        subject
+      end
+
+      describe SDL do
+        it { expect(SDL).to have_received(:blitSurface).with(dest_image._surface, 100, 200, 300, 400, source_image._surface, 0, 0).once }
+      end
+    end
+  end
+
   shared_context '#draw_font' do
     let!(:font) { DXRubySDL::Font.new(32) }
     let(:args) { [0, 0, 'やあ', font] }

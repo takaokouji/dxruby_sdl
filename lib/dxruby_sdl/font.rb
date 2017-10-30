@@ -68,8 +68,12 @@ module DXRubySDL
            MS\ Mincho
          ],
          %w[
-           osaka
+           Osaka
            /Library/Fonts/osaka.ttf
+         ],
+         %w[
+           ヒラギノ丸ゴ\ ProN\ W4
+           /Library/Fonts/ヒラギノ丸ゴ\ ProN\ W4.ttc
          ],
          %w[
            IPA\ Pゴシック

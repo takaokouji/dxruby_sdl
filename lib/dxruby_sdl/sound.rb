@@ -6,6 +6,17 @@ module DXRubySDL
   class Sound
     extend Forwardable
 
+    module Common
+      MAX_DXRUBY_VOLUME = 255
+      private_constant :MAX_DXRUBY_VOLUME
+      MAX_SDL_VOLUME = 128
+      private_constant :MAX_SDL_VOLUME
+
+      def dxruby_volume_to_sdl_volume(volume)
+        (volume * MAX_SDL_VOLUME.to_f / MAX_DXRUBY_VOLUME).round
+      end
+    end
+
     @sdl_mixer_openend = false
 
     def initialize(filename)
@@ -21,13 +32,15 @@ module DXRubySDL
       end
     end
 
-    def_delegators :@sound, :play, :set_volume
+    def_delegators :@sound, :play, :set_volume, :stop
 
     alias_method :setVolume, :set_volume
 
     private
 
     class Music
+      include Common
+
       def initialize(filename)
         @music = SDL::Mixer::Music.load(filename)
       end
@@ -37,12 +50,20 @@ module DXRubySDL
       end
 
       def set_volume(volume, time = 0)
-        raise NotImplementedError, 'Sound#set_volume(volume, time) with MIDI'
+        if time > 0
+          raise NotImplementedError, 'Sound#set_volume(volume, time != 0)'
+        end
+        @music.set_volume_music(dxruby_volume_to_sdl_volume(volume))
+      end
+
+      def stop
+        SDL::Mixer.halt_music
       end
     end
     private_constant :Music
 
     class Wave
+      include Common
       extend Forwardable
 
       def initialize(filename)
@@ -63,7 +84,11 @@ module DXRubySDL
         if time > 0
           raise NotImplementedError, 'Sound#set_volume(volume, time != 0)'
         end
-        @wave.set_volume(volume)
+        @wave.set_volume(dxruby_volume_to_sdl_volume(volume))
+      end
+
+      def stop
+        SDL::Mixer.halt(@last_played_channel) if @last_played_channel
       end
     end
     private_constant :Wave
